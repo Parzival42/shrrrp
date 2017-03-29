@@ -102,7 +102,7 @@ Material:
       second: 0.758
     - first:
         name: _Parallax
-      second: 0.058
+      second: 0.08
     - first:
         name: _SmoothnessTextureChannel
       second: 1

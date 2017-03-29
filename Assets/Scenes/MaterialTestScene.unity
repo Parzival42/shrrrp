@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 832510386}
   - component: {fileID: 832510385}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: SandRockCylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
