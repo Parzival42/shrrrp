@@ -6,6 +6,7 @@ public class RigidBodyInputHandler : InputHandler
     private static float MOVE_EPSILON = 0.1f;
     private static string HORIZONTAL_AXIS = "Horizontal";
     private static string VERTICAL_AXIS = "Vertical";
+    private static string JUMP_AXIS = "Jump";
     #endregion
 
     #region Internal members
@@ -52,8 +53,21 @@ public class RigidBodyInputHandler : InputHandler
         // Vertical Axis
         HandleAxisInput(vertical, Vector3.forward);
 
+        // Handle jumping
+        HandleJumpInput();
+
+        // Apply movement and rotation
         ApplyMovement(movementVector);
         ApplyRotation(horizontal, vertical);
+    }
+
+    private void HandleJumpInput()
+    {
+        bool hitGround = CheckPlayerGrounded();
+        if (hitGround && Input.GetButtonDown(JUMP_AXIS))
+        {
+            player.Rigid.AddForce(Vector3.up * player.JumpIntensity, ForceMode.VelocityChange);
+        }
     }
 
     private void HandleAxisInput(float axis, Vector3 direction)
@@ -85,5 +99,21 @@ public class RigidBodyInputHandler : InputHandler
     private void ApplyMovement(float movementSpeed, Vector3 direction)
     {
         ApplyMovement(direction * movementSpeed);
+    }
+
+    private bool CheckPlayerGrounded()
+    {
+        Ray ray = new Ray(player.transform.position + player.GroundPivotOffset, Vector3.down);
+        RaycastHit hitInfo;
+        bool hitGround = Physics.Raycast(ray, out hitInfo, player.GroundedDistance, 1 << player.GroundedLayer, QueryTriggerInteraction.UseGlobal);
+
+#if UNITY_EDITOR
+        if (hitGround)
+            Debug.DrawRay(ray.origin, ray.direction * player.GroundedDistance, Color.green);
+        else
+            Debug.DrawRay(ray.origin, ray.direction * player.GroundedDistance, Color.red);
+#endif
+
+        return hitGround;
     }
 }
