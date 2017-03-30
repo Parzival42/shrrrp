@@ -6,8 +6,12 @@ using UnityEngine;
 public class RigidBodyInput : MonoBehaviour
 {
     #region Public fields
+    [Header("Movement Settings")]
     [SerializeField]
-    private float movementSpeed = 2f;
+    private float movementSpeed = 0.1f;
+
+    [SerializeField]
+    private float rotationSpeed = 10f;
     #endregion
 
     #region Internal Members
@@ -18,6 +22,7 @@ public class RigidBodyInput : MonoBehaviour
     #region Properties
     public Rigidbody Rigid { get { return rigid; } }
     public float MovementSpeed { get { return movementSpeed; } }
+    public float RotationSpeed { get { return rotationSpeed; } }
     #endregion
 
     private void Start ()
@@ -30,8 +35,4 @@ public class RigidBodyInput : MonoBehaviour
     {
         inputHandler.HandleInput();
 	}
-
-    private void FixedUpdate()
-    {
-    }
 }

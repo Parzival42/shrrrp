@@ -47,12 +47,13 @@ public class RigidBodyInputHandler : InputHandler
         movementVector.Set(0f, 0f, 0f);
 
         // Horizontal Axis
-        HandleAxisInput(horizontal, player.transform.right);
+        HandleAxisInput(horizontal, Vector3.right);
 
         // Vertical Axis
-        HandleAxisInput(vertical, player.transform.forward);
+        HandleAxisInput(vertical, Vector3.forward);
 
         ApplyMovement(movementVector);
+        ApplyRotation(horizontal, vertical);
     }
 
     private void HandleAxisInput(float axis, Vector3 direction)
@@ -61,6 +62,19 @@ public class RigidBodyInputHandler : InputHandler
             movementVector += player.MovementSpeed * Mathf.Abs(axis) * direction;
         else if (axis < MOVE_EPSILON)
             movementVector += player.MovementSpeed * Mathf.Abs(axis) * -direction;
+    }
+
+    private void ApplyRotation(float horizontalInput, float verticalInput)
+    {
+        if (Mathf.Abs(horizontalInput) > MOVE_EPSILON || Mathf.Abs(verticalInput) > MOVE_EPSILON)
+        {
+            float yAngle = Mathf.Atan2(horizontalInput, verticalInput) * Mathf.Rad2Deg;
+
+            player.Rigid.MoveRotation(
+                Quaternion.Lerp(player.transform.rotation,
+                Quaternion.Euler(0f, yAngle, 0f),
+                Time.deltaTime * player.RotationSpeed));
+        }
     }
 
     private void ApplyMovement(Vector3 movementVector)
