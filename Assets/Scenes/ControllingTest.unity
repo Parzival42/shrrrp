@@ -1041,6 +1041,7 @@ MonoBehaviour:
   rotationSpeed: 20
   cameraBasedControl: 1
   jumpIntensity: 15
+  secondJumpIntensityFactor: 0.8
   groundedDistance: 0.1
   groundPivotOffset: {x: 0, y: -0.53, z: 0}
   groundedLayer: 8
