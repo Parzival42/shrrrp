@@ -22,6 +22,8 @@ public class RigidBodyInputHandler : InputHandler
 
     private Vector3 forwardVector = Vector3.forward;
     private Vector3 rightVector = Vector3.right;
+
+    private bool secondJump = false;
     #endregion
 
     #region Properties
@@ -87,9 +89,22 @@ public class RigidBodyInputHandler : InputHandler
     private void HandleJumpInput()
     {
         bool hitGround = CheckPlayerGrounded();
+        // Normal ground jump
         if (hitGround && Input.GetButtonDown(JUMP_AXIS))
         {
             player.Rigid.AddForce(Vector3.up * player.JumpIntensity, ForceMode.VelocityChange);
+            secondJump = false;
+        }
+
+        // Second jump
+        if (!hitGround && !secondJump && Input.GetButtonDown(JUMP_AXIS))
+        {
+            player.Rigid.velocity = Vector3.zero;   // :(
+            player.Rigid.AddForce(
+                Vector3.up * player.JumpIntensity * player.SecondJumpIntensityFactor,
+                ForceMode.VelocityChange);
+
+            secondJump = true;
         }
     }
 

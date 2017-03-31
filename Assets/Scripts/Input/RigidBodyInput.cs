@@ -21,6 +21,10 @@ public class RigidBodyInput : MonoBehaviour
     private float jumpIntensity = 1f;
 
     [SerializeField]
+    [Tooltip("Decrease factor of the second jump.")]
+    private float secondJumpIntensityFactor = 1f;
+
+    [SerializeField]
     [Tooltip("Only if the player is under this height above the ground, he is able to jump.")]
     private float groundedDistance = 0.1f;
 
@@ -47,6 +51,7 @@ public class RigidBodyInput : MonoBehaviour
     public int GroundedLayer { get { return groundedLayer; } }
     public Vector3 GroundPivotOffset { get { return groundPivotOffset; } }
     public bool CameraBasedControl { get { return cameraBasedControl; } }
+    public float SecondJumpIntensityFactor { get { return secondJumpIntensityFactor; } }
     #endregion
 
     private void Start ()
