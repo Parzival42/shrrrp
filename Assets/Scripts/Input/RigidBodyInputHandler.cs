@@ -15,6 +15,13 @@ public class RigidBodyInputHandler : InputHandler
     // Due to performance reasons this variable is declared here
     private Vector3 movementVector = Vector3.zero;
     private bool movementEnabled = true;
+    private Camera mainCamera;
+
+    private float horizontalInputValue = 0f;
+    private float verticalInputValue = 0f;
+
+    private Vector3 forwardVector = Vector3.forward;
+    private Vector3 rightVector = Vector3.right;
     #endregion
 
     #region Properties
@@ -23,11 +30,24 @@ public class RigidBodyInputHandler : InputHandler
         get { return movementEnabled; }
         set { movementEnabled = value; }
     }
+
+    public float HorizontalInputValue
+    {
+        get { return horizontalInputValue; }
+        set { horizontalInputValue = value; }
+    }
+
+    public float VerticalInputValue
+    {
+        get { return verticalInputValue; }
+        set { verticalInputValue = value; }
+    }
     #endregion
 
     public RigidBodyInputHandler(RigidBodyInput player)
     {
         this.player = player;
+        this.mainCamera = CameraUtil.GetMainCamera();
     }
 
     /// <summary>
@@ -43,22 +63,25 @@ public class RigidBodyInputHandler : InputHandler
 
     private void CheckInput()
     {
-        float horizontal = Input.GetAxis(HORIZONTAL_AXIS);
-        float vertical = Input.GetAxis(VERTICAL_AXIS);
+        HorizontalInputValue = Input.GetAxis(HORIZONTAL_AXIS);
+        VerticalInputValue = Input.GetAxis(VERTICAL_AXIS);
         movementVector.Set(0f, 0f, 0f);
 
+        // Calculate forward and right vector
+        CalculateDirectionVectors();
+
         // Horizontal Axis
-        HandleAxisInput(horizontal, Vector3.right);
+        HandleAxisInput(HorizontalInputValue, rightVector);
 
         // Vertical Axis
-        HandleAxisInput(vertical, Vector3.forward);
+        HandleAxisInput(VerticalInputValue, forwardVector);
 
         // Handle jumping
         HandleJumpInput();
 
         // Apply movement and rotation
         ApplyMovement(movementVector);
-        ApplyRotation(horizontal, vertical);
+        ApplyRotation(HorizontalInputValue, VerticalInputValue);
     }
 
     private void HandleJumpInput()
@@ -78,15 +101,29 @@ public class RigidBodyInputHandler : InputHandler
             movementVector += player.MovementSpeed * Mathf.Abs(axis) * -direction;
     }
 
+    private void CalculateDirectionVectors()
+    {
+        if (player.CameraBasedControl)
+        {
+            forwardVector = Vector3.ProjectOnPlane(mainCamera.transform.forward, Vector3.up);
+            rightVector = Vector3.Cross(Vector3.up, forwardVector);
+        }
+        else
+        {
+            forwardVector = Vector3.forward;
+            rightVector = Vector3.right;
+        }
+    }
+
     private void ApplyRotation(float horizontalInput, float verticalInput)
     {
         if (Mathf.Abs(horizontalInput) > MOVE_EPSILON || Mathf.Abs(verticalInput) > MOVE_EPSILON)
         {
-            float yAngle = Mathf.Atan2(horizontalInput, verticalInput) * Mathf.Rad2Deg;
+            Quaternion lookAtRotation = Quaternion.LookRotation(movementVector, Vector3.up);
 
             player.Rigid.MoveRotation(
                 Quaternion.Lerp(player.transform.rotation,
-                Quaternion.Euler(0f, yAngle, 0f),
+                lookAtRotation,
                 Time.deltaTime * player.RotationSpeed));
         }
     }
@@ -113,7 +150,6 @@ public class RigidBodyInputHandler : InputHandler
         else
             Debug.DrawRay(ray.origin, ray.direction * player.GroundedDistance, Color.red);
 #endif
-
         return hitGround;
     }
 }

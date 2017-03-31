@@ -13,6 +13,9 @@ public class RigidBodyInput : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 10f;
 
+    [SerializeField]
+    private bool cameraBasedControl = false;
+
     [Header("Jump Settings")]
     [SerializeField]
     private float jumpIntensity = 1f;
@@ -43,6 +46,7 @@ public class RigidBodyInput : MonoBehaviour
     public float GroundedDistance { get { return groundedDistance; } }
     public int GroundedLayer { get { return groundedLayer; } }
     public Vector3 GroundPivotOffset { get { return groundPivotOffset; } }
+    public bool CameraBasedControl { get { return cameraBasedControl; } }
     #endregion
 
     private void Start ()
