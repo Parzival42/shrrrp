@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "UVFree/Terrain/LegacyDiffuse" {
 	Properties {
 		_TexPower("Texture Power", Range(0.0, 20.0)) = 10.0
@@ -111,7 +113,7 @@ Shader "UVFree/Terrain/LegacyDiffuse" {
 			// Need to manually transform uv here,
 			// as we choose not to use 'uv' prefix for this texcoord.			
 			o.tc_Control = TRANSFORM_TEX(v.texcoord, _Control);
-			float4 pos = mul (UNITY_MATRIX_MVP, v.vertex);
+			float4 pos = UnityObjectToClipPos (v.vertex);
 			UNITY_TRANSFER_FOG(o, pos);			
 		}
 
