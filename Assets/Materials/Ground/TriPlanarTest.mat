@@ -18,7 +18,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BottomBumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 51630b08129c6144183838f5c9308c55, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BottomEmissionMap:
@@ -26,11 +26,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BottomMainTex:
-        m_Texture: {fileID: 2800000, guid: 34d1081e9b2541641bca4716e6e07b2a, type: 3}
-        m_Scale: {x: 0.2, y: 0.2}
+        m_Texture: {fileID: 2800000, guid: b326624f481f9b943a954a2920517fcd, type: 3}
+        m_Scale: {x: 0.3, y: 0.3}
         m_Offset: {x: 0, y: 0}
     - _BottomMetallicGlossMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5f488597fcb68264686ac8d89559d46d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -91,7 +91,7 @@ Material:
     - _BottomGlossiness: 0.5
     - _BottomMetallic: 0
     - _BottomMultiplier: 3.69
-    - _BottomUsingMetallicGlossMap: 0
+    - _BottomUsingMetallicGlossMap: 1
     - _BumpScale: -1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
