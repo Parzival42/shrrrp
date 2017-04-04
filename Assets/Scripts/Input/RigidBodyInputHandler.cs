@@ -113,10 +113,10 @@ public class RigidBodyInputHandler : InputHandler
         else if (firstJump && !secondJump && jumpButtonDown)   // Second jump
         {
             PerformJumpForce(Vector3.up * player.JumpIntensity * player.SecondJumpIntensityFactor);
-            SetJumpState(firstJump, true);
+            SetJumpState(true, true);
             OnSecondJumped();
         }
-        else if (hitGround)
+        else if (hitGround && !jumpButtonDown)
         {
             SetJumpState(false, false);
         }
