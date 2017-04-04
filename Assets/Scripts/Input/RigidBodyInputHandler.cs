@@ -23,6 +23,7 @@ public class RigidBodyInputHandler : InputHandler
     private Vector3 forwardVector = Vector3.forward;
     private Vector3 rightVector = Vector3.right;
 
+    private bool firstJump = false;
     private bool secondJump = false;
     private bool hitGround = true;
     #endregion
@@ -99,27 +100,38 @@ public class RigidBodyInputHandler : InputHandler
 
     private void HandleJumpInput()
     {
+        bool jumpButtonDown = Input.GetButtonDown(JUMP_AXIS);
         hitGround = CheckPlayerGrounded();
+
         // Normal ground jump
-        if (hitGround && Input.GetButtonDown(JUMP_AXIS))
+        if (!firstJump && jumpButtonDown)
         {
-            player.Rigid.AddForce(Vector3.up * player.JumpIntensity, ForceMode.VelocityChange);
-            secondJump = false;
+            PerformJumpForce(Vector3.up * player.JumpIntensity);
+            SetJumpState(true, false);
             OnJumped();
         }
-
-        // Second jump
-        if (!hitGround && !secondJump && Input.GetButtonDown(JUMP_AXIS))
+        else if (firstJump && !secondJump && jumpButtonDown)   // Second jump
         {
-            Debug.Log("Second jump!");
-            player.Rigid.velocity = Vector3.zero;   // :(
-            player.Rigid.AddForce(
-                Vector3.up * player.JumpIntensity * player.SecondJumpIntensityFactor,
-                ForceMode.VelocityChange);
-
-            secondJump = true;
+            PerformJumpForce(Vector3.up * player.JumpIntensity * player.SecondJumpIntensityFactor);
+            SetJumpState(firstJump, true);
             OnSecondJumped();
         }
+        else if (hitGround)
+        {
+            SetJumpState(false, false);
+        }
+    }
+
+    private void PerformJumpForce(Vector3 forceVector)
+    {
+        player.Rigid.velocity = Vector3.zero;       // :(
+        player.Rigid.AddForce(forceVector, ForceMode.VelocityChange);
+    }
+
+    private void SetJumpState(bool firstJump, bool secondJump)
+    {
+        this.firstJump = firstJump;
+        this.secondJump = secondJump;
     }
 
     private void HandleAxisInput(float axis, Vector3 direction)
