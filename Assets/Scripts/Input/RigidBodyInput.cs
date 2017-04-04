@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class RigidBodyInput : MonoBehaviour
@@ -52,14 +50,15 @@ public class RigidBodyInput : MonoBehaviour
     public Vector3 GroundPivotOffset { get { return groundPivotOffset; } }
     public bool CameraBasedControl { get { return cameraBasedControl; } }
     public float SecondJumpIntensityFactor { get { return secondJumpIntensityFactor; } }
+    public InputHandler InputController { get { return inputHandler; } }
     #endregion
 
-    private void Start ()
+    private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         inputHandler = new RigidBodyInputHandler(this);
-	}
-	
+    }
+
 	private void Update ()
     {
         inputHandler.HandleInput();

@@ -24,7 +24,10 @@ public class RigidBodyInputHandler : InputHandler
     private Vector3 rightVector = Vector3.right;
 
     private bool secondJump = false;
+    private bool hitGround = true;
     #endregion
+
+    
 
     #region Properties
     public bool MovementEnabled
@@ -44,6 +47,14 @@ public class RigidBodyInputHandler : InputHandler
         get { return verticalInputValue; }
         set { verticalInputValue = value; }
     }
+
+    public bool IsGrounded { get { return hitGround; } }
+    #endregion
+
+    #region Events
+    public event JumpPerformedHandler OnJump;
+    public event SecondJumpPerformedHandler OnSecondJump;
+    public event LandedOnGroundHandler OnLandedOnGround;
     #endregion
 
     public RigidBodyInputHandler(RigidBodyInput player)
@@ -88,23 +99,26 @@ public class RigidBodyInputHandler : InputHandler
 
     private void HandleJumpInput()
     {
-        bool hitGround = CheckPlayerGrounded();
+        hitGround = CheckPlayerGrounded();
         // Normal ground jump
         if (hitGround && Input.GetButtonDown(JUMP_AXIS))
         {
             player.Rigid.AddForce(Vector3.up * player.JumpIntensity, ForceMode.VelocityChange);
             secondJump = false;
+            OnJumped();
         }
 
         // Second jump
         if (!hitGround && !secondJump && Input.GetButtonDown(JUMP_AXIS))
         {
+            Debug.Log("Second jump!");
             player.Rigid.velocity = Vector3.zero;   // :(
             player.Rigid.AddForce(
                 Vector3.up * player.JumpIntensity * player.SecondJumpIntensityFactor,
                 ForceMode.VelocityChange);
 
             secondJump = true;
+            OnSecondJumped();
         }
     }
 
@@ -157,14 +171,37 @@ public class RigidBodyInputHandler : InputHandler
     {
         Ray ray = new Ray(player.transform.position + player.GroundPivotOffset, Vector3.down);
         RaycastHit hitInfo;
-        bool hitGround = Physics.Raycast(ray, out hitInfo, player.GroundedDistance, 1 << player.GroundedLayer, QueryTriggerInteraction.UseGlobal);
+        bool groundWasHit = Physics.Raycast(ray, out hitInfo, player.GroundedDistance, 1 << player.GroundedLayer, QueryTriggerInteraction.UseGlobal);
+
+        if (!hitGround && groundWasHit)
+            OnLanded();
 
 #if UNITY_EDITOR
-        if (hitGround)
+        if (groundWasHit)
             Debug.DrawRay(ray.origin, ray.direction * player.GroundedDistance, Color.green);
         else
             Debug.DrawRay(ray.origin, ray.direction * player.GroundedDistance, Color.red);
 #endif
-        return hitGround;
+        return groundWasHit;
     }
+
+    #region Event methods
+    private void OnJumped()
+    {
+        if (OnJump != null)
+            OnJump();
+    }
+
+    private void OnSecondJumped()
+    {
+        if (OnSecondJump != null)
+            OnSecondJump();
+    }
+
+    private void OnLanded()
+    {
+        if (OnLandedOnGround != null)
+            OnLandedOnGround();
+    }
+    #endregion
 }
