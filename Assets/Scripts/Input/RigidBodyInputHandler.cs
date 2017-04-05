@@ -28,8 +28,6 @@ public class RigidBodyInputHandler : InputHandler
     private bool hitGround = true;
     #endregion
 
-    
-
     #region Properties
     public bool MovementEnabled
     {
@@ -62,6 +60,7 @@ public class RigidBodyInputHandler : InputHandler
     {
         this.player = player;
         this.mainCamera = CameraUtil.GetMainCamera();
+        this.OnLandedOnGround += ResetJumpStateOnLanding;
     }
 
     /// <summary>
@@ -70,9 +69,7 @@ public class RigidBodyInputHandler : InputHandler
     public void HandleInput()
     {
         if (MovementEnabled)
-        {
             CheckInput();
-        }
     }
 
     private void CheckInput()
@@ -116,22 +113,24 @@ public class RigidBodyInputHandler : InputHandler
             SetJumpState(true, true);
             OnSecondJumped();
         }
-        else if (hitGround && !jumpButtonDown)
-        {
-            SetJumpState(false, false);
-        }
+        // Jump state is reseted per event in 'ResetJumpStateOnLanding'.
     }
 
-    private void PerformJumpForce(Vector3 forceVector)
+    private void ResetJumpStateOnLanding()
     {
-        player.Rigid.velocity = Vector3.zero;       // :(
-        player.Rigid.AddForce(forceVector, ForceMode.VelocityChange);
+        SetJumpState(false, false);
     }
 
     private void SetJumpState(bool firstJump, bool secondJump)
     {
         this.firstJump = firstJump;
         this.secondJump = secondJump;
+    }
+
+    private void PerformJumpForce(Vector3 forceVector)
+    {
+        player.Rigid.velocity = Vector3.zero;       // :(
+        player.Rigid.AddForce(forceVector, ForceMode.VelocityChange);
     }
 
     private void HandleAxisInput(float axis, Vector3 direction)
