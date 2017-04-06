@@ -33,11 +33,20 @@ public class RigidBodyInput : MonoBehaviour
     [SerializeField]
     [Tooltip("Collision layer of the ground check.")]
     private int groundedLayer = 8;
+
+    [Header("Dash settings")]
+    [SerializeField]
+    private float dashForce = 5f;
+
+    [SerializeField]
+    [Tooltip("Time of the dash in seconds.")]
+    private float dashTime = 0.25f;
     #endregion
 
     #region Internal Members
     private Rigidbody rigid;
     private InputHandler inputHandler = null;
+    private DashHandler dashHandler = null;
     #endregion
 
     #region Properties
@@ -51,16 +60,20 @@ public class RigidBodyInput : MonoBehaviour
     public bool CameraBasedControl { get { return cameraBasedControl; } }
     public float SecondJumpIntensityFactor { get { return secondJumpIntensityFactor; } }
     public InputHandler InputController { get { return inputHandler; } }
+    public float DashForce { get { return dashForce; } }
+    public float DashTime { get { return dashTime; } }
     #endregion
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         inputHandler = new RigidBodyInputHandler(this);
+        dashHandler = new RigidBodyDashHandler(this);
     }
 
 	private void Update ()
     {
         inputHandler.HandleInput();
+        dashHandler.HandleDash();
 	}
 }

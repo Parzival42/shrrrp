@@ -10,5 +10,5 @@ public interface DashHandler
     event DashCollisionHandler OnDashCollision;
     #endregion
 
-    void PerformDash();
+    void HandleDash();
 }
