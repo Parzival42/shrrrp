@@ -145,8 +145,8 @@ public class RigidBodyInputHandler : InputHandler
     {
         if (player.CameraBasedControl)
         {
-            forwardVector = Vector3.ProjectOnPlane(mainCamera.transform.forward, Vector3.up);
-            rightVector = Vector3.Cross(Vector3.up, forwardVector);
+            forwardVector = Vector3.ProjectOnPlane(mainCamera.transform.forward, Vector3.up).normalized;
+            rightVector = Vector3.Cross(Vector3.up, forwardVector).normalized;
         }
         else
         {
