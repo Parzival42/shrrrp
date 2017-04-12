@@ -234,7 +234,7 @@ Transform:
   m_LocalScale: {x: 4.3, y: 4.3, z: 4.3}
   m_Children: []
   m_Father: {fileID: 4257219572966996}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4062248183840582
 Transform:
@@ -260,10 +260,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4546646563704544}
-  - {fileID: 4854147416534972}
   - {fileID: 4061628935605808}
-  - {fileID: 4676293813066692}
+  - {fileID: 4854147416534972}
   - {fileID: 4378384215917286}
+  - {fileID: 4676293813066692}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -284,7 +284,7 @@ Transform:
   - {fileID: 4568136701346796}
   - {fileID: 4005636671140384}
   m_Father: {fileID: 4257219572966996}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4546646563704544
 Transform:
@@ -323,7 +323,7 @@ Transform:
   m_LocalScale: {x: 4.3, y: 4.3, z: 4.3}
   m_Children: []
   m_Father: {fileID: 4257219572966996}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4712107080432450
 Transform:
@@ -349,7 +349,7 @@ Transform:
   m_LocalScale: {x: 4.25, y: 4.250002, z: 4.250002}
   m_Children: []
   m_Father: {fileID: 4257219572966996}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4931012586813392
 Transform:
@@ -466,6 +466,7 @@ MonoBehaviour:
   groundedLayer: 8
   dashForce: 5
   dashTime: 0.25
+  dashCoolDownTime: 0.7
   dashGroundCheckDistance: 0.5
   dashCheckRadius: 0.4
   particleSpawnOffset: {x: 0, y: 0.2, z: 0}

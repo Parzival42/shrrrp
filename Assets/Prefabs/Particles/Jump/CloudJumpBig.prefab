@@ -109,7 +109,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1648110876
+  randomSeed: 412647354
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -2435,7 +2435,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
     widthOverTrail:
       minMaxState: 0
-      scalar: 1
+      scalar: 1.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -2994,7 +2994,7 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 2100000, guid: dad78772c5cd4eb46abc05e1bb5488cd, type: 2}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: a4c90ebe1b7df104dae13cb9a8c1a9ce, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

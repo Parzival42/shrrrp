@@ -94,8 +94,8 @@ public class RigidBodyInput : MonoBehaviour
         inputHandler = new RigidBodyInputHandler(this);
         dashHandler = new RigidBodyDashHandler(this);
 
-        inputHandler.OnJump += SpawnFirstJumpParticles;
-        inputHandler.OnSecondJump += SpawnSecondJumpParticles;
+        inputHandler.OnJump += HandleFirstJump;
+        inputHandler.OnSecondJump += HandleSecondJump;
     }
 
 	private void Update ()
@@ -104,13 +104,13 @@ public class RigidBodyInput : MonoBehaviour
         dashHandler.HandleDash();
 	}
 
-    private void SpawnFirstJumpParticles()
+    private void HandleFirstJump()
     {
         if(firstJumpParticle != null)
             Instantiate(firstJumpParticle, transform.position + particleSpawnOffset, firstJumpParticle.transform.rotation);
     }
 
-    private void SpawnSecondJumpParticles()
+    private void HandleSecondJump()
     {
         if (secondJumpParticle != null)
             Instantiate(secondJumpParticle, transform.position + particleSpawnOffset, secondJumpParticle.transform.rotation);
