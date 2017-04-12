@@ -27,6 +27,9 @@ public class PlaneCutTest : MonoBehaviour {
     [SerializeField]
     private SliceCreator sliceCreator;
 
+    [SerializeField]
+    private SliceCreator staticSliceCreator;
+
     // leftover meshes 
     private MeshContainer leftMesh = new MeshContainer();
 
@@ -48,7 +51,9 @@ public class PlaneCutTest : MonoBehaviour {
         public bool bLeft;
         public bool cLeft;
 
-        public Tri(Vector3 a, Vector3 b, Vector3 c, bool aLeft, bool bLeft, bool cLeft){
+        public bool negative;
+
+        public Tri(Vector3 a, Vector3 b, Vector3 c, bool aLeft, bool bLeft, bool cLeft, bool negative){
             this.a = a;
             this.b = b;
             this.c = c;
@@ -56,45 +61,47 @@ public class PlaneCutTest : MonoBehaviour {
             this.aLeft = aLeft;
             this.bLeft = bLeft;
             this.cLeft = cLeft;
+
+            this.negative = negative;
         }
     }
 
     private void AssignSplitTriangles(Tri t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor){
-          minor.Vertices.Add(transform.InverseTransformPoint(t.a));
+        minor.Vertices.Add(transform.InverseTransformPoint(t.a));
         minor.Vertices.Add(transform.InverseTransformPoint(d));
         minor.Vertices.Add(transform.InverseTransformPoint(e));
-
-        minor.Indices[0].Add(minor.Vertices.Count-1);
-        minor.Indices[0].Add(minor.Vertices.Count-2);
-        minor.Indices[0].Add(minor.Vertices.Count-3);
-
-         minor.Indices[0].Add(minor.Vertices.Count-3);
-        minor.Indices[0].Add(minor.Vertices.Count-2);
-        minor.Indices[0].Add(minor.Vertices.Count-1);
-
-
-         major.Vertices.Add(transform.InverseTransformPoint(d));
+        
+        major.Vertices.Add(transform.InverseTransformPoint(d));
         major.Vertices.Add(transform.InverseTransformPoint(e));
-         major.Vertices.Add(transform.InverseTransformPoint(t.c));
-       
-        major.Indices[0].Add(major.Vertices.Count-1);
-        major.Indices[0].Add(major.Vertices.Count-2);
-        major.Indices[0].Add(major.Vertices.Count-3);
+        major.Vertices.Add(transform.InverseTransformPoint(t.c));
+        major.Vertices.Add(transform.InverseTransformPoint(t.b));
 
-         major.Indices[0].Add(major.Vertices.Count-3);
-        major.Indices[0].Add(major.Vertices.Count-2);
-        major.Indices[0].Add(major.Vertices.Count-1);
+        if(t.negative){
+            minor.Indices[0].Add(minor.Vertices.Count-1);
+            minor.Indices[0].Add(minor.Vertices.Count-2);
+            minor.Indices[0].Add(minor.Vertices.Count-3);
 
-           major.Vertices.Add(transform.InverseTransformPoint(t.b));
-       
-        major.Indices[0].Add(major.Vertices.Count-1);
-        major.Indices[0].Add(major.Vertices.Count-2);
-        major.Indices[0].Add(major.Vertices.Count-4);
+            major.Indices[0].Add(major.Vertices.Count-4);
+            major.Indices[0].Add(major.Vertices.Count-3);
+            major.Indices[0].Add(major.Vertices.Count-2);
 
-         major.Indices[0].Add(major.Vertices.Count-4);
-        major.Indices[0].Add(major.Vertices.Count-2);
-        major.Indices[0].Add(major.Vertices.Count-1);
+            major.Indices[0].Add(major.Vertices.Count-4);
+            major.Indices[0].Add(major.Vertices.Count-2);
+            major.Indices[0].Add(major.Vertices.Count-1);
+            
+        }else{
+            minor.Indices[0].Add(minor.Vertices.Count-3);
+            minor.Indices[0].Add(minor.Vertices.Count-2);
+            minor.Indices[0].Add(minor.Vertices.Count-1);
 
+            major.Indices[0].Add(major.Vertices.Count-2);
+            major.Indices[0].Add(major.Vertices.Count-3);
+            major.Indices[0].Add(major.Vertices.Count-4);
+
+            major.Indices[0].Add(major.Vertices.Count-1);
+            major.Indices[0].Add(major.Vertices.Count-2);
+            major.Indices[0].Add(major.Vertices.Count-4);
+        }
     }
 
 
@@ -116,7 +123,6 @@ public class PlaneCutTest : MonoBehaviour {
             e= ray2.GetPoint(rayDistance2);
         }
 
-        //float angle = Mathf.Atan2(Vector3.Cross(t.b-t.a,t.c -t.a).normalized, Vector3.Dot(t.b-t.a, t.c - t.a));
         bool leftMajor = (t.aLeft && t.bLeft) || (t.aLeft && t.cLeft) || (t.bLeft && t.cLeft) ? true : false; 
 
         if(leftMajor){
@@ -125,7 +131,7 @@ public class PlaneCutTest : MonoBehaviour {
             AssignSplitTriangles(t,d,e,right,left);
         }
         
-        Debug.DrawLine(d,e);     
+        //Debug.DrawLine(d,e);     
     }
 
     void StartSplitInTwo()
@@ -136,6 +142,9 @@ public class PlaneCutTest : MonoBehaviour {
         }
         vertexPosChange = new int[M.vertexCount];
 		conflictTriangles = new List<Tri>();
+
+
+        float startTime = Time.realtimeSinceStartup;
 
         //adjust plane orientation
 		Mesh pM = referencePlane.GetComponent<MeshFilter>().mesh;
@@ -167,10 +176,14 @@ public class PlaneCutTest : MonoBehaviour {
             sliceCreator.CreateSlice(transform, rightMesh);
         }
 
-        sliceCreator.CreateSlice(transform, splitMeshLeft);
+        Debug.Log("Time needed: "+ (Time.realtimeSinceStartup - startTime));
 
-         sliceCreator.CreateSlice(transform, splitMeshRight);
+        staticSliceCreator.CreateSlice(transform, splitMeshLeft);
 
+        staticSliceCreator.CreateSlice(transform, splitMeshRight);
+
+
+         
 
         // kill the original object
       	Destroy(this.gameObject);
@@ -281,11 +294,11 @@ public class PlaneCutTest : MonoBehaviour {
                     }
                 }else{                   
                     if(a == c){
-                        conflictTriangles.Add(new Tri(transform.TransformPoint(vertices[subMeshIndices[i + 1]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),b,a,c));
+                        conflictTriangles.Add(new Tri(transform.TransformPoint(vertices[subMeshIndices[i + 1]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),b,a,c, true));
                     }else if(a == b){
-                        conflictTriangles.Add(new Tri(transform.TransformPoint(vertices[subMeshIndices[i + 2]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 1]]),c,a,b));
+                        conflictTriangles.Add(new Tri(transform.TransformPoint(vertices[subMeshIndices[i + 2]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 1]]),c,a,b, false));
                     }else if(b == c){
-                        conflictTriangles.Add(new Tri(transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i+1]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),a,b,c));
+                        conflictTriangles.Add(new Tri(transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i+1]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),a,b,c, false));
                     }                   
 				}
             }
