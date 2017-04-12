@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RigidBodyDashHandler : DashHandler
 {
@@ -16,7 +13,14 @@ public class RigidBodyDashHandler : DashHandler
     #endregion
 
     #region Events
+    /// <summary>
+    /// Is called when a valid (Ground or Player Layer) collision is detected.
+    /// </summary>
     public event DashCollisionHandler OnDashCollision;
+
+    /// <summary>
+    /// Is called when a dash is initiated.
+    /// </summary>
     public event DashStartedHandler OnDashStarted;
     #endregion
 
@@ -34,8 +38,6 @@ public class RigidBodyDashHandler : DashHandler
     private void PerformDashProcedure()
     {
         bool dashButton = Input.GetButtonDown(DASH_AXIS);
-
-        // TODO: Check collision during dash.
         if (dashButton && !isDashPerforming)
         {
             ApplyDashMovement();
