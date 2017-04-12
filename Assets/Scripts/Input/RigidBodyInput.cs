@@ -41,6 +41,9 @@ public class RigidBodyInput : MonoBehaviour
     [SerializeField]
     [Tooltip("Time of the dash in seconds.")]
     private float dashTime = 0.25f;
+
+    [SerializeField]
+    private float dashGroundCheckDistance = 0.5f;
     #endregion
 
     #region Internal Members
@@ -62,6 +65,7 @@ public class RigidBodyInput : MonoBehaviour
     public InputHandler InputController { get { return inputHandler; } }
     public float DashForce { get { return dashForce; } }
     public float DashTime { get { return dashTime; } }
+    public float DashGroundCheckDistance { get { return dashGroundCheckDistance; } }
     #endregion
 
     private void Awake()

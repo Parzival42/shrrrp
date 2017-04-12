@@ -34,7 +34,7 @@ public class RigidBodyDashHandler : DashHandler
         bool dashButton = Input.GetButtonDown(DASH_AXIS);
 
         // TODO: Check collision during dash.
-        if (dashButton)
+        if (dashButton && !isDashPerforming)
         {
             ApplyDashMovement();
         }
@@ -42,7 +42,16 @@ public class RigidBodyDashHandler : DashHandler
 
     private void ApplyDashMovement()
     {
-        Vector3 forward = player.transform.forward;
+        RaycastHit hitInfo;
+        Vector3 forward = Vector3.zero;
+
+        // Calculate forward use ground normal or player normal when in the air
+        if (CheckPlayerGrounded(out hitInfo))
+            forward = Vector3.ProjectOnPlane(player.transform.forward, hitInfo.normal).normalized;
+        else
+            forward = player.transform.forward;
+
+        Debug.DrawLine(player.transform.position, player.transform.position + forward * player.DashForce, Color.blue, 1f);
         AddForce(forward * player.DashForce);
     }
 
@@ -62,6 +71,18 @@ public class RigidBodyDashHandler : DashHandler
                 isDashPerforming = false;
             })
             .setEase(LeanTweenType.easeOutCirc);
+    }
+
+    private bool CheckPlayerGrounded(out RaycastHit hitInfo)
+    {
+        Ray ray = new Ray(player.transform.position + player.GroundPivotOffset, Vector3.down);
+        bool groundWasHit = Physics.Raycast(ray, out hitInfo, player.DashGroundCheckDistance, 1 << player.GroundedLayer, QueryTriggerInteraction.UseGlobal);
+
+#if UNITY_EDITOR
+        if (groundWasHit)
+            Debug.DrawRay(ray.origin, ray.direction * player.GroundedDistance, Color.blue, 1f);
+#endif
+        return groundWasHit;
     }
 
     #region Event methods
