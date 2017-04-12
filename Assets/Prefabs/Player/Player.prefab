@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 136105882746218418}
   - component: {fileID: 54254769215646534}
   - component: {fileID: 114446083201177404}
+  - component: {fileID: 114246283258304166}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -445,6 +446,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &114246283258304166
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1630457348639916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a858fa979e0ac88478cacaa4332bd083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSpawnOffset: {x: 0, y: 0.2, z: 0}
+  firstJumpParticle: {fileID: 1213797188506084, guid: 3d051719da3ecd344a7b5f15acbadf89,
+    type: 2}
+  secondJumpParticle: {fileID: 1213797188506084, guid: 4741af2b7e329914d85e2659780a9b6a,
+    type: 2}
 --- !u!114 &114446083201177404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -469,11 +486,6 @@ MonoBehaviour:
   dashCoolDownTime: 0.7
   dashGroundCheckDistance: 0.5
   dashCheckRadius: 0.4
-  particleSpawnOffset: {x: 0, y: 0.2, z: 0}
-  firstJumpParticle: {fileID: 1213797188506084, guid: 3d051719da3ecd344a7b5f15acbadf89,
-    type: 2}
-  secondJumpParticle: {fileID: 1213797188506084, guid: 4741af2b7e329914d85e2659780a9b6a,
-    type: 2}
 --- !u!114 &114578709919430864
 MonoBehaviour:
   m_ObjectHideFlags: 1

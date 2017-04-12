@@ -52,16 +52,6 @@ public class RigidBodyInput : MonoBehaviour
     [SerializeField]
     [Tooltip("Collision sphere radius during the dash.")]
     private float dashCheckRadius = 0.7f;
-
-    [Header("Particles")]
-    [SerializeField]
-    private Vector3 particleSpawnOffset;
-
-    [SerializeField]
-    private GameObject firstJumpParticle;
-
-    [SerializeField]
-    private GameObject secondJumpParticle;
     #endregion
 
     #region Internal Members
@@ -81,6 +71,7 @@ public class RigidBodyInput : MonoBehaviour
     public bool CameraBasedControl { get { return cameraBasedControl; } }
     public float SecondJumpIntensityFactor { get { return secondJumpIntensityFactor; } }
     public InputHandler InputController { get { return inputHandler; } }
+    public DashHandler DashController { get { return dashHandler; } }
     public float DashForce { get { return dashForce; } }
     public float DashTime { get { return dashTime; } }
     public float DashCoolDownTime { get { return dashCoolDownTime; } }
@@ -93,9 +84,6 @@ public class RigidBodyInput : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         inputHandler = new RigidBodyInputHandler(this);
         dashHandler = new RigidBodyDashHandler(this);
-
-        inputHandler.OnJump += HandleFirstJump;
-        inputHandler.OnSecondJump += HandleSecondJump;
     }
 
 	private void Update ()
@@ -103,16 +91,4 @@ public class RigidBodyInput : MonoBehaviour
         inputHandler.HandleInput();
         dashHandler.HandleDash();
 	}
-
-    private void HandleFirstJump()
-    {
-        if(firstJumpParticle != null)
-            Instantiate(firstJumpParticle, transform.position + particleSpawnOffset, firstJumpParticle.transform.rotation);
-    }
-
-    private void HandleSecondJump()
-    {
-        if (secondJumpParticle != null)
-            Instantiate(secondJumpParticle, transform.position + particleSpawnOffset, secondJumpParticle.transform.rotation);
-    }
 }
