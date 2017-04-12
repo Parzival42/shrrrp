@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class RigidBodyDashHandler : DashHandler
 {
@@ -8,8 +9,10 @@ public class RigidBodyDashHandler : DashHandler
     private RigidBodyInput player;
     private Collider playerCollider;
 
-    private bool isDashPerforming = false;
+    private bool isDashAllowed = true;
     private LTDescr dashTween = null;
+
+    private WaitForSeconds waitForCooldown;
     #endregion
 
     #region Events
@@ -28,6 +31,7 @@ public class RigidBodyDashHandler : DashHandler
     {
         this.player = player;
         this.playerCollider = this.player.GetComponent<Collider>();
+        this.waitForCooldown = new WaitForSeconds(player.DashCoolDownTime);
     }
 
     public void HandleDash()
@@ -38,9 +42,11 @@ public class RigidBodyDashHandler : DashHandler
     private void PerformDashProcedure()
     {
         bool dashButton = Input.GetButtonDown(DASH_AXIS);
-        if (dashButton && !isDashPerforming)
+        if (dashButton && isDashAllowed)
         {
+            isDashAllowed = false;
             ApplyDashMovement();
+            player.StartCoroutine(WaitForDashCooldown());
         }
     }
 
@@ -55,7 +61,7 @@ public class RigidBodyDashHandler : DashHandler
         else
             forward = player.transform.forward;
 
-        Debug.DrawLine(player.transform.position, player.transform.position + forward * player.DashForce, Color.blue, 1f);
+        Debug.DrawLine(player.transform.position, player.transform.position + forward * player.DashForce, Color.blue, 1f, true);
         AddForce(forward * player.DashForce);
     }
 
@@ -69,17 +75,10 @@ public class RigidBodyDashHandler : DashHandler
 
                 // Cancel dash when a collsion occurs
                 if (CheckDashCollision())
-                {
                     LeanTween.cancel(dashTween.uniqueId);
-                    SetDashCompleteState();
-                }
             })
             .setOnStart(() => {
-                isDashPerforming = true;
                 OnPerformStart();
-            })
-            .setOnComplete(() => {
-                SetDashCompleteState();
             })
             .setEase(LeanTweenType.easeOutCirc);
     }
@@ -129,9 +128,10 @@ public class RigidBodyDashHandler : DashHandler
         return playerCollider.bounds.center;
     }
 
-    private void SetDashCompleteState()
+    private IEnumerator WaitForDashCooldown()
     {
-        isDashPerforming = false;
+        yield return waitForCooldown;
+        isDashAllowed = true;
     }
 
     #region Event methods

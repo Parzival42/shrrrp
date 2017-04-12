@@ -43,11 +43,25 @@ public class RigidBodyInput : MonoBehaviour
     private float dashTime = 0.25f;
 
     [SerializeField]
+    [Tooltip("Time after the next dash can be performed.")]
+    private float dashCoolDownTime = 0.7f;
+
+    [SerializeField]
     private float dashGroundCheckDistance = 0.5f;
 
     [SerializeField]
     [Tooltip("Collision sphere radius during the dash.")]
     private float dashCheckRadius = 0.7f;
+
+    [Header("Particles")]
+    [SerializeField]
+    private Vector3 particleSpawnOffset;
+
+    [SerializeField]
+    private GameObject firstJumpParticle;
+
+    [SerializeField]
+    private GameObject secondJumpParticle;
     #endregion
 
     #region Internal Members
@@ -69,6 +83,7 @@ public class RigidBodyInput : MonoBehaviour
     public InputHandler InputController { get { return inputHandler; } }
     public float DashForce { get { return dashForce; } }
     public float DashTime { get { return dashTime; } }
+    public float DashCoolDownTime { get { return dashCoolDownTime; } }
     public float DashGroundCheckDistance { get { return dashGroundCheckDistance; } }
     public float DashCheckRadius { get { return dashCheckRadius; } }
     #endregion
@@ -78,6 +93,9 @@ public class RigidBodyInput : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         inputHandler = new RigidBodyInputHandler(this);
         dashHandler = new RigidBodyDashHandler(this);
+
+        inputHandler.OnJump += SpawnFirstJumpParticles;
+        inputHandler.OnSecondJump += SpawnSecondJumpParticles;
     }
 
 	private void Update ()
@@ -85,4 +103,16 @@ public class RigidBodyInput : MonoBehaviour
         inputHandler.HandleInput();
         dashHandler.HandleDash();
 	}
+
+    private void SpawnFirstJumpParticles()
+    {
+        if(firstJumpParticle != null)
+            Instantiate(firstJumpParticle, transform.position + particleSpawnOffset, firstJumpParticle.transform.rotation);
+    }
+
+    private void SpawnSecondJumpParticles()
+    {
+        if (secondJumpParticle != null)
+            Instantiate(secondJumpParticle, transform.position + particleSpawnOffset, secondJumpParticle.transform.rotation);
+    }
 }

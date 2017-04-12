@@ -468,6 +468,11 @@ MonoBehaviour:
   dashTime: 0.25
   dashGroundCheckDistance: 0.5
   dashCheckRadius: 0.4
+  particleSpawnOffset: {x: 0, y: 0.2, z: 0}
+  firstJumpParticle: {fileID: 1213797188506084, guid: 3d051719da3ecd344a7b5f15acbadf89,
+    type: 2}
+  secondJumpParticle: {fileID: 1213797188506084, guid: 4741af2b7e329914d85e2659780a9b6a,
+    type: 2}
 --- !u!114 &114578709919430864
 MonoBehaviour:
   m_ObjectHideFlags: 1
