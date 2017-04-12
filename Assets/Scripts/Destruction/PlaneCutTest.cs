@@ -4,19 +4,23 @@ using UnityEngine;
 [RequireComponent(typeof(SliceCreator))]
 public class PlaneCutTest : MonoBehaviour {
     
+    // mesh (should be a plane) that determines the plane orientation
 	[SerializeField]
 	private GameObject referencePlane;
 
 	[SerializeField]
 	private bool cut;
 
+    // the plane object that is used for determining the vertex distribution
 	private Plane cuttingPlane;
 
+    // indices need to be adjusted when the vertices are distributed to the left and right mesh
     private int[] vertexPosChange;
 
+    // mesh that is about to be cut
     Mesh M;    
 
-    // 
+    // triangles that intersect the plane
 	private List<Tri> conflictTriangles;
 
     // slice creator 
@@ -28,10 +32,12 @@ public class PlaneCutTest : MonoBehaviour {
 
     private MeshContainer rightMesh = new MeshContainer();
 
-    // cutted triangles are stored here
+    // cut triangles are stored here
     private MeshContainer splitMeshLeft = new MeshContainer();
 
     private MeshContainer splitMeshRight = new MeshContainer();
+
+    
 
     public struct Tri{
         public Vector3 a;
@@ -53,12 +59,53 @@ public class PlaneCutTest : MonoBehaviour {
         }
     }
 
-    private void SplitTriangle(Plane p, Tri t){
+    private void AssignSplitTriangles(Tri t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor){
+          minor.Vertices.Add(transform.InverseTransformPoint(t.a));
+        minor.Vertices.Add(transform.InverseTransformPoint(d));
+        minor.Vertices.Add(transform.InverseTransformPoint(e));
+
+        minor.Indices[0].Add(minor.Vertices.Count-1);
+        minor.Indices[0].Add(minor.Vertices.Count-2);
+        minor.Indices[0].Add(minor.Vertices.Count-3);
+
+         minor.Indices[0].Add(minor.Vertices.Count-3);
+        minor.Indices[0].Add(minor.Vertices.Count-2);
+        minor.Indices[0].Add(minor.Vertices.Count-1);
+
+
+         major.Vertices.Add(transform.InverseTransformPoint(d));
+        major.Vertices.Add(transform.InverseTransformPoint(e));
+         major.Vertices.Add(transform.InverseTransformPoint(t.c));
+       
+        major.Indices[0].Add(major.Vertices.Count-1);
+        major.Indices[0].Add(major.Vertices.Count-2);
+        major.Indices[0].Add(major.Vertices.Count-3);
+
+         major.Indices[0].Add(major.Vertices.Count-3);
+        major.Indices[0].Add(major.Vertices.Count-2);
+        major.Indices[0].Add(major.Vertices.Count-1);
+
+           major.Vertices.Add(transform.InverseTransformPoint(t.b));
+       
+        major.Indices[0].Add(major.Vertices.Count-1);
+        major.Indices[0].Add(major.Vertices.Count-2);
+        major.Indices[0].Add(major.Vertices.Count-4);
+
+         major.Indices[0].Add(major.Vertices.Count-4);
+        major.Indices[0].Add(major.Vertices.Count-2);
+        major.Indices[0].Add(major.Vertices.Count-1);
+
+    }
+
+
+
+    private void SplitTriangle(Plane p, Tri t, MeshContainer left, MeshContainer right){
         Ray ray1 = new Ray(t.a, t.b - t.a);
         Ray ray2 = new Ray(t.a, t.c - t.a);
 
         Vector3 d = new Vector3();
         Vector3 e = new Vector3();
+
         float rayDistance1;
         if (p.Raycast(ray1, out rayDistance1)){
             d= ray1.GetPoint(rayDistance1);
@@ -68,11 +115,18 @@ public class PlaneCutTest : MonoBehaviour {
         if (p.Raycast(ray2, out rayDistance2)){
             e= ray2.GetPoint(rayDistance2);
         }
+
+        //float angle = Mathf.Atan2(Vector3.Cross(t.b-t.a,t.c -t.a).normalized, Vector3.Dot(t.b-t.a, t.c - t.a));
+        bool leftMajor = (t.aLeft && t.bLeft) || (t.aLeft && t.cLeft) || (t.bLeft && t.cLeft) ? true : false; 
+
+        if(leftMajor){
+            AssignSplitTriangles(t, d, e, left, right);
+        }else{
+            AssignSplitTriangles(t,d,e,right,left);
+        }
         
         Debug.DrawLine(d,e);     
     }
-
-
 
     void StartSplitInTwo()
     {
@@ -80,18 +134,45 @@ public class PlaneCutTest : MonoBehaviour {
         {
             M = GetComponent<MeshFilter>().mesh;
         }
-       
         vertexPosChange = new int[M.vertexCount];
-
 		conflictTriangles = new List<Tri>();
-    
+
+        //adjust plane orientation
 		Mesh pM = referencePlane.GetComponent<MeshFilter>().mesh;
 		Transform pT = referencePlane.transform;
 		cuttingPlane.Set3Points(pT.TransformPoint(pM.vertices[pM.triangles[0]]), pT.TransformPoint(pM.vertices[pM.triangles[1]]),pT.TransformPoint(pM.vertices[pM.triangles[2]]));
 
-      
-        SplitInTwo();
+        //determine whether the triangle indices belong to the left or right  
+        DetermineIndexPositions();       
 
+        //determine whether the vertices belongto the left or right
+        DetermineVertexPositions(M.vertices, M.normals, M.uv);
+
+        //split the plane-intersecting triangles
+        for(int i = 0; i < conflictTriangles.Count; i++){
+            SplitTriangle(cuttingPlane, conflictTriangles[i], splitMeshLeft, splitMeshRight);
+        }
+
+        //create the slices as gameobjects and add needed components
+        if(leftMesh.Vertices.Count != 0)
+        {
+            //index change is necessary as the vertex count is different for the two new meshes -> indices need to be adjusted
+            ApplyIndexChange(leftMesh.Indices, vertexPosChange);
+            sliceCreator.CreateSlice(transform, leftMesh);
+        }
+
+        if (rightMesh.Vertices.Count != 0)
+        {
+            ApplyIndexChange(rightMesh.Indices, vertexPosChange);
+            sliceCreator.CreateSlice(transform, rightMesh);
+        }
+
+        sliceCreator.CreateSlice(transform, splitMeshLeft);
+
+         sliceCreator.CreateSlice(transform, splitMeshRight);
+
+
+        // kill the original object
       	Destroy(this.gameObject);
     }
 
@@ -123,20 +204,8 @@ public class PlaneCutTest : MonoBehaviour {
             }
         }
     }
-   
-    private int[] ApplyIndexChange(List<int> indices, int[] lookUp)
-    {
-        int[] indexArray = new int[indices.Count];
-        for (int i = 0; i < indices.Count; i++)
-        {
-            indexArray[i] = lookUp[indices[i]];
-        }
-
-        return indexArray;
-    }
 
      private void ApplyIndexChange(List<int>[] indices, int[] lookUp){
-
          for(int i = 0; i < indices.Length; i++){
             for(int j = 0; j < indices[0].Count; j++){
                 indices[i][j] = lookUp[indices[i][j]]; 
@@ -144,7 +213,7 @@ public class PlaneCutTest : MonoBehaviour {
          }
      }
 
-    private void SplitInTwo()
+    private void DetermineIndexPositions()
     {
         int above = 0;
         int below = 0;
@@ -220,24 +289,6 @@ public class PlaneCutTest : MonoBehaviour {
                     }                   
 				}
             }
-        }
-
-        for(int i = 0; i < conflictTriangles.Count; i++){
-            SplitTriangle(cuttingPlane, conflictTriangles[i]);
-        }
-
-        DetermineVertexPositions(vertices, M.normals, M.uv);
-
-        if(leftMesh.Vertices.Count != 0)
-        {
-            ApplyIndexChange(leftMesh.Indices, vertexPosChange);
-            sliceCreator.CreateSlice(transform, leftMesh);
-        }
-
-        if (rightMesh.Vertices.Count != 0)
-        {
-            ApplyIndexChange(rightMesh.Indices, vertexPosChange);
-            sliceCreator.CreateSlice(transform, rightMesh);
         }
     }
 }
