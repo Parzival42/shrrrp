@@ -9,6 +9,7 @@ public class RigidBodyDashHandler : DashHandler
 
     #region Internal Members
     private RigidBodyInput player;
+    private Collider playerCollider;
 
     private bool isDashPerforming = false;
     private LTDescr dashTween = null;
@@ -22,6 +23,7 @@ public class RigidBodyDashHandler : DashHandler
     public RigidBodyDashHandler(RigidBodyInput player)
     {
         this.player = player;
+        this.playerCollider = this.player.GetComponent<Collider>();
     }
 
     public void HandleDash()
@@ -62,15 +64,50 @@ public class RigidBodyDashHandler : DashHandler
         dashTween = LeanTween.value(player.gameObject, player.transform.position, player.transform.position + forceVector, player.DashTime)
             .setOnUpdate((Vector3 value) => {
                 player.Rigid.MovePosition(value);
+
+                // Cancel dash when a collsion occurs
+                if (CheckDashCollision())
+                {
+                    LeanTween.cancel(dashTween.uniqueId);
+                    SetDashCompleteState();
+                }
             })
             .setOnStart(() => {
                 isDashPerforming = true;
                 OnPerformStart();
             })
             .setOnComplete(() => {
-                isDashPerforming = false;
+                SetDashCompleteState();
             })
             .setEase(LeanTweenType.easeOutCirc);
+    }
+
+    private bool CheckDashCollision()
+    {
+        int layerMask = 1 << player.gameObject.layer | 1 << player.GroundedLayer;
+        Collider[] collider = Physics.OverlapSphere(GetPlayerCenter(), player.DashCheckRadius, layerMask);
+
+#if UNITY_EDITOR
+        DebugExtension.DebugWireSphere(GetPlayerCenter(), Color.red, player.DashCheckRadius);
+#endif
+        return IsValidCollision(collider);
+    }
+
+    /// <summary>
+    /// Checks if one of the collider is a valid ground or another player collider.
+    /// </summary>
+    private bool IsValidCollision(Collider[] collider)
+    {
+        foreach(Collider c in collider)
+        {
+            // Collision with other object than a player
+            if (c.gameObject.GetInstanceID() != player.gameObject.GetInstanceID())
+            {
+                OnPerformDashCollision(player.gameObject, c.gameObject);
+                return true;
+            }
+        }
+        return false;
     }
 
     private bool CheckPlayerGrounded(out RaycastHit hitInfo)
@@ -83,6 +120,16 @@ public class RigidBodyDashHandler : DashHandler
             Debug.DrawRay(ray.origin, ray.direction * player.GroundedDistance, Color.blue, 1f);
 #endif
         return groundWasHit;
+    }
+
+    private Vector3 GetPlayerCenter()
+    {
+        return playerCollider.bounds.center;
+    }
+
+    private void SetDashCompleteState()
+    {
+        isDashPerforming = false;
     }
 
     #region Event methods

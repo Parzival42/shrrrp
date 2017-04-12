@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 136105882746218418}
   - component: {fileID: 54254769215646534}
   - component: {fileID: 114446083201177404}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -466,6 +466,8 @@ MonoBehaviour:
   groundedLayer: 8
   dashForce: 5
   dashTime: 0.25
+  dashGroundCheckDistance: 0.5
+  dashCheckRadius: 0.4
 --- !u!114 &114578709919430864
 MonoBehaviour:
   m_ObjectHideFlags: 1

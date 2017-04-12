@@ -44,6 +44,10 @@ public class RigidBodyInput : MonoBehaviour
 
     [SerializeField]
     private float dashGroundCheckDistance = 0.5f;
+
+    [SerializeField]
+    [Tooltip("Collision sphere radius during the dash.")]
+    private float dashCheckRadius = 0.7f;
     #endregion
 
     #region Internal Members
@@ -66,6 +70,7 @@ public class RigidBodyInput : MonoBehaviour
     public float DashForce { get { return dashForce; } }
     public float DashTime { get { return dashTime; } }
     public float DashGroundCheckDistance { get { return dashGroundCheckDistance; } }
+    public float DashCheckRadius { get { return dashCheckRadius; } }
     #endregion
 
     private void Awake()
