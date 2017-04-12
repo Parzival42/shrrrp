@@ -17,7 +17,6 @@ public class ParticleSelfDestruct : MonoBehaviour
     private void Start()
     {
         particles = GetComponent<ParticleSystem>();
-        Debug.Log("Start Time: " + particles.main.startLifetime.constant);
         Destroy(gameObject, particles.main.startLifetime.constant + addDestroyTime);
     }
 }
