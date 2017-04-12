@@ -77,7 +77,7 @@ public class MeshSplitter : MonoBehaviour {
 		int[] triangles = mesh.triangles;
 
 		for(int i = 0; i < triangles.Length; i+=3){
-
+				
 
 
 		}
