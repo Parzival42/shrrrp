@@ -55,11 +55,21 @@ public class PlayerLine : MonoBehaviour
 	private void Update ()
     {
         SetLinePositions();
-	}
+        HandleLineVisibility();
+    }
+
+    private void HandleLineVisibility()
+    {
+        if (inputHandler.IsGrounded)
+            playerLine.enabled = false;
+        else
+            playerLine.enabled = true;
+    }
 
     private void JumpLineTween()
     {
         playerLine.widthMultiplier = 0f;
+
         CancelJumpTween();
         jumpTween = LeanTween.value(gameObject, 0f, originalPlayerLineWidth, lineTweenTime)
             .setOnUpdate((float value) => {

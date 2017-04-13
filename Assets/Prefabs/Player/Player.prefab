@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 54254769215646534}
   - component: {fileID: 114446083201177404}
   - component: {fileID: 114246283258304166}
+  - component: {fileID: 114746737531432480}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -536,6 +537,20 @@ MonoBehaviour:
   lineTweenEase: 14
   secondJumpLineWidthMultiplier: 4
   secondJumpTweenTime: 0.2
+--- !u!114 &114746737531432480
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1630457348639916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29694d95543373f44902354a8448634e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pushAwayForce: 0.1
+  forceMode: 2
+  collisionLayer: 8
 --- !u!120 &120472502679458668
 LineRenderer:
   m_ObjectHideFlags: 1
