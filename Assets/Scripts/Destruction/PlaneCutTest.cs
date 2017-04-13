@@ -21,7 +21,7 @@ public class PlaneCutTest : MonoBehaviour {
     Mesh M;    
 
     // triangles that intersect the plane
-	private List<Tri> conflictTriangles;
+	private List<ConflictTriangle> conflictTriangles;
 
     // slice creator 
     [SerializeField]
@@ -29,6 +29,11 @@ public class PlaneCutTest : MonoBehaviour {
 
     [SerializeField]
     private SliceCreator staticSliceCreator;
+
+
+    [SerializeField]
+    private FlatMeshMerger meshMerger;
+
 
     // leftover meshes 
     private MeshContainer leftMesh = new MeshContainer();
@@ -40,33 +45,7 @@ public class PlaneCutTest : MonoBehaviour {
 
     private MeshContainer splitMeshRight = new MeshContainer();
 
-    
-
-    public struct Tri{
-        public Vector3 a;
-        public Vector3 b;
-        public Vector3 c;
-
-        public bool aLeft;
-        public bool bLeft;
-        public bool cLeft;
-
-        public bool negative;
-
-        public Tri(Vector3 a, Vector3 b, Vector3 c, bool aLeft, bool bLeft, bool cLeft, bool negative){
-            this.a = a;
-            this.b = b;
-            this.c = c;
-
-            this.aLeft = aLeft;
-            this.bLeft = bLeft;
-            this.cLeft = cLeft;
-
-            this.negative = negative;
-        }
-    }
-
-    private void AssignSplitTriangles(Tri t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor){
+    private void AssignSplitTriangles(ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor){
         minor.Vertices.Add(transform.InverseTransformPoint(t.a));
         minor.Vertices.Add(transform.InverseTransformPoint(d));
         minor.Vertices.Add(transform.InverseTransformPoint(e));
@@ -104,9 +83,7 @@ public class PlaneCutTest : MonoBehaviour {
         }
     }
 
-
-
-    private void SplitTriangle(Plane p, Tri t, MeshContainer left, MeshContainer right){
+    private void SplitTriangle(Plane p, ConflictTriangle t, MeshContainer left, MeshContainer right){
         Ray ray1 = new Ray(t.a, t.b - t.a);
         Ray ray2 = new Ray(t.a, t.c - t.a);
 
@@ -141,8 +118,7 @@ public class PlaneCutTest : MonoBehaviour {
             M = GetComponent<MeshFilter>().mesh;
         }
         vertexPosChange = new int[M.vertexCount];
-		conflictTriangles = new List<Tri>();
-
+		conflictTriangles = new List<ConflictTriangle>();
 
         float startTime = Time.realtimeSinceStartup;
 
@@ -167,23 +143,22 @@ public class PlaneCutTest : MonoBehaviour {
         {
             //index change is necessary as the vertex count is different for the two new meshes -> indices need to be adjusted
             ApplyIndexChange(leftMesh.Indices, vertexPosChange);
-            sliceCreator.CreateSlice(transform, leftMesh);
+            leftMesh = meshMerger.Merge(leftMesh, splitMeshRight);
+            staticSliceCreator.CreateSlice(transform, leftMesh);
         }
 
         if (rightMesh.Vertices.Count != 0)
         {
             ApplyIndexChange(rightMesh.Indices, vertexPosChange);
-            sliceCreator.CreateSlice(transform, rightMesh);
+            rightMesh = meshMerger.Merge(rightMesh, splitMeshLeft);
+            staticSliceCreator.CreateSlice(transform, rightMesh);
         }
 
         Debug.Log("Time needed: "+ (Time.realtimeSinceStartup - startTime));
 
-        staticSliceCreator.CreateSlice(transform, splitMeshLeft);
+        // staticSliceCreator.CreateSlice(transform, splitMeshLeft);
 
-        staticSliceCreator.CreateSlice(transform, splitMeshRight);
-
-
-         
+        // staticSliceCreator.CreateSlice(transform, splitMeshRight);
 
         // kill the original object
       	Destroy(this.gameObject);
@@ -294,11 +269,11 @@ public class PlaneCutTest : MonoBehaviour {
                     }
                 }else{                   
                     if(a == c){
-                        conflictTriangles.Add(new Tri(transform.TransformPoint(vertices[subMeshIndices[i + 1]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),b,a,c, true));
+                        conflictTriangles.Add(new ConflictTriangle(transform.TransformPoint(vertices[subMeshIndices[i + 1]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),b,a,c, true));
                     }else if(a == b){
-                        conflictTriangles.Add(new Tri(transform.TransformPoint(vertices[subMeshIndices[i + 2]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 1]]),c,a,b, false));
+                        conflictTriangles.Add(new ConflictTriangle(transform.TransformPoint(vertices[subMeshIndices[i + 2]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 1]]),c,a,b, false));
                     }else if(b == c){
-                        conflictTriangles.Add(new Tri(transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i+1]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),a,b,c, false));
+                        conflictTriangles.Add(new ConflictTriangle(transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i+1]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),a,b,c, false));
                     }                   
 				}
             }
