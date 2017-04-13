@@ -510,13 +510,13 @@ MonoBehaviour:
   movementSpeed: 0.12
   rotationSpeed: 20
   cameraBasedControl: 1
-  jumpIntensity: 15
+  jumpIntensity: 12
   secondJumpIntensityFactor: 0.8
   groundedDistance: 0.3
   groundPivotOffset: {x: 0, y: 0.05, z: 0}
   groundedLayer: 8
-  dashForce: 5
-  dashTime: 0.25
+  dashForce: 3
+  dashTime: 0.35
   dashCoolDownTime: 0.7
   dashGroundCheckDistance: 0.5
   dashCheckRadius: 0.4
