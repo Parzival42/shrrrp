@@ -2167,8 +2167,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceMultiplier: 2
   forceMode: 1
-  debugDraw: 1
+  debugDraw: 0
   uniformForce: 0
+  randomizeForce: 1
+  noiseTurbulence: 60
 --- !u!1 &629412255
 GameObject:
   m_ObjectHideFlags: 0

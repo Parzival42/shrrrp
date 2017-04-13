@@ -8,6 +8,12 @@ public class SphereForceField : ForceField
     [SerializeField]
     [Tooltip("Force strength dependent on the distance to the middle point or not.")]
     private bool uniformForce = false;
+
+    [SerializeField]
+    private bool randomizeForce = false;
+
+    [SerializeField]
+    private float noiseTurbulence = 1f;
     #endregion
 
     #region Internal Members
@@ -25,6 +31,7 @@ public class SphereForceField : ForceField
 
     protected override Vector3 GetForceFor(Vector3 position)
     {
+
         Vector3 worldColliderCenter = GetWorldColliderCenter();
         // Only XZ plane starting from the circle collider middle point
         middlePosition.Set(worldColliderCenter.x, worldColliderCenter.z);
@@ -33,6 +40,10 @@ public class SphereForceField : ForceField
         // Calculate direction and normalize it based on the collider radius
         Vector2 forceDirection = bodyPosition - middlePosition;
         forceDirection *= 1f / sphereCollider.radius;
+
+        // Randomization
+        if (randomizeForce)
+            forceDirection = forceDirection.Rotate((Mathf.PerlinNoise(bodyPosition.x, bodyPosition.y) - 0.5f) * 2f * noiseTurbulence);
 
         // Save into 3D result vector
         Vector3 resultVector = new Vector3(forceDirection.x, 0f, forceDirection.y);
