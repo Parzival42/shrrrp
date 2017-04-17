@@ -117,7 +117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 14298978}
   m_Layer: 0
-  m_Name: StylizedMud
+  m_Name: Soil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -296,7 +296,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 6aa7c3382a4963f458a665c28c49ba44, type: 2}
+  - {fileID: 2100000, guid: e68ee09f5ff81fc48bf713431ccd6da2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -461,7 +461,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 6aa7c3382a4963f458a665c28c49ba44, type: 2}
+  - {fileID: 2100000, guid: e68ee09f5ff81fc48bf713431ccd6da2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1350,7 +1350,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 6aa7c3382a4963f458a665c28c49ba44, type: 2}
+  - {fileID: 2100000, guid: e68ee09f5ff81fc48bf713431ccd6da2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
