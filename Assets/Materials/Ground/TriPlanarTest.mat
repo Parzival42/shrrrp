@@ -18,7 +18,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BottomBumpMap:
-        m_Texture: {fileID: 2800000, guid: 057aba1d7ccbef64389755a77456126a, type: 3}
+        m_Texture: {fileID: 2800000, guid: a4cdbff1bbd460541a59a54c7ab4263d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BottomEmissionMap:
@@ -26,11 +26,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BottomMainTex:
-        m_Texture: {fileID: 2800000, guid: 2a28465078f76dc4a91ef3090d25d788, type: 3}
+        m_Texture: {fileID: 2800000, guid: 121e3d42ce8e0a245a152e8f86ac2508, type: 3}
         m_Scale: {x: 0.3, y: 0.3}
         m_Offset: {x: 0, y: 0}
     - _BottomMetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: cb3192ca557f9ac4d90f2156e87d4763, type: 3}
+        m_Texture: {fileID: 2800000, guid: f9517c6b136fee348aed07dfad12ddd1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -86,11 +86,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BottomBumpScale: -0.5
+    - _BottomBumpScale: 2
     - _BottomEmissionScaleUI: 0
     - _BottomGlossiness: 0.5
     - _BottomMetallic: 0
-    - _BottomMultiplier: 3.69
+    - _BottomMultiplier: 2.96
     - _BottomUsingMetallicGlossMap: 1
     - _BumpScale: -1
     - _Cutoff: 0.5
@@ -120,7 +120,7 @@ Material:
     - _VertexColorStrength: 1
     - _ZWrite: 1
     m_Colors:
-    - _BottomColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BottomColor: {r: 0.8901961, g: 0.7019608, b: 0.29411766, a: 1}
     - _BottomEmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _BottomEmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
