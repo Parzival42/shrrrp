@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(LineRenderer))]
 public class PlayerLine : MonoBehaviour
@@ -24,6 +25,19 @@ public class PlayerLine : MonoBehaviour
 
     [SerializeField]
     private float secondJumpTweenTime = 0.2f;
+
+    [Header("Player Circle")]
+    [SerializeField]
+    private Image playerCircle;
+
+    [SerializeField]
+    private float circleYOffset = 0.1f;
+
+    [SerializeField]
+    private float sizeTarget = 1.4f;
+
+    [SerializeField]
+    private float circleTweenTime = 0.3f;
     #endregion
 
     #region Internal Members
@@ -33,23 +47,36 @@ public class PlayerLine : MonoBehaviour
     private InputHandler inputHandler;
 
     private float originalPlayerLineWidth;
-
-    private LTDescr jumpTween;
     #endregion
 
     private void Start ()
     {
+        Initialize();
+        CheckForErrors();
+	}
+
+    private void Initialize()
+    {
         playerLine = GetComponent<LineRenderer>();
         inputHandler = transform.parent.GetComponent<RigidBodyInput>().InputController;
+        inputHandler.OnJump += HandleJumpCircleTween;
+        inputHandler.OnLandedOnGround += HandleLandedCircleTween;
         inputHandler.OnJump += JumpLineTween;
         inputHandler.OnSecondJump += SecondJumpTween;
 
+        originalPlayerLineWidth = playerLine.widthMultiplier;
+        SetZeroAlphaPlayerCircle();
+    }
+
+    private void CheckForErrors()
+    {
         if (inputHandler == null)
             Debug.LogError("No input handler in parent object found! Check hierarchy!", gameObject);
 
-        originalPlayerLineWidth = playerLine.widthMultiplier;
-	}
-	
+        if (playerCircle == null)
+            Debug.LogError("No player circle specified!", gameObject);
+    }
+
 	private void Update ()
     {
         SetLinePositions();
@@ -68,8 +95,7 @@ public class PlayerLine : MonoBehaviour
     {
         playerLine.widthMultiplier = 0f;
 
-        CancelJumpTween();
-        jumpTween = LeanTween.value(gameObject, 0f, originalPlayerLineWidth, lineTweenTime)
+        LeanTween.value(gameObject, 0f, originalPlayerLineWidth, lineTweenTime)
             .setOnUpdate((float value) => {
                 playerLine.widthMultiplier = value;
             }).setEase(lineTweenEase);
@@ -77,15 +103,13 @@ public class PlayerLine : MonoBehaviour
 
     private void SecondJumpTween()
     {
-        CancelJumpTween();
-        jumpTween = LeanTween.value(gameObject, originalPlayerLineWidth, originalPlayerLineWidth * secondJumpLineWidthMultiplier, secondJumpTweenTime * 0.5f)
+        LeanTween.value(gameObject, originalPlayerLineWidth, originalPlayerLineWidth * secondJumpLineWidthMultiplier, secondJumpTweenTime * 0.5f)
             .setOnUpdate((float value) => {
                 playerLine.widthMultiplier = value;
             })
             .setEase(LeanTweenType.easeOutQuad)
             .setOnComplete(() => {
-                CancelJumpTween();
-                jumpTween = LeanTween.value(playerLine.widthMultiplier, originalPlayerLineWidth, secondJumpTweenTime * 0.5f)
+                LeanTween.value(playerLine.widthMultiplier, originalPlayerLineWidth, secondJumpTweenTime * 0.5f)
                     .setOnUpdate((float value) => {
                         playerLine.widthMultiplier = value;
                     })
@@ -102,17 +126,44 @@ public class PlayerLine : MonoBehaviour
         bool hit = Physics.Raycast(startPosition, Vector3.down, out hitInfo, maxCollisionDistance, 1 << collisionLayer);
 
         if (hit)
+        {
             endPosition = hitInfo.point;
+            SetCircleTransformation(endPosition, hitInfo.normal);
+        }
         else
+        {
             endPosition = startPosition + Vector3.down * maxCollisionDistance;
-        
+            SetCircleTransformation(endPosition, Vector3.up);
+        }
+
         playerLine.SetPosition(0, startPosition);
         playerLine.SetPosition(1, endPosition);
     }
 
-    private void CancelJumpTween()
+    private void SetCircleTransformation(Vector3 groundHit, Vector3 normal)
     {
-        if (jumpTween != null)
-            LeanTween.cancel(jumpTween.id);
+        playerCircle.transform.position = groundHit + Vector3.up * circleYOffset;
+        playerCircle.transform.forward = normal;
+    }
+
+    private void HandleLandedCircleTween()
+    {
+        playerCircle.rectTransform.localScale = Vector3.one;
+        LeanTween.alpha(playerCircle.rectTransform, 0f, circleTweenTime).setEase(LeanTweenType.easeOutExpo);
+        LeanTween.scale(playerCircle.rectTransform, Vector3.one * sizeTarget, circleTweenTime).setEase(LeanTweenType.easeOutExpo);
+    }
+
+    private void HandleJumpCircleTween()
+    {
+        SetZeroAlphaPlayerCircle();
+        playerCircle.rectTransform.localScale = Vector3.one * sizeTarget;
+
+        LeanTween.alpha(playerCircle.rectTransform, 1f, circleTweenTime).setEase(LeanTweenType.easeOutExpo);
+        LeanTween.scale(playerCircle.rectTransform, Vector3.one, circleTweenTime).setEase(LeanTweenType.easeOutExpo);
+    }
+
+    private void SetZeroAlphaPlayerCircle()
+    {
+        playerCircle.color = new Color(playerCircle.color.r, playerCircle.color.g, playerCircle.color.b, 0f);
     }
 }
