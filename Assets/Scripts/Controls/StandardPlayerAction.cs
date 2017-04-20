@@ -20,7 +20,7 @@ public class StandardPlayerAction : PlayerActionSet
         Right = CreatePlayerAction("Move Right");
         Up = CreatePlayerAction("Move Up");
         Down = CreatePlayerAction("Move Down");
-
+        
         Jump = CreatePlayerAction("Jump");
         Dash = CreatePlayerAction("Dash");
 

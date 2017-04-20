@@ -55,6 +55,7 @@ public class RigidBodyInput : MonoBehaviour
     #endregion
 
     #region Internal Members
+    private StandardPlayerAction playerAction;
     private Rigidbody rigid;
     private InputHandler inputHandler = null;
     private DashHandler dashHandler = null;
@@ -77,6 +78,7 @@ public class RigidBodyInput : MonoBehaviour
     public float DashCoolDownTime { get { return dashCoolDownTime; } }
     public float DashGroundCheckDistance { get { return dashGroundCheckDistance; } }
     public float DashCheckRadius { get { return dashCheckRadius; } }
+    public StandardPlayerAction PlayerAction { get { return playerAction; } set { playerAction = value; } }
     #endregion
 
     private void Awake()
