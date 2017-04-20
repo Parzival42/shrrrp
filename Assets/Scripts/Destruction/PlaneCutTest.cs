@@ -108,7 +108,7 @@ public class PlaneCutTest : MonoBehaviour {
             AssignSplitTriangles(t,d,e,right,left);
         }
         
-        //Debug.DrawLine(d,e);     
+        Debug.DrawLine(d,e);     
     }
 
     void StartSplitInTwo()
@@ -155,10 +155,6 @@ public class PlaneCutTest : MonoBehaviour {
         }
 
         Debug.Log("Time needed: "+ (Time.realtimeSinceStartup - startTime));
-
-        // staticSliceCreator.CreateSlice(transform, splitMeshLeft);
-
-        // staticSliceCreator.CreateSlice(transform, splitMeshRight);
 
         // kill the original object
       	Destroy(this.gameObject);

@@ -33,10 +33,10 @@ public class Poly2DCreator : MonoBehaviour {
 		lineRenderer.SetPositions(points);
 	}
 
-	public List<Vector2> GetPolygon(){
-		List<Vector2> polygon = new List<Vector2>();
+	public List<Vector3> GetPolygon(){
+		List<Vector3> polygon = new List<Vector3>();
 		for(int i = 0; i < points.Length-1; i++){
-			polygon.Add(new Vector2(points[i].x, points[i].y));
+			polygon.Add(points[i]);
 		}		
 		return polygon;
 	}
