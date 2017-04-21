@@ -11,6 +11,7 @@ using InControl;
 /// </summary>
 public class PlayerSpawner : MonoBehaviour
 {
+    [Comment("The PlayerSpawner is only a script for development. It only spawns when you directly start playing in a level.", 15)]
     [Header("Player/Slot assignment")]
     [SerializeField]
     private PlayerType[] playerTypes;
