@@ -4,7 +4,7 @@
 public class RigidBodyInput : MonoBehaviour
 {
     #region Public fields
-    [Header("Movement Settings")]
+    [FancyHeader("Movement Settings", "Speed and general stuff")]
     [SerializeField]
     private float movementSpeed = 0.1f;
 
@@ -14,7 +14,7 @@ public class RigidBodyInput : MonoBehaviour
     [SerializeField]
     private bool cameraBasedControl = false;
 
-    [Header("Jump Settings")]
+    [FancyHeader("Jump Settings", "Jump and second jump")]
     [SerializeField]
     private float jumpIntensity = 1f;
 
@@ -34,7 +34,7 @@ public class RigidBodyInput : MonoBehaviour
     [Tooltip("Collision layer of the ground check.")]
     private int groundedLayer = 8;
 
-    [Header("Dash settings")]
+    [FancyHeader("Dash Settings")]
     [SerializeField]
     private float dashForce = 5f;
 

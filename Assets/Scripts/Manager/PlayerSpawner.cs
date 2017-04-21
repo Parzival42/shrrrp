@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using InControl;
 
 #if UNITY_EDITOR
@@ -12,14 +10,14 @@ using InControl;
 public class PlayerSpawner : MonoBehaviour
 {
     [Comment("The PlayerSpawner is only a script for development. It only spawns when you directly start playing in a level.", 15)]
-    [Header("Player/Slot assignment")]
+    [FancyHeader("Assign Slots", "Player/Controller assignment")]
     [SerializeField]
     private PlayerType[] playerTypes;
 
     [SerializeField]
     private ControllerType[] controllerTypes;
 
-    [Header("Player prefabs")]
+    [FancyHeader("Player prefabs", "Assign different prefabs")]
     [SerializeField]
     private GameObject[] playerPrefabs;
 

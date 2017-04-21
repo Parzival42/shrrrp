@@ -8,7 +8,7 @@
 public class PlayerAnimationAndFxHandler : MonoBehaviour
 {
     #region Inspector variables
-    [Header("Particles")]
+    [FancyHeader("Jump Particles", "Various jump particles")]
     [SerializeField]
     private Vector3 particleSpawnOffset;
 
@@ -18,7 +18,7 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     [SerializeField]
     private GameObject secondJumpParticle;
 
-    [Space(10f)]
+    [FancyHeader("Run Particles")]
     [SerializeField]
     private float runParticleActivationThreshold = 0.1f;
 

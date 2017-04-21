@@ -8,14 +8,14 @@
 public class RigidBodyForceJump : MonoBehaviour
 {
     #region Inspector variables
-    [Header("Force settings")]
+    [FancyHeader("Force settings")]
     [SerializeField]
     private float pushAwayForce = 10f;
 
     [SerializeField]
     private ForceMode forceMode = ForceMode.VelocityChange;
 
-    [Header("Collision settings")]
+    [FancyHeader("Collision settings")]
     [SerializeField]
     private int collisionLayer = 8;
     #endregion
