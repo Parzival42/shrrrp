@@ -81,6 +81,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTypes: 00000000
-  controllerSlots: 00000000
+  controllerTypes: 01000000
   playerPrefabs:
+  - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}
+  - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}
+  - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}
   - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}

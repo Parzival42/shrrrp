@@ -74,8 +74,8 @@ public class RigidBodyInputHandler : InputHandler
 
     private void CheckInput()
     {
-        HorizontalInputValue = Input.GetAxis(HORIZONTAL_AXIS);
-        VerticalInputValue = Input.GetAxis(VERTICAL_AXIS);
+        HorizontalInputValue = player.PlayerAction.Move.X;
+        VerticalInputValue = player.PlayerAction.Move.Y;
         movementVector.Set(0f, 0f, 0f);
 
         // Calculate forward and right vector
@@ -97,7 +97,7 @@ public class RigidBodyInputHandler : InputHandler
 
     private void HandleJumpInput()
     {
-        bool jumpButtonDown = Input.GetButtonDown(JUMP_AXIS);
+        bool jumpButtonDown = player.PlayerAction.Jump.WasPressed;
         hitGround = CheckPlayerGrounded();
 
         // Normal ground jump

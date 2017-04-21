@@ -14,6 +14,8 @@ public class StandardPlayerAction : PlayerActionSet
 
     public PlayerTwoAxisAction Move;
 
+    public PlayerAction NullAction = null;
+
     public StandardPlayerAction()
     {
         Left = CreatePlayerAction("Move Left");
@@ -29,7 +31,21 @@ public class StandardPlayerAction : PlayerActionSet
         Move = CreateTwoAxisPlayerAction(Left, Right, Down, Up);
     }
 
-    public static StandardPlayerAction CreateStandardBinding()
+    public bool IsNullAction()
+    {
+        return NullAction != null ? true : false;
+    }
+
+    public static StandardPlayerAction CreateNullBinding()
+    {
+        StandardPlayerAction p = new StandardPlayerAction();
+        p.NullAction = p.CreatePlayerAction("Null");
+        p.NullAction.AddDefaultBinding(InputControlType.None);
+        
+        return p;
+    }
+
+    public static StandardPlayerAction CreateStandardGamePadBinding()
     {
         StandardPlayerAction playerAction = new StandardPlayerAction();
 
@@ -62,6 +78,55 @@ public class StandardPlayerAction : PlayerActionSet
         // Xbox 360 specific
         playerAction.Pause.AddDefaultBinding(InputControlType.Start);
 
+        return playerAction;
+    }
+
+    public static StandardPlayerAction CreateStandardGamePadBinding(InputDevice inputDevice)
+    {
+        StandardPlayerAction playerAction = CreateStandardGamePadBinding();
+        playerAction.Device = inputDevice;
+        return playerAction;
+    }
+
+    public static StandardPlayerAction CreateStandardKeyboardBinding()
+    {
+        StandardPlayerAction playerAction = new StandardPlayerAction();
+
+        // Left
+        playerAction.Left.AddDefaultBinding(Key.LeftArrow);
+        playerAction.Left.AddDefaultBinding(Key.A);
+
+        // Right
+        playerAction.Right.AddDefaultBinding(Key.RightArrow);
+        playerAction.Right.AddDefaultBinding(Key.D);
+
+        // Up
+        playerAction.Up.AddDefaultBinding(Key.UpArrow);
+        playerAction.Up.AddDefaultBinding(Key.W);
+
+        // Down
+        playerAction.Down.AddDefaultBinding(Key.DownArrow);
+        playerAction.Down.AddDefaultBinding(Key.S);
+
+        // Jump
+        playerAction.Jump.AddDefaultBinding(Key.Space);
+        playerAction.Jump.AddDefaultBinding(Key.Return);
+
+        // Dash
+        playerAction.Dash.AddDefaultBinding(Key.LeftAlt);
+        playerAction.Dash.AddDefaultBinding(Key.LeftControl);
+
+        // Xbox one specific
+        playerAction.Pause.AddDefaultBinding(Key.Escape);
+        playerAction.Pause.AddDefaultBinding(Key.Backspace);
+
+        return playerAction;
+    }
+
+    public static StandardPlayerAction CreateStandardKeyboardBinding(InputDevice inputDevice)
+    {
+        StandardPlayerAction playerAction = CreateStandardKeyboardBinding();
+        playerAction.Device = inputDevice;
         return playerAction;
     }
 }

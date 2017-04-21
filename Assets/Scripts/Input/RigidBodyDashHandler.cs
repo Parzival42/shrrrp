@@ -41,7 +41,7 @@ public class RigidBodyDashHandler : DashHandler
 
     private void PerformDashProcedure()
     {
-        bool dashButton = Input.GetButtonDown(DASH_AXIS);
+        bool dashButton = player.PlayerAction.Dash.WasPressed;
         if (dashButton && isDashAllowed)
         {
             isDashAllowed = false;

@@ -78,11 +78,12 @@ public class RigidBodyInput : MonoBehaviour
     public float DashCoolDownTime { get { return dashCoolDownTime; } }
     public float DashGroundCheckDistance { get { return dashGroundCheckDistance; } }
     public float DashCheckRadius { get { return dashCheckRadius; } }
-    public StandardPlayerAction PlayerAction { get { return playerAction; } set { playerAction = value; } }
+    public StandardPlayerAction PlayerAction { get { return playerAction; } set { SetPlayerAction(value); } }
     #endregion
 
     private void Awake()
     {
+        playerAction = StandardPlayerAction.CreateNullBinding();
         rigid = GetComponent<Rigidbody>();
         inputHandler = new RigidBodyInputHandler(this);
         dashHandler = new RigidBodyDashHandler(this);
@@ -93,4 +94,13 @@ public class RigidBodyInput : MonoBehaviour
         inputHandler.HandleInput();
         dashHandler.HandleDash();
 	}
+
+    private void SetPlayerAction(StandardPlayerAction newPlayerAction)
+    {
+        if (playerAction != null)
+        {
+            playerAction.Destroy();
+            playerAction = newPlayerAction;
+        }
+    }
 }
