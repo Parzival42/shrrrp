@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using InControl;
 
 #if UNITY_EDITOR
 /// <summary>
@@ -23,7 +24,13 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Start ()
     {
-        Initialize();
+        // Only run this script if the level is started withouth menu cycle
+        if (IsLevelStartedDirectlyInEditor())
+        {
+            Debug.Log("Direct Editor level start! Spawn players via PlayerSpawner.", gameObject);
+            Initialize();
+            SpawnPlayersAtSpawnPoints();
+        }
 	}
 
     private void Initialize()
@@ -36,6 +43,21 @@ public class PlayerSpawner : MonoBehaviour
             Debug.LogError("Count of player slots and player types must be the same!", gameObject);
         if (playerPrefabs == null || playerPrefabs.Length == 0)
             Debug.LogError("No player prefabs assigned :(.", gameObject);
+    }
+
+    private void SpawnPlayersAtSpawnPoints()
+    {
+        
+    }
+
+    /// <summary>
+    /// If there is no 'MenuSelectionContainer' object in the scene,
+    /// it is assumed that the level is started directly in the editor (without menu cycle).
+    /// </summary>
+    private bool IsLevelStartedDirectlyInEditor()
+    {
+        MenuSelectionContainer selectionContainer = FindObjectOfType<MenuSelectionContainer>();
+        return selectionContainer == null;
     }
 }
 #endif
