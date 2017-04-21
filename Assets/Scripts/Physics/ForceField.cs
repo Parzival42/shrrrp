@@ -7,7 +7,7 @@
 public abstract class ForceField : MonoBehaviour
 {
     #region Inspector variables
-    [Header("General settings")]
+    [FancyHeader("General settings", "General force field settings")]
     [SerializeField]
     private float forceMultiplier = 1f;
 

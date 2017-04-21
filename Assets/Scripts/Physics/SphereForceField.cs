@@ -4,7 +4,7 @@
 public class SphereForceField : ForceField
 {
     #region Inspector variables
-    [Header("Sphere Force Field")]
+    [FancyHeader("Sphere Force Field", "Specific sphere force field settings")]
     [SerializeField]
     [Tooltip("Force strength dependent on the distance to the middle point or not.")]
     private bool uniformForce = false;
