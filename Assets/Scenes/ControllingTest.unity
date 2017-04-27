@@ -2042,7 +2042,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1396204775}
   - component: {fileID: 1396204774}
-  - component: {fileID: 1396204773}
   - component: {fileID: 1396204772}
   m_Layer: 0
   m_Name: IntersectionPlane
@@ -2083,20 +2082,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &1396204773
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1396204771}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &1396204774
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2110,13 +2095,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1396204771}
-  m_LocalRotation: {x: -0.22643262, y: -0.78248143, z: 0.41300043, w: 0.40728563}
-  m_LocalPosition: {x: -9.35, y: 1.25, z: 16.69}
+  m_LocalRotation: {x: 0.33289132, y: -0.78865033, z: 0.51131517, w: -0.075967014}
+  m_LocalPosition: {x: -2.51, y: -2.42, z: -2.43}
   m_LocalScale: {x: 1.618639, y: 1.6186372, z: 1.6186372}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 152.491, y: 68.35899, z: 231.154}
+  m_LocalEulerAnglesHint: {x: 130.894, y: -44.669983, z: 112.96999}
 --- !u!1 &1458568440
 GameObject:
   m_ObjectHideFlags: 0
