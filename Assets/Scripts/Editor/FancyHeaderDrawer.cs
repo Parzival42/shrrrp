@@ -36,22 +36,27 @@ public class FancyHeaderDrawer : DecoratorDrawer
         {
             Rect subTitleRect = new Rect(titleRect.x, titleRect.y + TITLE_HEIGHT, position.width, position.height - (UPPER_MARGIN + TITLE_HEIGHT));
             EditorGUI.LabelField(subTitleRect, new GUIContent(FancyHeader.subtitle), GetSubTitleStyle());
-            lineRect = new Rect(subTitleRect.x, subTitleRect.y + SUBTITLE_HEIGHT + LINE_OFFSET, position.width, 1f);
+            lineRect = new Rect(subTitleRect.x, subTitleRect.y + SUBTITLE_HEIGHT + LINE_OFFSET, position.width, 1.5f);
         }
         else
-            lineRect = new Rect(new Rect(titleRect.x, titleRect.y + UPPER_MARGIN + LINE_OFFSET - LINE_OFFSET_REDUCTION, position.width, 1f));
+            lineRect = new Rect(new Rect(titleRect.x, titleRect.y + UPPER_MARGIN + LINE_OFFSET - LINE_OFFSET_REDUCTION, position.width, 1.5f));
 
         DrawLine(lineRect);
     }
 
     private void DrawLine(Rect position)
     {
-        //Color oldGuiColor = GUI.color;
-        //GUI.color = new Color(0.5f, 0.5f, 0.5f);
-        //EditorGUI.DrawPreviewTexture(position, Texture2D.whiteTexture);
-        //GUI.color = oldGuiColor;
-        if(Event.current.type == EventType.Repaint)
-            GUI.skin.box.Draw(position, GUIContent.none, 0);
+        if (Event.current.type == EventType.Repaint)
+        {
+            Color oldGuiColor = GUI.color;
+            GUI.color = new Color(0.5f, 0.5f, 0.5f);
+
+            GUIStyle boxStyle = GUI.skin.box;
+            boxStyle.border = new RectOffset(0, 0, 0, 0);
+            boxStyle.normal.background = Texture2D.whiteTexture;
+            boxStyle.Draw(position, GUIContent.none, 0);
+            GUI.color = oldGuiColor;
+        }
     }
 
     private GUIStyle GetTitleStyle()
@@ -66,7 +71,11 @@ public class FancyHeaderDrawer : DecoratorDrawer
         float offset = 0.18f;
         GUIStyle style = new GUIStyle(EditorStyles.boldLabel);
 
-        style.normal.textColor = new Color(style.normal.textColor.r - offset, style.normal.textColor.g - offset, style.normal.textColor.b - offset);
+        if(EditorGUIUtility.isProSkin)
+            style.normal.textColor = new Color(style.normal.textColor.r - offset, style.normal.textColor.g - offset, style.normal.textColor.b - offset);
+        else
+            style.normal.textColor = new Color(style.normal.textColor.r - offset, style.normal.textColor.g + offset, style.normal.textColor.b + offset);
+
         style.fontSize = 11;
         return style;
     }
