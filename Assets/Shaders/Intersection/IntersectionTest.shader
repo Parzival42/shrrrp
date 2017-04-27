@@ -78,7 +78,7 @@
         //If the two are similar, then there is an object intersecting with our object
         float diff = abs(sceneZ - partZ) / _HighlightThresholdMax;
         diff = clamp(diff, 0.0, 1.0);
-        finalColor = lerp(_HighlightColorMultiplier * _HighlightColor * edgeNoise, mainTexture, half4(diff, diff, diff, diff));
+        finalColor = lerp(_HighlightColorMultiplier * _HighlightColor * edgeNoise, mainTexture, diff);
 
         half4 c = finalColor;
         return c;
