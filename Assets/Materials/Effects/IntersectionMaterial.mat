@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: IntersectionMaterial
   m_Shader: {fileID: 4800000, guid: dc9b8abe08e118e448361a83ae85ca2f, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _SCREENSPACETEXTURE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_CustomRenderQueue: -1
@@ -47,7 +47,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
         m_Texture: {fileID: 2800000, guid: 389f9afadb2544340b310fd4665935c2, type: 3}
-        m_Scale: {x: 100, y: 100}
+        m_Scale: {x: 70, y: 70}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -78,6 +78,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _ScreenSpaceTexture: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

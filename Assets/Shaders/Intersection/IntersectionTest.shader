@@ -1,6 +1,8 @@
 ﻿Shader "Custom/IntersectionHighlights" {
   Properties {
     _MainTexture ("Main Texture", 2D) = "white" {}
+    [Toggle]
+    _ScreenSpaceTexture("Screen space texture?", Float) = 0
     _EdgeNoise ("Edge Noise", 2D) = "white" {}
     _RegularColor ("Main Color", Color) = (1, 1, 1, 0.5) // Color when not intersecting
     _HighlightColor ("Highlight Color", Color) = (1, 1, 1, 0.5) // Color when intersecting
@@ -25,6 +27,7 @@
  
       uniform sampler2D_float _CameraDepthTexture; //Depth Texture
       sampler2D _MainTexture;
+      fixed _ScreenSpaceTexture;
       sampler2D _EdgeNoise;
 
       float4 _EdgeNoise_ST;
@@ -48,13 +51,21 @@
         Input o;
         o.vertex = UnityObjectToClipPos(v.vertex);
         o.screenPosition = ComputeScreenPos(o.vertex);
-        o.uv = TRANSFORM_TEX(v.texcoord.xy, _MainTexture);
+        o.uv = TRANSFORM_TEX(v.texcoord, _MainTexture);
         o.noiseUV = TRANSFORM_TEX(v.texcoord1.xy, _EdgeNoise);
         return o;
       }
  
+      /* Calculates normal uv's or screen space uv's depending on _ScreenSpaceTexture */
+      float2 calculateMainUv(Input i) {
+        if(_ScreenSpaceTexture < 1.0) {
+          return i.uv;
+        }
+        return i.screenPosition.xy / i.screenPosition.w * float2(_MainTexture_ST.x, _MainTexture_ST.y);
+      }
+
       half4 frag(Input i) : COLOR {
-        float4 mainTexture = tex2D(_MainTexture, i.uv) * _RegularColor;
+        float4 mainTexture = tex2D(_MainTexture, calculateMainUv(i)) * _RegularColor;
         float edgeNoise = clamp(tex2D(_EdgeNoise, i.noiseUV + _Time.x * _HighlightAnimationSpeed).r, 0.0, 1.0);
         float4 finalColor = _RegularColor;
   
