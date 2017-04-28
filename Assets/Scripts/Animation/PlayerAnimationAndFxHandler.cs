@@ -27,16 +27,20 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     #endregion
 
     #region Internal Members
+    private static readonly string ANIMATOR_RUN = "Run";
+
     private RigidBodyInput inputHandler;
     private float originalRunningParticleRate = 0f;
     private float vectorOneMagnitude = Vector2.one.magnitude;
     private ParticleSystem.EmissionModule runningEmission;
     private Vector2 inputVector = Vector2.zero;
+    private Animator playerAnimator;
     #endregion
 
     private void Start ()
     {
         inputHandler = GetComponent<RigidBodyInput>();
+        playerAnimator = GetComponent<Animator>();
         SetupRunningParticle();
 
         // Input Controller events
@@ -65,7 +69,14 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
         float horizontal = inputHandler.InputController.HorizontalInputValue;
         float vertical = inputHandler.InputController.VerticalInputValue;
 
+        HandleRunAnimation(horizontal, vertical);
         HandleRunningParticles(horizontal, vertical);
+    }
+
+    private void HandleRunAnimation(float horizontal, float vertical)
+    {
+        float runSpeed = Mathf.Max(Mathf.Abs(horizontal), Mathf.Abs(vertical));
+        playerAnimator.SetFloat(ANIMATOR_RUN, runSpeed);
     }
 
     private void HandleRunningParticles(float horizontal, float vertical)
