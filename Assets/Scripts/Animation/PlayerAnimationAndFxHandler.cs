@@ -28,6 +28,9 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
     #region Internal Members
     private static readonly string ANIMATOR_RUN = "Run";
+    private static readonly string ANIMATOR_JUMPED = "Jumped";
+    private static readonly string ANIMATOR_GROUNDED = "Grounded";
+
 
     private RigidBodyInput inputHandler;
     private float originalRunningParticleRate = 0f;
@@ -69,14 +72,18 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
         float horizontal = inputHandler.InputController.HorizontalInputValue;
         float vertical = inputHandler.InputController.VerticalInputValue;
 
-        HandleRunAnimation(horizontal, vertical);
+        FillAnimationData(horizontal, vertical);
         HandleRunningParticles(horizontal, vertical);
     }
 
-    private void HandleRunAnimation(float horizontal, float vertical)
+    private void FillAnimationData(float horizontal, float vertical)
     {
+        // Running
         float runSpeed = Mathf.Max(Mathf.Abs(horizontal), Mathf.Abs(vertical));
         playerAnimator.SetFloat(ANIMATOR_RUN, runSpeed);
+
+        // Grounded
+        playerAnimator.SetBool(ANIMATOR_GROUNDED, inputHandler.InputController.IsGrounded);
     }
 
     private void HandleRunningParticles(float horizontal, float vertical)
@@ -91,15 +98,23 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
     private void HandleFirstJump()
     {
+        // Particles
         runningEmission.enabled = false;
         if (firstJumpParticle != null)
             Instantiate(firstJumpParticle, transform.position + particleSpawnOffset, firstJumpParticle.transform.rotation);
+
+        // Animation
+        playerAnimator.SetTrigger(ANIMATOR_JUMPED);
     }
 
     private void HandleSecondJump()
     {
+        // Particles
         if (secondJumpParticle != null)
             Instantiate(secondJumpParticle, transform.position + particleSpawnOffset, secondJumpParticle.transform.rotation);
+
+        // Animation
+        playerAnimator.SetTrigger(ANIMATOR_JUMPED);
     }
 
     private void HandleGrounded()
