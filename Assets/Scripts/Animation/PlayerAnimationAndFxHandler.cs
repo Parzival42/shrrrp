@@ -30,6 +30,7 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     private static readonly string ANIMATOR_RUN = "Run";
     private static readonly string ANIMATOR_JUMPED = "Jumped";
     private static readonly string ANIMATOR_GROUNDED = "Grounded";
+    private static readonly string ANIMATOR_DASH = "Dash";
 
 
     private RigidBodyInput inputHandler;
@@ -50,6 +51,9 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
         inputHandler.InputController.OnJump += HandleFirstJump;
         inputHandler.InputController.OnSecondJump += HandleSecondJump;
         inputHandler.InputController.OnLandedOnGround += HandleGrounded;
+
+        // Dash Controller events
+        inputHandler.DashController.OnDashStarted += HandleDash;
     }
 
     private void Update()
@@ -94,6 +98,12 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
         float t = Mathf.InverseLerp(0f, vectorOneMagnitude, inputVector.magnitude);
         emission.rateOverTime = Mathf.Lerp(0f, originalRunningParticleRate, t);
+    }
+
+    private void HandleDash()
+    {
+        // Animation
+        playerAnimator.SetTrigger(ANIMATOR_DASH);
     }
 
     private void HandleFirstJump()
