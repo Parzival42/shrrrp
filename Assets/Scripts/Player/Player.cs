@@ -1,0 +1,49 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour {
+
+	#region Internal Members
+	PlayerType playerType = PlayerType.Player1;
+	#endregion
+
+	#region Properties
+    public PlayerType PlayerType {
+		get { return playerType; }
+		set { playerType = value; }
+	}
+	#endregion
+
+	#region Public Fields
+	[SerializeField]
+ 	[FancyHeader("Material Objects", "Assign materials based on PlayerType")]
+	private PlayerMaterialObject[] playerMaterials;
+
+	[SerializeField]
+	private Renderer body;
+
+	[SerializeField]
+	private Renderer hair;
+
+	[SerializeField]
+	private Renderer[] scarf;
+	#endregion
+
+    // Use this for initialization
+    void Start () {
+		foreach(PlayerMaterialObject materials in playerMaterials){
+			if(playerType.Equals(materials.playerType)){
+				body.material = materials.body;
+				hair.material = materials.hair;
+				foreach(Renderer r in scarf)
+					r.material = materials.scarf;
+			}
+		}
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+}
