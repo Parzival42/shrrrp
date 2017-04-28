@@ -24,6 +24,10 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
     [SerializeField]
     private ParticleSystem runningParticle;
+
+    [FancyHeader("Other particles")]
+    [SerializeField]
+    private ParticleSystem landedParticles;
     #endregion
 
     #region Internal Members
@@ -129,6 +133,11 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
     private void HandleGrounded()
     {
+        // Running particles
         runningEmission.enabled = true;
+
+        // Landed particles
+        if (landedParticles != null)
+            Instantiate(landedParticles, transform.position, landedParticles.transform.rotation);
     }
 }

@@ -7,7 +7,9 @@
 [RequireComponent(typeof(ParticleSystem))]
 public class ParticleSelfDestruct : MonoBehaviour
 {
-    [Header("Settings")]
+    [Comment("Destroy the particle system automatically after its life time. Some extra time can be added.")]
+
+    [FancyHeader("Settings")]
     [SerializeField]
     [Tooltip("This time is added to the particle life time.")]
     private float addDestroyTime = 0f;
