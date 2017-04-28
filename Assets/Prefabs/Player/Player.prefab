@@ -313,7 +313,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4150813183191320}
-  - component: {fileID: 95534154743902660}
   m_Layer: 0
   m_Name: character_anim
   m_TagString: Untagged
@@ -383,6 +382,7 @@ GameObject:
   - component: {fileID: 114446083201177404}
   - component: {fileID: 114246283258304166}
   - component: {fileID: 114746737531432480}
+  - component: {fileID: 95840816753761364}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -1163,13 +1163,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!95 &95534154743902660
+--- !u!95 &95840816753761364
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1522969737250060}
+  m_GameObject: {fileID: 1630457348639916}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 99bccd09708f2de4abb563394dc29b7e, type: 3}
   m_Controller: {fileID: 9100000, guid: 8b0f7de5da833614e81e763fd8b08449, type: 2}
