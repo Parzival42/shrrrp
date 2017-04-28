@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 875373a5492e6b74c96b246b3d4faba8, type: 3}
-  m_Name: PlayerMaterialObject
+  m_Name: PlayerMaterialObjectYellow
   m_EditorClassIdentifier: 
-  objectName: New MyScriptableObject
-  colorIsRandom: 0
-  thisColor: {r: 1, g: 1, b: 1, a: 1}
-  spawnPoints: []
+  playerType: 0
+  body: {fileID: 2100000, guid: c3ea62747489e494cb36cdc6b9e775bd, type: 2}
+  hair: {fileID: 2100000, guid: 58bde7c468f53f441ad90601dc3531c4, type: 2}
+  scarf: {fileID: 2100000, guid: e9066a6fc89418c42afd95ac16a79ba4, type: 2}

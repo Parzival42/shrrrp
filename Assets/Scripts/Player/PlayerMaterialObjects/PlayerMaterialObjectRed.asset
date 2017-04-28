@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 875373a5492e6b74c96b246b3d4faba8, type: 3}
-  m_Name: PlayerMaterialObjectCyan
+  m_Name: PlayerMaterialObjectRed
   m_EditorClassIdentifier: 
-  playerType: 0
-  body: {fileID: 0}
-  hair: {fileID: 0}
-  scarf: {fileID: 0}
+  playerType: 2
+  body: {fileID: 2100000, guid: ce1f75c0774867746b2b5b79de9dcf57, type: 2}
+  hair: {fileID: 2100000, guid: cdd5c86ee9b4e22459f992e2b65d9d01, type: 2}
+  scarf: {fileID: 2100000, guid: c75bbfb85fad39e4e89c4c10e7dd295a, type: 2}

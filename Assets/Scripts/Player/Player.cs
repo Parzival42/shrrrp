@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
 	#region Internal Members
-	PlayerType playerType = PlayerType.Player1;
+	PlayerType playerType;
 	#endregion
 
 	#region Properties
@@ -30,7 +30,6 @@ public class Player : MonoBehaviour {
 	private Renderer[] scarf;
 	#endregion
 
-    // Use this for initialization
     void Start () {
 		foreach(PlayerMaterialObject materials in playerMaterials){
 			if(playerType.Equals(materials.playerType)){
@@ -41,9 +40,5 @@ public class Player : MonoBehaviour {
 			}
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }

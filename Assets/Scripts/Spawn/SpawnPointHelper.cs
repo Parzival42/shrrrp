@@ -18,6 +18,7 @@ public class SpawnPointHelper
             if (spawnPoint && spawnPoint.Player == playerType)
             {
                 GameObject instantiatedPlayer = GameObject.Instantiate(playerPrefab, spawnPoint.transform.position, playerPrefab.transform.rotation);
+                instantiatedPlayer.GetComponent<Player>().PlayerType = playerType;
                 return instantiatedPlayer;
             }
         }

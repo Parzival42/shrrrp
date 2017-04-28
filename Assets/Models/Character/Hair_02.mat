@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Hair
+  m_Name: Hair_02
   m_Shader: {fileID: 4800000, guid: 655f519ba2153344982b88ac54d8a737, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -38,7 +38,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: a48bd98b44811e74088d319676ccec43, type: 3}
+        m_Texture: {fileID: 2800000, guid: 538aaa8810cea354bb6ed1d9c5418b9c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
