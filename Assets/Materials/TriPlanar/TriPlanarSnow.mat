@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: TriPlanarSnow
   m_Shader: {fileID: 4800000, guid: cc1b0f60eb4c244ffb41d05775fdc42c, type: 3}
-  m_ShaderKeywords: _METALLICGLOSSMAP _UVFREE_BOTTOM
+  m_ShaderKeywords: _METALLICGLOSSMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_CustomRenderQueue: -1
@@ -26,7 +26,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BottomMainTex:
-        m_Texture: {fileID: 2800000, guid: 121e3d42ce8e0a245a152e8f86ac2508, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 0.3, y: 0.3}
         m_Offset: {x: 0, y: 0}
     - _BottomMetallicGlossMap:
@@ -34,7 +34,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: de5c7eaba642a194cba3420b68409b31, type: 3}
+        m_Texture: {fileID: 2800000, guid: 61a4e25c1f719a84099daefdc82183d1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -54,11 +54,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 5b5c0defee229924e97d70c4b15b67b2, type: 3}
-        m_Scale: {x: 0.25, y: 0.25}
+        m_Texture: {fileID: 2800000, guid: 8d1cdc65b20aab648afacc67d378c7f7, type: 3}
+        m_Scale: {x: 0.2, y: 0.2}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 600ed6de30d23b14b8fe2d198302540e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1ba293d1f74a1f74e8d5533861dd95d3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -90,7 +90,7 @@ Material:
     - _BottomEmissionScaleUI: 0
     - _BottomGlossiness: 0.5
     - _BottomMetallic: 0
-    - _BottomMultiplier: 2.96
+    - _BottomMultiplier: 0
     - _BottomUsingMetallicGlossMap: 1
     - _BumpScale: -1
     - _Cutoff: 0.5
@@ -107,17 +107,17 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TexPower: 10
+    - _TexPower: 11.2
     - _TopBumpScale: -1.4
     - _TopEmissionScaleUI: 0
     - _TopGlossiness: 0
     - _TopMetallic: 0
-    - _TopMultiplier: 1
+    - _TopMultiplier: 1.84
     - _TopUsingMetallicGlossMap: 1
     - _TriplanarSpace: 0
     - _UVSec: 0
     - _UsingMetallicGlossMap: 1
-    - _VertexColorStrength: 1
+    - _VertexColorStrength: 0
     - _ZWrite: 1
     m_Colors:
     - _BottomColor: {r: 0.8901961, g: 0.7019608, b: 0.29411766, a: 1}
