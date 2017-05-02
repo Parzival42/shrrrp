@@ -694,7 +694,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1630457348639916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.222875, y: 2.989691e-17, z: 1.3464372}
+  m_LocalPosition: {x: -1.5743816, y: 6.20745e-17, z: 2.7955868}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4150813183191320}
@@ -1256,6 +1256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 0.12
   rotationSpeed: 20
+  allowMovement: 1
   cameraBasedControl: 1
   jumpIntensity: 12
   secondJumpIntensityFactor: 0.8
@@ -1463,7 +1464,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1343980072657112}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.060110454
   m_Height: 0.123287566
@@ -1536,8 +1537,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.00054979324, y: -0.001124531, z: 0.2966968}
-    m_Extent: {x: 0.07451619, y: 0.060148187, z: 0.089366116}
+    m_Center: {x: 0.00054973364, y: -0.0011245608, z: 0.2966968}
+    m_Extent: {x: 0.07451619, y: 0.060148157, z: 0.089366116}
   m_DirtyAABB: 0
 --- !u!137 &137439987489747716
 SkinnedMeshRenderer:
@@ -1580,8 +1581,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.02445817, y: 0.029816568, z: 0.17101471}
-    m_Extent: {x: 0.025008019, y: 0.020567838, z: 0.09876491}
+    m_Center: {x: -0.02445826, y: 0.029816508, z: 0.17101473}
+    m_Extent: {x: 0.025008047, y: 0.020567864, z: 0.09876491}
   m_DirtyAABB: 0
 --- !u!137 &137513401500145078
 SkinnedMeshRenderer:
@@ -1684,8 +1685,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.02218604, y: 0.031266242, z: 0.18595529}
-    m_Extent: {x: 0.021636667, y: 0.022077939, z: 0.07899218}
+    m_Center: {x: 0.022186011, y: 0.031266153, z: 0.18595529}
+    m_Extent: {x: 0.021636639, y: 0.022077939, z: 0.07899218}
   m_DirtyAABB: 0
 --- !u!137 &137919322813234362
 SkinnedMeshRenderer:
