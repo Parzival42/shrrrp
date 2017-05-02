@@ -28,6 +28,9 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     [FancyHeader("Other particles")]
     [SerializeField]
     private ParticleSystem landedParticles;
+
+    [SerializeField]
+    private ParticleSystem swooshParticle;
     #endregion
 
     #region Internal Members
@@ -117,7 +120,12 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
     private void HandleCutMove()
     {
+        // Animation
         playerAnimator.SetTrigger(ANIMATOR_CUT);
+
+        // Particle
+        if (swooshParticle != null)
+            swooshParticle.Play(true);
     }
 
     private void HandleDash()

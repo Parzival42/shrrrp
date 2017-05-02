@@ -683,7 +683,7 @@ Transform:
   m_GameObject: {fileID: 1176264593665332}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children: []
   m_Father: {fileID: 4848714249802220}
   m_RootOrder: 0
@@ -741,7 +741,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1630457348639916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.5406137, y: 1.4113875e-17, z: 0.6356324}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4848714249802220}
@@ -1019,14 +1019,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1223735576625834}
-  m_LocalRotation: {x: 0.53315276, y: 0.27721098, z: 0.77721417, w: 0.18665572}
+  m_LocalRotation: {x: 0.6487991, y: 0.23190922, z: 0.69134444, w: 0.21753317}
   m_LocalPosition: {x: 0, y: 0.925, z: 0.343}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 4093332611169376}
   m_Father: {fileID: 4257219572966996}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -13.407001, y: 73.406006, z: 142.97601}
+  m_LocalEulerAnglesHint: {x: -2.2, y: 87.1, z: 142.97601}
 --- !u!4 &4854901543057136
 Transform:
   m_ObjectHideFlags: 1
@@ -1283,6 +1283,7 @@ MonoBehaviour:
   runParticleActivationThreshold: 0.1
   runningParticle: {fileID: 198066950911776750}
   landedParticles: {fileID: 0}
+  swooshParticle: {fileID: 198646784025651110}
 --- !u!114 &114436952532375634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1599,8 +1600,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.0005497757, y: -0.0011245366, z: 0.29669678}
-    m_Extent: {x: 0.074516185, y: 0.060148172, z: 0.089366116}
+    m_Center: {x: 0.00054979324, y: -0.001124531, z: 0.29669678}
+    m_Extent: {x: 0.07451619, y: 0.060148172, z: 0.089366116}
   m_DirtyAABB: 0
 --- !u!137 &137439987489747716
 SkinnedMeshRenderer:
@@ -1643,8 +1644,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.024458233, y: 0.029816568, z: 0.17101471}
-    m_Extent: {x: 0.02500804, y: 0.020567844, z: 0.09876491}
+    m_Center: {x: -0.02445823, y: 0.029816583, z: 0.1710147}
+    m_Extent: {x: 0.025008019, y: 0.020567851, z: 0.09876491}
   m_DirtyAABB: 0
 --- !u!137 &137513401500145078
 SkinnedMeshRenderer:
@@ -1747,8 +1748,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.022186024, y: 0.031266216, z: 0.18595527}
-    m_Extent: {x: 0.021636644, y: 0.022077933, z: 0.07899218}
+    m_Center: {x: 0.022185981, y: 0.031266212, z: 0.18595527}
+    m_Extent: {x: 0.021636667, y: 0.022077926, z: 0.07899218}
   m_DirtyAABB: 0
 --- !u!137 &137919322813234362
 SkinnedMeshRenderer:
@@ -5191,7 +5192,7 @@ ParticleSystem:
   simulationSpeed: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   autoRandomSeed: 1
   startDelay:
     minMaxState: 0
@@ -5235,7 +5236,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 939156115
+  randomSeed: 519015621
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5847,7 +5848,7 @@ ParticleSystem:
         m_RotationOrder: 4
     m_BurstCount: 1
     m_Bursts:
-    - time: 0
+    - time: 0.3
       minCount: 2
       maxCount: 2
       cycleCount: 1
@@ -8194,7 +8195,7 @@ ParticleSystem:
   simulationSpeed: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   autoRandomSeed: 1
   startDelay:
     minMaxState: 0
@@ -8238,7 +8239,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -58351358
+  randomSeed: 1508152465
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -8580,7 +8581,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotation:
       minMaxState: 0
-      scalar: -1.7453293
+      scalar: -1.3962634
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -8850,7 +8851,7 @@ ParticleSystem:
         m_RotationOrder: 4
     m_BurstCount: 1
     m_Bursts:
-    - time: 0
+    - time: 0.3
       minCount: 1
       maxCount: 1
       cycleCount: 1
