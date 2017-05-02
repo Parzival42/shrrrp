@@ -1225,7 +1225,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!95 &95840816753761364
 Animator:
   serializedVersion: 3
@@ -1282,7 +1282,8 @@ MonoBehaviour:
     type: 2}
   runParticleActivationThreshold: 0.1
   runningParticle: {fileID: 198066950911776750}
-  landedParticles: {fileID: 0}
+  landedParticles: {fileID: 198652094387334740, guid: c3d9e87471fdaad4bb3fb1c483879f32,
+    type: 2}
   swooshParticle: {fileID: 198646784025651110}
 --- !u!114 &114436952532375634
 MonoBehaviour:
