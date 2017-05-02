@@ -29,6 +29,21 @@ public class Poly2DCreator : MonoBehaviour {
         }
 		points[points.Length-1] = points[0];
 
+		// points = new Vector3[9];
+		// points[0] = new Vector3(5,0,0);
+		// points[1] = new Vector3(0,0,0);
+		// points[2] = new Vector3(-5,0,0);
+		// points[3] = new Vector3(-10,0,0);
+		
+		// points[4] = new Vector3(-10,5,0);
+
+		// points[5] = new Vector3(-5,5,0);
+		
+		// points[6] = new Vector3(0,5,0);
+		// points[7] = new Vector3(5,5,0);
+		// points[8] = new Vector3(5,0,0);
+		// lineRenderer.positionCount = 9;
+
 		lineRenderer.positionCount = segments+1;
 		lineRenderer.SetPositions(points);
 	}

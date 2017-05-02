@@ -8,6 +8,8 @@ public static class Helper {
 	private static Vector3 prev = new Vector3();
 	private static Vector3 current = new Vector3();
 	private static Vector3 next = new Vector3();
+
+	private static float epsilon = Mathf.Epsilon*5.0f;
 	#endregion
 
 
@@ -64,8 +66,12 @@ public static class Helper {
 		return Mathf.Approximately(a,b);
 	}
 
+	public static bool FloatIsIdentical(float a, float b, float epsilon){
+		return a > b - epsilon && a < b + epsilon;
+	}
+
 	public static bool VectorIsIdentical(Vector3 a, Vector3 b){
-		return FloatIsIdentical(a.x, b.x) && FloatIsIdentical(a.y, b.y) && FloatIsIdentical(a.z, b.z);
+		return Vector3.SqrMagnitude(a-b)< 1e-005f;;
 	}
 
 	public static void FillTriangle(int index, List<Vector3> polygon, Vector3[] triangle){
@@ -76,5 +82,38 @@ public static class Helper {
 		triangle[1] = polygon[index];
 		triangle[2] = polygon[next];
 	}
+
+
+	/**
+	 * Calculates where a vector is positioned in comparison to another
+	 */
+	 public static int GetRelativePosition(Vector3 reference, Vector3 target){
+		 if(VectorIsIdentical(reference, target)){
+			 return 0;
+		 }
+
+		 if(target.x < reference.x || 
+		 	(FloatIsIdentical(target.x, reference.x) && target.y < reference.y) || 
+			(FloatIsIdentical(target.x, reference.x) && FloatIsIdentical(target.y, reference.y) && target.z < reference.z)){
+
+			return -1;	
+		 }else{
+			 return 1;
+		 }
+	 }
+
+
+	 //mesh util?
+	 public static void FlipTriangles(List<int>[] indices){
+		for(int i = 0; i < indices.Length; i++){
+			for(int j = 0; j < indices[i].Count; j+=3){
+				int temp = indices[i][j];
+				indices[i][j] = indices[i][j+2];
+				indices[i][j+2] = temp;
+			}
+		}
+	 }
+
+
 	#endregion
 }

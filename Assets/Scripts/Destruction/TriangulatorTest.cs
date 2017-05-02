@@ -5,56 +5,47 @@ using UnityEngine;
 
 public class TriangulatorTest : MonoBehaviour {
 
-	[SerializeField]
-	private bool triangulate = false;
-
-	private List<Vector3> polygon;
-
-
-	private bool once = false;
-
-	// Use this for initialization
-	void Start () {
-		polygon = GetComponent<Poly2DCreator>().GetPolygon();
-	
-	}
-
-	void Update(){
-		if(triangulate && !once){
-			once = true;
-			for(int i = 0; i < polygon.Count; i++){
-				if(Helper.VectorIsIdentical(polygon[polygon.Count-1], polygon[i])){
-					Debug.Log("identical!");
-				}
-			}
-			
-			List<Vector3> resultingTriangles = Triangulate(polygon);
-
-			ShowTriangles(resultingTriangles);
+	private void ShowTriangles(MeshContainer cap){
+		int c = 0;
+		for(int i = 0; i < cap.Indices[0].Count; i+=3){
+			Debug.DrawLine(cap.Vertices[cap.Indices[0][i]], cap.Vertices[cap.Indices[0][i+1]], Color.white, 5.0f, false);
+			Debug.DrawLine(cap.Vertices[cap.Indices[0][i+1]], cap.Vertices[cap.Indices[0][i+2]], Color.white, 5.0f, false);
+			Debug.DrawLine(cap.Vertices[cap.Indices[0][i+2]], cap.Vertices[cap.Indices[0][i]], Color.white, 5.0f, false);
+			c++;
 		}
+
+		Mesh mesh = new Mesh();
+		mesh.name = "cap";
+		mesh.SetVertices(cap.Vertices);
+		mesh.SetIndices(cap.Indices[0].ToArray(), MeshTopology.Triangles, 0);
+		mesh.RecalculateNormals();
+		mesh.RecalculateBounds();
+		
+		MeshFilter meshFilter = GetComponent<MeshFilter>();
+		meshFilter.mesh = mesh;
+
+		Debug.Log("triangles: "+c);
 	}
 
-	private void ShowTriangles(List<Vector3> vertices){
-		for(int i = 0; i < vertices.Count; i+=3){
-			Debug.DrawLine(vertices[i], vertices[i+1], Color.white, 5.0f, false);
-			Debug.DrawLine(vertices[i+1], vertices[i+2], Color.white, 5.0f, false);
-			Debug.DrawLine(vertices[i+2], vertices[i], Color.white, 5.0f, false);
-		}
-	}
-
-    private List<Vector3> Triangulate(List<Vector3> polygon)
+    public MeshContainer Triangulate(List<Vector3> polygon)
     {
+		Debug.Log("polygon is legit yo: "+polygon.Count);
+
 		float time = Time.realtimeSinceStartup;
+		MeshContainer result = new MeshContainer();
+		int removedVertices = 0;
+
+		result.Vertices.AddRange(polygon);
 
 		//holds the clipped triangles
 		List<Vector3> newTriangles = new List<Vector3>();
 
 		//if the polygon only contains three vertices -> those three form a triangle -> done
 		if(polygon.Count==3){
-			newTriangles.Add(polygon[0]);
-			newTriangles.Add(polygon[1]);
-			newTriangles.Add(polygon[2]);
-			return newTriangles;
+			result.Indices[0].Add(0);
+			result.Indices[0].Add(1);
+			result.Indices[0].Add(2);
+			return result;
 		}
 
 		//the index of the leftmost vertex
@@ -68,6 +59,8 @@ public class TriangulatorTest : MonoBehaviour {
 				left = polygon[startIndex];
 			}
 		}
+
+		//Debug.DrawLine(left, left+Vector3.up, Color.red, 5.0f, false);
 
 		//construct the first triangle using the leftmost vertex and its neighbours
 		Vector3[] triangle = new Vector3[3];
@@ -121,14 +114,14 @@ public class TriangulatorTest : MonoBehaviour {
 
 				//the ear is really an ear
 				if(isEar){
-					Vector3 start = polygon[index+1];
+					Vector3 start = polygon[Helper.GetNextIndex(polygon, index)];
 					Vector3 end = polygon[polygon.Count-1];
 
 					int count = -1;
 					while(!Helper.VectorIsIdentical(start,end)){
 						count++;
 						//Debug.Log(count);
-						start = polygon[index+1+count];
+						start = polygon[Helper.GetNextIndex(polygon, index)+count];
 
 						if(Helper.VectorIsIdentical(start, polygon[prev])||
 							Helper.VectorIsIdentical(start, polygon[index]) ||
@@ -141,15 +134,11 @@ public class TriangulatorTest : MonoBehaviour {
 							isEar = false;
 							break;
 						}			
-
-						
 					}
-
 				}
 				if(isEar){
 					ear = index;
 				}
-				
 			}
 
 			//if the ear index is not valid exit
@@ -159,13 +148,25 @@ public class TriangulatorTest : MonoBehaviour {
 			}
 			
 			Helper.FillTriangle(ear, polygon, triangle);
-			newTriangles.AddRange(triangle);
+			
+			result.Indices[0].Add(Helper.GetPreviousIndex(polygon, ear)+removedVertices);
+			result.Indices[0].Add(ear+removedVertices);
+			result.Indices[0].Add(Helper.GetNextIndex(polygon, ear)+removedVertices);
+
+			// result.Indices[0].Add(Helper.GetNextIndex(polygon, ear)+removedVertices);
+			// result.Indices[0].Add(ear+removedVertices);
+			// result.Indices[0].Add(Helper.GetPreviousIndex(polygon, ear)+removedVertices);
+			
+
 			polygon.Remove(triangle[1]);
+			removedVertices++;
 		}
 
 		float duration = Time.realtimeSinceStartup - time;
 		Debug.Log("triangulation duration: "+ duration);
 
-		return newTriangles;
+		//ShowTriangles(result);
+
+		return result;
     }
 }

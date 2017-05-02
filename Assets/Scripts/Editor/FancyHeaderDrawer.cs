@@ -8,7 +8,6 @@ public class FancyHeaderDrawer : DecoratorDrawer
     private const float TITLE_HEIGHT = 15;
     private const float SUBTITLE_HEIGHT = 10;
     private const float LINE_OFFSET = 8;
-
     private const float LINE_OFFSET_REDUCTION = 4;
 
     private FancyHeaderAttribute FancyHeader { get { return (FancyHeaderAttribute) attribute; } }
@@ -74,7 +73,10 @@ public class FancyHeaderDrawer : DecoratorDrawer
         if(EditorGUIUtility.isProSkin)
             style.normal.textColor = new Color(style.normal.textColor.r - offset, style.normal.textColor.g - offset, style.normal.textColor.b - offset);
         else
-            style.normal.textColor = new Color(style.normal.textColor.r - offset, style.normal.textColor.g + offset, style.normal.textColor.b + offset);
+        {
+            offset = 0.3f;
+            style.normal.textColor = new Color(style.normal.textColor.r + offset, style.normal.textColor.g + offset, style.normal.textColor.b + offset);
+        }
 
         style.fontSize = 11;
         return style;

@@ -24,6 +24,7 @@ public class StandardSliceCreator : SliceCreator
 
 		mesh.SetNormals(slice.Normals);
 		mesh.SetUVs(0, slice.Uvs);
+		mesh.RecalculateNormals();
 
 		
 		MeshRenderer renderer = newSlice.AddComponent<MeshRenderer>();

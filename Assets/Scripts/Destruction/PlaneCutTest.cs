@@ -45,6 +45,10 @@ public class PlaneCutTest : MonoBehaviour {
 
     private MeshContainer splitMeshRight = new MeshContainer();
 
+    private List<Vector3> polygonVertices = new List<Vector3>();
+
+    private OutlinePreparator outlinePreparator = new OutlinePreparator();
+
     private void AssignSplitTriangles(ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor){
         minor.Vertices.Add(transform.InverseTransformPoint(t.a));
         minor.Vertices.Add(transform.InverseTransformPoint(d));
@@ -92,23 +96,32 @@ public class PlaneCutTest : MonoBehaviour {
 
         float rayDistance1;
         if (p.Raycast(ray1, out rayDistance1)){
-            d= ray1.GetPoint(rayDistance1);
+            d= ray1.GetPoint(rayDistance1);          
+        }else {
+            return;
         }
 
         float rayDistance2;
         if (p.Raycast(ray2, out rayDistance2)){
-            e= ray2.GetPoint(rayDistance2);
+            e= ray2.GetPoint(rayDistance2);           
+        }else{
+            return;
         }
+
+        //outlinePreparator.AddVertexConnection(d,e);
 
         bool leftMajor = (t.aLeft && t.bLeft) || (t.aLeft && t.cLeft) || (t.bLeft && t.cLeft) ? true : false; 
 
         if(leftMajor){
             AssignSplitTriangles(t, d, e, left, right);
+            outlinePreparator.Add(transform.InverseTransformPoint(d),transform.InverseTransformPoint(e));
         }else{
             AssignSplitTriangles(t,d,e,right,left);
+            outlinePreparator.Add(transform.InverseTransformPoint(e),transform.InverseTransformPoint(d));
         }
-        
-        Debug.DrawLine(d,e);     
+        Debug.Log("split triangle executed");
+        //Debug.DrawLine(d,e);    
+         
     }
 
     void StartSplitInTwo()
@@ -138,21 +151,38 @@ public class PlaneCutTest : MonoBehaviour {
             SplitTriangle(cuttingPlane, conflictTriangles[i], splitMeshLeft, splitMeshRight);
         }
 
+        //create correct cap polygon
+        List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
+        //capOutlinePolygon = gameObject.AddComponent<Poly2DCreator>().GetPolygon();
+        Debug.Log("polygon size: "+capOutlinePolygon.Count);
+
+        TriangulatorTest triangualtor = GetComponent<TriangulatorTest>();
+        MeshContainer cap = triangualtor.Triangulate(capOutlinePolygon);
+        
         //create the slices as gameobjects and add needed components
+        if (rightMesh.Vertices.Count != 0)
+        {
+            ApplyIndexChange(rightMesh.Indices, vertexPosChange);
+            rightMesh = meshMerger.Merge(rightMesh, splitMeshLeft);
+            rightMesh = meshMerger.Merge(rightMesh, cap);
+            sliceCreator.CreateSlice(transform, rightMesh);
+        }
+        
         if(leftMesh.Vertices.Count != 0)
         {
             //index change is necessary as the vertex count is different for the two new meshes -> indices need to be adjusted
             ApplyIndexChange(leftMesh.Indices, vertexPosChange);
             leftMesh = meshMerger.Merge(leftMesh, splitMeshRight);
+            Helper.FlipTriangles(cap.Indices);
+            
+            leftMesh = meshMerger.Merge(leftMesh, cap);
             staticSliceCreator.CreateSlice(transform, leftMesh);
         }
+        
+        
 
-        if (rightMesh.Vertices.Count != 0)
-        {
-            ApplyIndexChange(rightMesh.Indices, vertexPosChange);
-            rightMesh = meshMerger.Merge(rightMesh, splitMeshLeft);
-            staticSliceCreator.CreateSlice(transform, rightMesh);
-        }
+       
+
 
         Debug.Log("Time needed: "+ (Time.realtimeSinceStartup - startTime));
 
@@ -162,9 +192,19 @@ public class PlaneCutTest : MonoBehaviour {
 
 	void Update () {
 		if(cut){
-			StartSplitInTwo();			
+			StartSplitInTwo();	
+            //GetComponent<TriangulatorTest>().Triangulate(polygonVertices);	
 		}
 	}
+
+    private void AddPolygonVertex(Vector3 vertex){
+        for(int i = 0; i < polygonVertices.Count; i++){
+            if(Helper.VectorIsIdentical(polygonVertices[i], vertex)){
+                return;
+            }
+        }
+        polygonVertices.Add(vertex);
+    }
 
     private void DetermineVertexPositions(Vector3[] vertices, Vector3[] normals, Vector2[] uvs)
     {
