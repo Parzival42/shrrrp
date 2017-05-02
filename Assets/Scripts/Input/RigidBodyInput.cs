@@ -12,6 +12,9 @@ public class RigidBodyInput : MonoBehaviour
     private float rotationSpeed = 10f;
 
     [SerializeField]
+    private bool allowMovement = true;
+
+    [SerializeField]
     private bool cameraBasedControl = false;
 
     [FancyHeader("Jump Settings", "Jump and second jump")]
@@ -65,6 +68,7 @@ public class RigidBodyInput : MonoBehaviour
     public Rigidbody Rigid { get { return rigid; } }
     public float MovementSpeed { get { return movementSpeed; } }
     public float RotationSpeed { get { return rotationSpeed; } }
+    public bool AllowMovement { get { return allowMovement; } set { allowMovement = value; } }
     public float JumpIntensity { get { return jumpIntensity; } }
     public float GroundedDistance { get { return groundedDistance; } }
     public int GroundedLayer { get { return groundedLayer; } }

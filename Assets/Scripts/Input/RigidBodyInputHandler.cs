@@ -14,7 +14,7 @@ public class RigidBodyInputHandler : InputHandler
 
     // Due to performance reasons this variable is declared here
     private Vector3 movementVector = Vector3.zero;
-    private bool movementEnabled = true;
+    private Vector2 normalizedInput = Vector2.zero;
     private Camera mainCamera;
 
     private float horizontalInputValue = 0f;
@@ -29,12 +29,6 @@ public class RigidBodyInputHandler : InputHandler
     #endregion
 
     #region Properties
-    public bool MovementEnabled
-    {
-        get { return movementEnabled; }
-        set { movementEnabled = value; }
-    }
-
     public float HorizontalInputValue
     {
         get { return horizontalInputValue; }
@@ -54,6 +48,7 @@ public class RigidBodyInputHandler : InputHandler
     public event JumpPerformedHandler OnJump;
     public event SecondJumpPerformedHandler OnSecondJump;
     public event LandedOnGroundHandler OnLandedOnGround;
+    public event SpecialMoveHandler OnPlayerCut;
     #endregion
 
     public RigidBodyInputHandler(RigidBodyInput player)
@@ -68,14 +63,24 @@ public class RigidBodyInputHandler : InputHandler
     /// </summary>
     public void HandleInput()
     {
-        if (MovementEnabled)
+        // Set input values regardless if movement is allowed or not
+        CalculateInputValues();
+
+        if (player.AllowMovement)
             CheckInput();
+    }
+
+    private void CalculateInputValues()
+    {
+        normalizedInput.Set(player.PlayerAction.Move.X, player.PlayerAction.Move.Y);
+        normalizedInput.Normalize();
+        HorizontalInputValue = normalizedInput.x;
+        VerticalInputValue = normalizedInput.y;
+        hitGround = CheckPlayerGrounded();
     }
 
     private void CheckInput()
     {
-        HorizontalInputValue = player.PlayerAction.Move.X;
-        VerticalInputValue = player.PlayerAction.Move.Y;
         movementVector.Set(0f, 0f, 0f);
 
         // Calculate forward and right vector
@@ -98,7 +103,7 @@ public class RigidBodyInputHandler : InputHandler
     private void HandleJumpInput()
     {
         bool jumpButtonDown = player.PlayerAction.Jump.WasPressed;
-        hitGround = CheckPlayerGrounded();
+        
 
         // Normal ground jump
         if (!firstJump && jumpButtonDown)
@@ -197,6 +202,12 @@ public class RigidBodyInputHandler : InputHandler
     }
 
     #region Event methods
+    public void OnPlayerCutMove()
+    {
+        if (OnPlayerCut != null)
+            OnPlayerCut();
+    }
+    
     private void OnJumped()
     {
         if (OnJump != null)

@@ -35,7 +35,7 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     private static readonly string ANIMATOR_JUMPED = "Jumped";
     private static readonly string ANIMATOR_GROUNDED = "Grounded";
     private static readonly string ANIMATOR_DASH = "Dash";
-
+    private static readonly string ANIMATOR_CUT = "Cut";
 
     private RigidBodyInput inputHandler;
     private float originalRunningParticleRate = 0f;
@@ -55,6 +55,7 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
         inputHandler.InputController.OnJump += HandleFirstJump;
         inputHandler.InputController.OnSecondJump += HandleSecondJump;
         inputHandler.InputController.OnLandedOnGround += HandleGrounded;
+        inputHandler.InputController.OnPlayerCut += HandleCutMove;
 
         // Dash Controller events
         inputHandler.DashController.OnDashStarted += HandleDash;
@@ -87,8 +88,13 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     private void FillAnimationData(float horizontal, float vertical)
     {
         // Running
-        float runSpeed = Mathf.Max(Mathf.Abs(horizontal), Mathf.Abs(vertical));
-        playerAnimator.SetFloat(ANIMATOR_RUN, runSpeed);
+        if (inputHandler.AllowMovement)
+        {
+            float runSpeed = Mathf.Max(Mathf.Abs(horizontal), Mathf.Abs(vertical));
+            playerAnimator.SetFloat(ANIMATOR_RUN, runSpeed);
+        }
+        else
+            playerAnimator.SetFloat(ANIMATOR_RUN, 0f);
 
         // Grounded
         playerAnimator.SetBool(ANIMATOR_GROUNDED, inputHandler.InputController.IsGrounded);
@@ -97,11 +103,21 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     private void HandleRunningParticles(float horizontal, float vertical)
     {
         var emission = runningParticle.emission;
+        if (inputHandler.AllowMovement)
+        {
 
-        inputVector.Set(horizontal, vertical);
+            inputVector.Set(horizontal, vertical);
 
-        float t = Mathf.InverseLerp(0f, vectorOneMagnitude, inputVector.magnitude);
-        emission.rateOverTime = Mathf.Lerp(0f, originalRunningParticleRate, t);
+            float t = Mathf.InverseLerp(0f, vectorOneMagnitude, inputVector.magnitude);
+            emission.rateOverTime = Mathf.Lerp(0f, originalRunningParticleRate, t);
+        }
+        else
+            emission.rateOverTime = 0f;
+    }
+
+    private void HandleCutMove()
+    {
+        playerAnimator.SetTrigger(ANIMATOR_CUT);
     }
 
     private void HandleDash()
