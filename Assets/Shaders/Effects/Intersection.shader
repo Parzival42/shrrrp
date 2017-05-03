@@ -1,4 +1,4 @@
-﻿Shader "Custom/IntersectionHighlights" {
+﻿Shader "Custom/Intersection" {
   Properties {
     _MainTexture ("Main Texture", 2D) = "white" {}
     [Toggle]
