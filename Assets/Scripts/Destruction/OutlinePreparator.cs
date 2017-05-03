@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class OutlinePreparator  {
+public class OutlinePreparator : MonoBehaviour {
 
 	private List<Vector3> addedVertices = new List<Vector3>();
 
@@ -13,15 +13,19 @@ public class OutlinePreparator  {
 
 	private List<VertexNeighbourInfo> neighbourData = new List<VertexNeighbourInfo>();
 
+	private List<Vector3> orderedPolygon = new List<Vector3>();
 
 	public void Add(Vector3 a, Vector3 b){
 		neighbourData.Add(new VertexNeighbourInfo(a,b));
 		Debug.Log("connection added!");
 
-		for(int i = 0; i < neighbourData.Count; i++){
-			neighbourData[i].Replace(a);		
-			neighbourData[i].Replace(b);
-		}	
+		Debug.Log(a + " -> " + b);
+		DebugExtension.DebugArrow(a,b-a,Color.blue, 10.0f);
+
+		// for(int i = 0; i < neighbourData.Count; i++){
+		// 	neighbourData[i].Replace(a);		
+		// 	neighbourData[i].Replace(b);
+		// }	
 	}
 	public void AddVertexConnection(Vector3 a, Vector3 b){
 		AddNeighbour(a,b);
@@ -55,19 +59,6 @@ public class OutlinePreparator  {
 			neighbourData[i].Replace(neighbour);
 
 		}	
-
-		
-
-		// if(neighbours.ContainsKey(key)){
-			
-		// 	neighbours.TryGetValue(key, out n);
-		// 	n.Add(neighbour);
-		// }else{
-		// 	n = new List<Vector3>();
-		// 	Debug.Log("new connection");
-		// 	n.Add(neighbour);
-		// 	neighbours.Add(key, n);
-		// }
 	}
 
 	private VertexNeighbourInfo FindNeighbour(Vector3 origin){
@@ -80,13 +71,22 @@ public class OutlinePreparator  {
 	}
 
 	public List<Vector3> PrepareOutlinePolygon(){
-		List<Vector3> orderedPolygon = new List<Vector3>();
+		Debug.Log("neighbours: "+ neighbourData.Count);
 
-		VertexNeighbourInfo origin = neighbourData[0];
+		VertexNeighbourInfo origin = neighbourData[1];
 		orderedPolygon.Add(origin.Origin);
+		
+		orderedPolygon.Add(origin.Neighbours[0]);
+		//Debug.Log(orderedPolygon[0] + " -> " + orderedPolygon[1]);
+
 		for(int i = 0; i < neighbourData.Count-1; i++){
+			origin = FindNeighbour(orderedPolygon[orderedPolygon.Count-1]);
+			if(origin==null || Helper.VectorIsIdentical(origin.Origin, orderedPolygon[orderedPolygon.Count-2])){
+				break;
+			}
 			orderedPolygon.Add(origin.Neighbours[0]);
-			origin = FindNeighbour(origin.Neighbours[0]);
+			//Debug.Log(orderedPolygon[orderedPolygon.Count-2]+" -> "+orderedPolygon[orderedPolygon.Count-1]);
+			//origin = FindNeighbour(origin.Neighbours[0]);
 		}
 	
 		VisualizePolygonFlow(orderedPolygon);
@@ -114,8 +114,6 @@ public class OutlinePreparator  {
 				if(i == 2){
 					Debug.DrawLine(orderedPolygon[4], orderedPolygon[4]+Vector3.up, Color.red);
 					Debug.DrawLine(orderedPolygon[5], orderedPolygon[5]+Vector3.up, Color.green);
-
-
 				}
 			}
 
@@ -138,5 +136,16 @@ public class OutlinePreparator  {
 		}
 
 		Debug.DrawLine(orderedVertices[0], orderedVertices[orderedVertices.Count-1], Color.cyan);
+	}
+
+	void OnDrawGizmos(){
+		Debug.Log("draw");
+		if(neighbourData != null && neighbourData.Count >1){
+			for(int i = 0; i < neighbourData.Count; i++){
+				DebugExtension.DebugArrow(neighbourData[i].Origin, neighbourData[i].Neighbours[0], Color.black, 10.0f);
+			}
+
+			//DebugExtension.DebugArrow(orderedPolygon[0], orderedPolygon[orderedPolygon.Count-1], Color.cyan);
+		}
 	}
 }

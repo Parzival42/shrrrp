@@ -29,8 +29,6 @@ public class TriangulatorTest : MonoBehaviour {
 
     public MeshContainer Triangulate(List<Vector3> polygon)
     {
-		Debug.Log("polygon is legit yo: "+polygon.Count);
-
 		float time = Time.realtimeSinceStartup;
 		MeshContainer result = new MeshContainer();
 		int removedVertices = 0;

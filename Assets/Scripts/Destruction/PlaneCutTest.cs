@@ -47,7 +47,9 @@ public class PlaneCutTest : MonoBehaviour {
 
     private List<Vector3> polygonVertices = new List<Vector3>();
 
-    private OutlinePreparator outlinePreparator = new OutlinePreparator();
+    private OutlinePreparator outlinePreparator;
+
+    private List<Vector3> capPoints;
 
     private void AssignSplitTriangles(ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor){
         minor.Vertices.Add(transform.InverseTransformPoint(t.a));
@@ -111,13 +113,29 @@ public class PlaneCutTest : MonoBehaviour {
         //outlinePreparator.AddVertexConnection(d,e);
 
         bool leftMajor = (t.aLeft && t.bLeft) || (t.aLeft && t.cLeft) || (t.bLeft && t.cLeft) ? true : false; 
+//outlinePreparator.Add(transform.InverseTransformPoint(d),transform.InverseTransformPoint(e));
+//outlinePreparator.Add(transform.InverseTransformPoint(e),transform.InverseTransformPoint(d));
 
         if(leftMajor){
             AssignSplitTriangles(t, d, e, left, right);
-            outlinePreparator.Add(transform.InverseTransformPoint(d),transform.InverseTransformPoint(e));
+            //outlinePreparator.Add(d,e);
+            if(t.negative){
+                outlinePreparator.Add(transform.InverseTransformPoint(e),transform.InverseTransformPoint(d));
+            }else{
+                outlinePreparator.Add(transform.InverseTransformPoint(d),transform.InverseTransformPoint(e));
+            }
+            
+            Debug.DrawLine(d,e);
         }else{
             AssignSplitTriangles(t,d,e,right,left);
-            outlinePreparator.Add(transform.InverseTransformPoint(e),transform.InverseTransformPoint(d));
+            //outlinePreparator.Add(e,d);
+            if(t.negative){
+                outlinePreparator.Add(transform.InverseTransformPoint(d),transform.InverseTransformPoint(e));
+            }else{
+                outlinePreparator.Add(transform.InverseTransformPoint(e),transform.InverseTransformPoint(d));
+            }
+
+           // Debug.DrawLine(e,d);
         }
         Debug.Log("split triangle executed");
         //Debug.DrawLine(d,e);    
@@ -146,18 +164,32 @@ public class PlaneCutTest : MonoBehaviour {
         //determine whether the vertices belongto the left or right
         DetermineVertexPositions(M.vertices, M.normals, M.uv);
 
+        outlinePreparator = gameObject.AddComponent<OutlinePreparator>();
+
         //split the plane-intersecting triangles
         for(int i = 0; i < conflictTriangles.Count; i++){
             SplitTriangle(cuttingPlane, conflictTriangles[i], splitMeshLeft, splitMeshRight);
         }
 
         //create correct cap polygon
+        
         List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
+        capPoints = capOutlinePolygon;
         //capOutlinePolygon = gameObject.AddComponent<Poly2DCreator>().GetPolygon();
         Debug.Log("polygon size: "+capOutlinePolygon.Count);
+        //  if(capPoints != null && capPoints.Count >1){
+        //    Debug.Log("cap vertices: "+capPoints.Count);
+		// 	for(int i = 0; i < capPoints.Count-1; i++){
+		// 		DebugExtension.DebugArrow(capPoints[i], capPoints[i+1]-capPoints[i], Color.black, 10.0f);
+		// 	}
+
+		// 	DebugExtension.DebugArrow(capPoints[capPoints.Count-1], capPoints[0]-capPoints[capPoints.Count-1], Color.black, 10.0f);
+		// }
 
         TriangulatorTest triangualtor = GetComponent<TriangulatorTest>();
         MeshContainer cap = triangualtor.Triangulate(capOutlinePolygon);
+
+        
         
         //create the slices as gameobjects and add needed components
         if (rightMesh.Vertices.Count != 0)
@@ -181,7 +213,7 @@ public class PlaneCutTest : MonoBehaviour {
         
         
 
-       
+      
 
 
         Debug.Log("Time needed: "+ (Time.realtimeSinceStartup - startTime));
@@ -191,6 +223,8 @@ public class PlaneCutTest : MonoBehaviour {
     }
 
 	void Update () {
+     
+		
 		if(cut){
 			StartSplitInTwo();	
             //GetComponent<TriangulatorTest>().Triangulate(polygonVertices);	
@@ -241,6 +275,10 @@ public class PlaneCutTest : MonoBehaviour {
     {
         int above = 0;
         int below = 0;
+
+        List<int> leftVertices = new List<int>();
+        List<int> rightVertices = new List<int>();
+        
 
         Vector3[] vertices = M.vertices;
 
@@ -305,7 +343,7 @@ public class PlaneCutTest : MonoBehaviour {
                     }
                 }else{                   
                     if(a == c){
-                        conflictTriangles.Add(new ConflictTriangle(transform.TransformPoint(vertices[subMeshIndices[i + 1]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),b,a,c, true));
+                        conflictTriangles.Add(new ConflictTriangle(transform.TransformPoint(vertices[subMeshIndices[i + 1]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i+2]]),b,a,c, true));
                     }else if(a == b){
                         conflictTriangles.Add(new ConflictTriangle(transform.TransformPoint(vertices[subMeshIndices[i + 2]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 1]]),c,a,b, false));
                     }else if(b == c){
@@ -315,4 +353,5 @@ public class PlaneCutTest : MonoBehaviour {
             }
         }
     }
+
 }
