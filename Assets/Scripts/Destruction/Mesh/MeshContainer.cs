@@ -44,9 +44,6 @@ public class MeshContainer {
 
 	public MeshContainer(): this(1){}
 
-	public MeshContainer(MeshContainer meshContainer){
-
-	}
 
 	public Mesh GetMesh(){
 		Mesh mesh = new Mesh();
