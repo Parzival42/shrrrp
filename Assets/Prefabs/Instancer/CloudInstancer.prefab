@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1975655116955954}
+  m_IsPrefabParent: 1
+--- !u!1 &1975655116955954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4094711559520914}
+  - component: {fileID: 114435336473910292}
+  m_Layer: 0
+  m_Name: CloudInstancer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4094711559520914
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1975655116955954}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 41.9, y: -10, z: 63.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114435336473910292
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1975655116955954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69cbee2f399bb542ae454ba8d71fba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mesh: {fileID: 4300000, guid: d998238f632c87844859c3658639bfa6, type: 3}
+  material: {fileID: 2100000, guid: b5a7b3eb856eea443b216d9d645f36c8, type: 2}
+  size: {x: 2.1, y: 2.1, z: 3.9}
+  sizeOffset: {x: 2, y: 2, z: 2}
+  uniformScale: 1
+  minSize: 0.5
+  positionOffset: {x: 2, y: 4, z: 3}
+  eulerFrom: {x: 0, y: 0, z: 0}
+  eulerTo: {x: 0, y: 45, z: 180}
+  meshCount: 300
+  spawnPlane: {x: 100, y: 170}
+  translation: {x: -0.02, y: 0.01}
+  repeatPosition: 1
+  objectsPerFrame: 90
