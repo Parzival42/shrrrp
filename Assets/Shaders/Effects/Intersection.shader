@@ -9,6 +9,9 @@
     _HighlightColorMultiplier ("Highlight Color Multiplier", Float) = 1.0
     _HighlightThresholdMax ("Highlight Threshold Max", Float) = 1 // Max difference for intersections
     _HighlightAnimationSpeed ("Highlight Animation Speed", Float) = 4.0
+    _Falloff("Falloff", Range(0.01,10)) = 1.0
+    _MagicTiling("Magic Emission Tiling", Range(0,1)) = 0.1
+    _MagicEmission("Magic Emission", Float) = 3.0
   }
   SubShader {
     Tags { "Queue" = "Transparent" "RenderType" = "Transparent"  }
@@ -24,6 +27,7 @@
       #pragma vertex vert
       #pragma fragment frag
       #include "UnityCG.cginc"
+      #include "../Includes/Noise.cginc"
  
       uniform sampler2D_float _CameraDepthTexture; //Depth Texture
       sampler2D _MainTexture;
@@ -39,12 +43,17 @@
       half _HighlightColorMultiplier;
       half _HighlightThresholdMax;
       half _HighlightAnimationSpeed;
+
+      fixed _Falloff;
+      fixed _MagicEmission;
+      fixed _MagicTiling;
  
       struct Input {
         float4 vertex : SV_POSITION;
         float2 uv : TEXCOORD0;
         float2 noiseUV : TEXCOORD1;
         float4 screenPosition : TEXCOORD2;    //Screen position of pos
+        float2 texcoordOld : TEXCOORD3;
       };
  
       Input vert(appdata_full v) {
@@ -53,6 +62,7 @@
         o.screenPosition = ComputeScreenPos(o.vertex);
         o.uv = TRANSFORM_TEX(v.texcoord, _MainTexture);
         o.noiseUV = TRANSFORM_TEX(v.texcoord1.xy, _EdgeNoise);
+        o.texcoordOld = v.texcoord; //Save texture coordinates without tiling
         return o;
       }
  
@@ -79,6 +89,15 @@
         float diff = abs(sceneZ - partZ) / _HighlightThresholdMax;
         diff = clamp(diff, 0.0, 1.0);
         finalColor = lerp(_HighlightColorMultiplier * _HighlightColor * edgeNoise, mainTexture, diff);
+
+        //Calculate circular falloff
+        fixed d = length(i.texcoordOld.xy - fixed2(0.5,0.5));
+				float t = pow(1.0 - min(0.5, d) * 2.0, _Falloff);
+				finalColor.a = finalColor.a*t;
+
+        //Work the emission magic in world z direction
+        float magic = tex2D(_EdgeNoise, i.noiseUV * partZ * -partZ * _MagicTiling).r;
+        finalColor.rgb = lerp(finalColor.rgb, finalColor.rgb * magic * _MagicEmission, diff);
 
         half4 c = finalColor;
         return c;
