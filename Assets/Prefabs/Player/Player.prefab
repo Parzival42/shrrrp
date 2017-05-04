@@ -1331,7 +1331,9 @@ MonoBehaviour:
   dashTime: 0.35
   dashCoolDownTime: 0.7
   dashGroundCheckDistance: 0.5
-  dashCheckRadius: 0.4
+  dashCollisionForwardOffset: 0.7
+  dashCheckRadius: 0.5
+  dashPushBackForce: 15
 --- !u!114 &114550925458687184
 MonoBehaviour:
   m_ObjectHideFlags: 1

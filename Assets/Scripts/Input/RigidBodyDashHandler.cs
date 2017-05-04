@@ -4,6 +4,7 @@ using System.Collections;
 public class RigidBodyDashHandler : DashHandler
 {
     private static string DASH_AXIS = "Fire2";
+    private static string PLAYER_TAG = "Player";
 
     #region Internal Members
     private RigidBodyInput player;
@@ -32,6 +33,25 @@ public class RigidBodyDashHandler : DashHandler
         this.player = player;
         this.playerCollider = this.player.GetComponent<Collider>();
         this.waitForCooldown = new WaitForSeconds(player.DashCoolDownTime);
+        OnDashCollision += HandlePlayerDashCollision;
+    }
+
+    /// <summary>
+    /// When a collision happens between between 2 players, the other player will be pushed back.
+    /// </summary>
+    private void HandlePlayerDashCollision(GameObject self, GameObject other)
+    {
+        Player player = other.GetComponent<Player>();
+        if (player != null)
+        {
+            Rigidbody rigid = player.gameObject.GetComponent<Rigidbody>();
+            if(rigid != null)
+            {
+                Vector3 force = other.transform.position - self.transform.position;
+                rigid.AddForce(force.normalized * this.player.DashPushBackForce, ForceMode.VelocityChange);
+                Debug.Log("Force on " + other.name + " !");
+            }
+        }
     }
 
     public void HandleDash()
@@ -55,7 +75,7 @@ public class RigidBodyDashHandler : DashHandler
         RaycastHit hitInfo;
         Vector3 forward = Vector3.zero;
 
-        // Calculate forward use ground normal or player normal when in the air
+        // Calculate forward: Use ground normal or player normal when in the air
         if (CheckPlayerGrounded(out hitInfo))
             forward = Vector3.ProjectOnPlane(player.transform.forward, hitInfo.normal).normalized;
         else
@@ -125,7 +145,7 @@ public class RigidBodyDashHandler : DashHandler
 
     private Vector3 GetPlayerCenter()
     {
-        return playerCollider.bounds.center;
+        return playerCollider.bounds.center + player.transform.forward * player.DashCollisionForwardOffset;
     }
 
     private IEnumerator WaitForDashCooldown()
