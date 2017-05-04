@@ -19,7 +19,7 @@ public class OutlinePreparator : MonoBehaviour {
 		neighbourData.Add(new VertexNeighbourInfo(a,b));
 		Debug.Log("connection added!");
 
-		Debug.Log(a + " -> " + b);
+		//Debug.Log(a + " -> " + b);
 		DebugExtension.DebugArrow(a,b-a,Color.blue, 10.0f);
 
 		// for(int i = 0; i < neighbourData.Count; i++){
@@ -72,24 +72,26 @@ public class OutlinePreparator : MonoBehaviour {
 
 	public List<Vector3> PrepareOutlinePolygon(){
 		Debug.Log("neighbours: "+ neighbourData.Count);
-
-		VertexNeighbourInfo origin = neighbourData[1];
-		orderedPolygon.Add(origin.Origin);
-		
-		orderedPolygon.Add(origin.Neighbours[0]);
-		//Debug.Log(orderedPolygon[0] + " -> " + orderedPolygon[1]);
-
-		for(int i = 0; i < neighbourData.Count-1; i++){
-			origin = FindNeighbour(orderedPolygon[orderedPolygon.Count-1]);
-			if(origin==null || Helper.VectorIsIdentical(origin.Origin, orderedPolygon[orderedPolygon.Count-2])){
-				break;
-			}
+		if(neighbourData.Count>0){
+			VertexNeighbourInfo origin = neighbourData[1];
+			orderedPolygon.Add(origin.Origin);
+			
 			orderedPolygon.Add(origin.Neighbours[0]);
-			//Debug.Log(orderedPolygon[orderedPolygon.Count-2]+" -> "+orderedPolygon[orderedPolygon.Count-1]);
-			//origin = FindNeighbour(origin.Neighbours[0]);
+			//Debug.Log(orderedPolygon[0] + " -> " + orderedPolygon[1]);
+
+			for(int i = 0; i < neighbourData.Count-1; i++){
+				origin = FindNeighbour(orderedPolygon[orderedPolygon.Count-1]);
+				if(origin==null || Helper.VectorIsIdentical(origin.Origin, orderedPolygon[orderedPolygon.Count-2])){
+					break;
+				}
+				orderedPolygon.Add(origin.Neighbours[0]);
+				//Debug.Log(orderedPolygon[orderedPolygon.Count-2]+" -> "+orderedPolygon[orderedPolygon.Count-1]);
+				//origin = FindNeighbour(origin.Neighbours[0]);
+			}
+		
+			VisualizePolygonFlow(orderedPolygon);
 		}
-	
-		VisualizePolygonFlow(orderedPolygon);
+		
 	
 		return orderedPolygon;
 	}
@@ -142,7 +144,7 @@ public class OutlinePreparator : MonoBehaviour {
 		Debug.Log("draw");
 		if(neighbourData != null && neighbourData.Count >1){
 			for(int i = 0; i < neighbourData.Count; i++){
-				DebugExtension.DebugArrow(neighbourData[i].Origin, neighbourData[i].Neighbours[0], Color.black, 10.0f);
+				DebugExtension.DebugArrow(neighbourData[i].Origin, neighbourData[i].Neighbours[0]-neighbourData[i].Origin, Color.black, 10.0f);
 			}
 
 			//DebugExtension.DebugArrow(orderedPolygon[0], orderedPolygon[orderedPolygon.Count-1], Color.cyan);

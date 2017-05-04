@@ -5,14 +5,10 @@ using UnityEngine;
 public class PlaneCutTest : MonoBehaviour {
     
     // mesh (should be a plane) that determines the plane orientation
-	[SerializeField]
 	private GameObject referencePlane;
 
 	[SerializeField]
 	private bool cut;
-
-    // the plane object that is used for determining the vertex distribution
-	private Plane cuttingPlane;
 
     // indices need to be adjusted when the vertices are distributed to the left and right mesh
     private int[] vertexPosChange;
@@ -23,16 +19,10 @@ public class PlaneCutTest : MonoBehaviour {
     // triangles that intersect the plane
 	private List<ConflictTriangle> conflictTriangles;
 
-    // slice creator 
-    [SerializeField]
     private SliceCreator sliceCreator;
 
-    [SerializeField]
-    private SliceCreator staticSliceCreator;
 
-
-    [SerializeField]
-    private FlatMeshMerger meshMerger;
+    private MeshMerger meshMerger;
 
 
     // leftover meshes 
@@ -120,8 +110,10 @@ public class PlaneCutTest : MonoBehaviour {
             AssignSplitTriangles(t, d, e, left, right);
             //outlinePreparator.Add(d,e);
             if(t.negative){
+                //outlinePreparator.Add(e,d);
                 outlinePreparator.Add(transform.InverseTransformPoint(e),transform.InverseTransformPoint(d));
             }else{
+                //outlinePreparator.Add(d,e);
                 outlinePreparator.Add(transform.InverseTransformPoint(d),transform.InverseTransformPoint(e));
             }
             
@@ -130,8 +122,10 @@ public class PlaneCutTest : MonoBehaviour {
             AssignSplitTriangles(t,d,e,right,left);
             //outlinePreparator.Add(e,d);
             if(t.negative){
+                //outlinePreparator.Add(d,e);
                 outlinePreparator.Add(transform.InverseTransformPoint(d),transform.InverseTransformPoint(e));
             }else{
+                //outlinePreparator.Add(e,d);
                 outlinePreparator.Add(transform.InverseTransformPoint(e),transform.InverseTransformPoint(d));
             }
 
@@ -142,7 +136,7 @@ public class PlaneCutTest : MonoBehaviour {
          
     }
 
-    void StartSplitInTwo()
+    public void StartSplitInTwo(Plane cuttingPlane, bool set)
     {
         if (GetComponent<MeshFilter>() != null)
         {
@@ -154,22 +148,33 @@ public class PlaneCutTest : MonoBehaviour {
         float startTime = Time.realtimeSinceStartup;
 
         //adjust plane orientation
-		Mesh pM = referencePlane.GetComponent<MeshFilter>().mesh;
-		Transform pT = referencePlane.transform;
-		cuttingPlane.Set3Points(pT.TransformPoint(pM.vertices[pM.triangles[0]]), pT.TransformPoint(pM.vertices[pM.triangles[1]]),pT.TransformPoint(pM.vertices[pM.triangles[2]]));
-
+        if(!set){
+            referencePlane = GameObject.FindGameObjectWithTag("CuttingPlane");
+            Mesh pM = referencePlane.GetComponent<MeshFilter>().mesh;
+            Transform pT = referencePlane.transform;           
+            cuttingPlane.Set3Points(pT.TransformPoint(pM.vertices[pM.triangles[0]]), pT.TransformPoint(pM.vertices[pM.triangles[1]]),pT.TransformPoint(pM.vertices[pM.triangles[2]]));
+        }
+       
         //determine whether the triangle indices belong to the left or right  
-        DetermineIndexPositions();       
+        DetermineIndexPositions(cuttingPlane);       
 
         //determine whether the vertices belongto the left or right
-        DetermineVertexPositions(M.vertices, M.normals, M.uv);
+        DetermineVertexPositions(M.vertices, M.normals, M.uv, cuttingPlane);
+
+        if(leftMesh.Vertices.Count == 0 || rightMesh.Vertices.Count == 0){
+            Debug.Log("leftMesh vertices: "+leftMesh.Vertices.Count + " -- rightMesh vertices: "+rightMesh.Vertices.Count);
+            return;
+        }
+
 
         outlinePreparator = gameObject.AddComponent<OutlinePreparator>();
 
         //split the plane-intersecting triangles
         for(int i = 0; i < conflictTriangles.Count; i++){
             SplitTriangle(cuttingPlane, conflictTriangles[i], splitMeshLeft, splitMeshRight);
+
         }
+        Debug.Log("conflict triangle amount: "+conflictTriangles.Count);
 
         //create correct cap polygon
         
@@ -190,7 +195,9 @@ public class PlaneCutTest : MonoBehaviour {
         MeshContainer cap = triangualtor.Triangulate(capOutlinePolygon);
 
         
-        
+        sliceCreator = GetComponent<SliceCreator>();
+        meshMerger = GetComponent<MeshMerger>();
+
         //create the slices as gameobjects and add needed components
         if (rightMesh.Vertices.Count != 0)
         {
@@ -208,13 +215,8 @@ public class PlaneCutTest : MonoBehaviour {
             Helper.FlipTriangles(cap.Indices);
             
             leftMesh = meshMerger.Merge(leftMesh, cap);
-            staticSliceCreator.CreateSlice(transform, leftMesh);
+            sliceCreator.CreateSlice(transform, leftMesh);
         }
-        
-        
-
-      
-
 
         Debug.Log("Time needed: "+ (Time.realtimeSinceStartup - startTime));
 
@@ -226,7 +228,7 @@ public class PlaneCutTest : MonoBehaviour {
      
 		
 		if(cut){
-			StartSplitInTwo();	
+			StartSplitInTwo(new Plane(),false);	
             //GetComponent<TriangulatorTest>().Triangulate(polygonVertices);	
 		}
 	}
@@ -240,7 +242,7 @@ public class PlaneCutTest : MonoBehaviour {
         polygonVertices.Add(vertex);
     }
 
-    private void DetermineVertexPositions(Vector3[] vertices, Vector3[] normals, Vector2[] uvs)
+    private void DetermineVertexPositions(Vector3[] vertices, Vector3[] normals, Vector2[] uvs, Plane cuttingPlane)
     {
         for (int i = 0; i < vertices.Length; i++)
         {
@@ -271,7 +273,7 @@ public class PlaneCutTest : MonoBehaviour {
          }
      }
 
-    private void DetermineIndexPositions()
+    private void DetermineIndexPositions(Plane cuttingPlane)
     {
         int above = 0;
         int below = 0;
