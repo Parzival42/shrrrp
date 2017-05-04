@@ -112,7 +112,7 @@ Material:
     - _TopEmissionScaleUI: 0
     - _TopGlossiness: 0
     - _TopMetallic: 0
-    - _TopMultiplier: 1.17
+    - _TopMultiplier: 0.75
     - _TopUsingMetallicGlossMap: 1
     - _TriplanarSpace: 0
     - _UVSec: 0
