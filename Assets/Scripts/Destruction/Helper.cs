@@ -71,7 +71,7 @@ public static class Helper {
 	}
 
 	public static bool VectorIsIdentical(Vector3 a, Vector3 b){
-		return Vector3.SqrMagnitude(a-b)< 1e-005f;
+		return Vector3.SqrMagnitude(a-b)< 1e-008f;
 	}
 
 	public static void FillTriangle(int index, List<Vector3> polygon, Vector3[] triangle){
