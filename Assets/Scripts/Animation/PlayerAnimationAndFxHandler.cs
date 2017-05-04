@@ -31,6 +31,26 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
     [SerializeField]
     private ParticleSystem swooshParticle;
+
+    [FancyHeader("Player Sounds")]
+    [SerializeField]
+    private AudioClip dashClip;
+
+    [SerializeField]
+    private AudioClip collideClip;
+
+    [SerializeField]
+    private AudioClip[] firstJumpClips;
+
+    [SerializeField]
+    private AudioClip secondJumpClip;
+
+    [SerializeField]
+    private AudioClip landedClip;
+
+    [SerializeField]
+    private AudioClip[] cutClips; //first: sword, second: plane
+
     #endregion
 
     #region Internal Members
