@@ -113,7 +113,7 @@ MonoBehaviour:
   Radius: 0.211
   Intensity: 2.6
   Distance: 1.18
-  Bias: 0.008
+  Bias: 0.215
   LumContribution: 0.5
   OcclusionColor: {r: 0, g: 0, b: 0, a: 1}
   CutoffDistance: 150
