@@ -30,7 +30,19 @@ public class Player : MonoBehaviour {
 	private Renderer[] scarf;
 	#endregion
 
-    void Start () {
+    private void Start ()
+    {
+        SetPlayerName();
+        ChoosePlayerMaterial();
+	}
+
+    private void SetPlayerName()
+    {
+        gameObject.name = PlayerType.ToString();
+    }
+
+    private void ChoosePlayerMaterial()
+    {
 		foreach(PlayerMaterialObject materials in playerMaterials){
 			if(playerType.Equals(materials.playerType)){
 				body.material = materials.body;
@@ -39,6 +51,5 @@ public class Player : MonoBehaviour {
 					r.material = materials.scarf;
 			}
 		}
-	}
-
+    }
 }

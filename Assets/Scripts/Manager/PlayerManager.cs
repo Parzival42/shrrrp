@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void AllPlayerDeadHandler();
+public delegate void OnePlayerLeftHandler(Player lastPlayer);
 public delegate void PlayerDiedHandler(Player player);
 
 /// <summary>
@@ -27,6 +27,7 @@ public class PlayerManager : MonoBehaviour
 
     #region Events
     public event AllPlayerDeadHandler OnAllPlayersDied;
+    public event OnePlayerLeftHandler OnOnePlayerLeft;
     public event PlayerDiedHandler OnPlayerDied;
     #endregion
 
@@ -72,8 +73,36 @@ public class PlayerManager : MonoBehaviour
     private void HandlePlayerDeath(Player player)
     {
         currentPlayerCount--;
+        DeactivatePlayer(player);
+
+        if (CurrentPlayerCount == 1)
+        {
+            Player lastPlayer = GetLastPlayer();
+            Debug.Log("[PlayerManager]: Player " + lastPlayer.PlayerType.ToString() + " won!", gameObject);
+            OnePlayerLeft(lastPlayer);
+        }
+
         if (CurrentPlayerCount <= 0)
+        {
+            Debug.Log("[PlayerManager]: All players died!", gameObject);
             AllPlayersDied();
+        }
+    }
+
+    private Player GetLastPlayer()
+    {
+        foreach (KeyValuePair<PlayerType, Player> player in playersByType)
+        {
+            if (player.Value.gameObject.activeSelf)
+                return player.Value;
+        }
+        return null;
+    }
+
+    private void DeactivatePlayer(Player player)
+    {
+        Debug.Log("[PlayerManager]: Player " + player.PlayerType.ToString() + " died.", gameObject);
+        player.gameObject.SetActive(false);
     }
 
     #region Event methods
@@ -90,6 +119,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (OnAllPlayersDied != null && sendEvents)
             OnAllPlayersDied();
+    }
+
+    private void OnePlayerLeft(Player lastPlayer)
+    {
+        if (OnOnePlayerLeft != null)
+            OnOnePlayerLeft(lastPlayer);
     }
     #endregion
 }
