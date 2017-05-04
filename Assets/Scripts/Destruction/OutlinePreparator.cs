@@ -20,7 +20,7 @@ public class OutlinePreparator : MonoBehaviour {
 		Debug.Log("connection added!");
 
 		//Debug.Log(a + " -> " + b);
-		DebugExtension.DebugArrow(a,b-a,Color.blue, 10.0f);
+		//DebugExtension.DebugArrow(a,b-a,Color.blue, 10.0f);
 
 		// for(int i = 0; i < neighbourData.Count; i++){
 		// 	neighbourData[i].Replace(a);		

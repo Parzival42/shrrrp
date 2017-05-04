@@ -1,7 +1,4 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TerrainSliceCreator : SliceCreator
 {
@@ -12,9 +9,12 @@ public class TerrainSliceCreator : SliceCreator
 		newSlice.transform.position = original.position;
 		newSlice.transform.rotation = original.rotation;
 		newSlice.transform.localScale = original.localScale;
+		newSlice.layer = LayerMask.NameToLayer("Ground");
+		newSlice.tag = "CuttingPlane";
 
 		Mesh mesh = new Mesh();
 		mesh.SetVertices(slice.Vertices);
+
 
 		mesh.subMeshCount = slice.Indices.Length;
 		for (int i = 0; i < slice.Indices.Length; i++)
@@ -44,11 +44,28 @@ public class TerrainSliceCreator : SliceCreator
 
 
 		newSlice.AddComponent<TerrainSliceCreator>();
-
 		newSlice.AddComponent<PlaneCutTest>();
 		newSlice.AddComponent<FlatMeshMerger>();
 		newSlice.AddComponent<TriangulatorTest>();
 
+		GameObject g = new GameObject(original.gameObject.name+" - slice");
+		g.layer = LayerMask.NameToLayer("TerrainPhysics");
+		
+		g.transform.position = original.position;
+		g.transform.rotation = original.rotation;
+		g.transform.localScale = original.localScale;
 
+
+		MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
+		convexMeshCollider.sharedMesh = mesh;
+		convexMeshCollider.convex = true;
+
+		Rigidbody parentRigidBody = g.AddComponent<Rigidbody>();
+		parentRigidBody.useGravity = false;
+		parentRigidBody.mass = 1000;
+		parentRigidBody.drag = 5.0f;
+		parentRigidBody.angularDrag = 5.0f;
+
+		newSlice.transform.parent = g.transform;
     }
 }

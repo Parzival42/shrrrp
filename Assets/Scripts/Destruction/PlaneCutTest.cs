@@ -181,14 +181,14 @@ public class PlaneCutTest : MonoBehaviour {
         List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
         capPoints = capOutlinePolygon;
         //capOutlinePolygon = gameObject.AddComponent<Poly2DCreator>().GetPolygon();
-        Debug.Log("polygon size: "+capOutlinePolygon.Count);
+        // Debug.Log("polygon size: "+capOutlinePolygon.Count);
         //  if(capPoints != null && capPoints.Count >1){
         //    Debug.Log("cap vertices: "+capPoints.Count);
 		// 	for(int i = 0; i < capPoints.Count-1; i++){
-		// 		DebugExtension.DebugArrow(capPoints[i], capPoints[i+1]-capPoints[i], Color.black, 10.0f);
+		// 		DebugExtension.DebugArrow(transform.TransformPoint(capPoints[i]), transform.TransformPoint(capPoints[i+1])-transform.TransformPoint(capPoints[i]), Color.black, 10.0f);
 		// 	}
 
-		// 	DebugExtension.DebugArrow(capPoints[capPoints.Count-1], capPoints[0]-capPoints[capPoints.Count-1], Color.black, 10.0f);
+		// 	DebugExtension.DebugArrow(transform.TransformPoint(capPoints[capPoints.Count-1]), transform.TransformPoint(capPoints[0])-transform.TransformPoint(capPoints[capPoints.Count-1]), Color.black, 10.0f);
 		// }
 
         TriangulatorTest triangualtor = GetComponent<TriangulatorTest>();
