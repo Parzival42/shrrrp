@@ -30,6 +30,10 @@ public class RigidBodyInput : MonoBehaviour
     private float groundedDistance = 0.1f;
 
     [SerializeField]
+    [Tooltip("Additional radial check.")]
+    private float groundedRadius = 0.3f;
+
+    [SerializeField]
     [Tooltip("The offset of the pivot (Since the ground check start from the pivot point).")]
     private Vector3 groundPivotOffset = Vector3.zero;
 
@@ -78,6 +82,7 @@ public class RigidBodyInput : MonoBehaviour
     public bool AllowMovement { get { return allowMovement; } set { allowMovement = value; } }
     public float JumpIntensity { get { return jumpIntensity; } }
     public float GroundedDistance { get { return groundedDistance; } }
+    public float GroundedRadius { get { return groundedRadius; } }
     public int GroundedLayer { get { return groundedLayer; } }
     public Vector3 GroundPivotOffset { get { return groundPivotOffset; } }
     public bool CameraBasedControl { get { return cameraBasedControl; } }

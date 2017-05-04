@@ -189,14 +189,24 @@ public class RigidBodyInputHandler : InputHandler
         RaycastHit hitInfo;
         bool groundWasHit = Physics.Raycast(ray, out hitInfo, player.GroundedDistance, 1 << player.GroundedLayer, QueryTriggerInteraction.UseGlobal);
 
+        bool sphereTest = Physics.CheckSphere(player.transform.position, player.GroundedRadius, 1 << player.GroundedLayer);
+
+        groundWasHit = groundWasHit || sphereTest;
+
         if (!hitGround && groundWasHit)
             OnLanded();
 
 #if UNITY_EDITOR
         if (groundWasHit)
+        {
+            DebugExtension.DebugWireSphere(player.transform.position, Color.green, player.GroundedRadius);
             Debug.DrawRay(ray.origin, ray.direction * player.GroundedDistance, Color.green);
+        }
         else
+        {
+            DebugExtension.DebugWireSphere(player.transform.position, Color.red, player.GroundedRadius);
             Debug.DrawRay(ray.origin, ray.direction * player.GroundedDistance, Color.red);
+        }
 #endif
         return groundWasHit;
     }
