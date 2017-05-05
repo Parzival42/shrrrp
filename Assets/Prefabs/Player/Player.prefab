@@ -1338,7 +1338,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1427,6 +1427,10 @@ MonoBehaviour:
   swordClip: {fileID: 8300000, guid: 54f4254f8b1886e4e8daa5a6fcc22014, type: 3}
   swordPitch: 1.5
   swordVolume: 0.25
+  dashShakePlayer: 3
+  dashTimePlayer: 0.1
+  dashShakeWall: 1
+  dashTimeWall: 0.1
 --- !u!114 &114394095737586570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1491,8 +1495,8 @@ MonoBehaviour:
   dashCoolDownTime: 0.7
   dashGroundCheckDistance: 0.5
   dashCollisionForwardOffset: 0.7
-  dashCheckRadius: 0.5
-  dashPushBackForce: 15
+  dashCheckRadius: 0.6
+  dashPushBackForce: 18
 --- !u!114 &114550925458687184
 MonoBehaviour:
   m_ObjectHideFlags: 1
