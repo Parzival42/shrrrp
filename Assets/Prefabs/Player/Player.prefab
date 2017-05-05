@@ -759,7 +759,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1630457348639916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.15410459, y: -0.12599999, z: -1.3551558}
+  m_LocalPosition: {x: 0.0461642, y: -3.092991e-17, z: -1.3929592}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4848714249802220}
@@ -1278,11 +1278,12 @@ AudioSource:
   m_GameObject: {fileID: 1630457348639916}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243874136203801490, guid: 52c3ca8d7bfeb4e44beff18b320d75cd,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.25
+  m_Pitch: 1.8
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -1410,15 +1411,22 @@ MonoBehaviour:
     type: 2}
   swooshParticle: {fileID: 198646784025651110}
   dashClip: {fileID: 8300000, guid: f256bda1bb4775b4ba38b08c653ee8af, type: 3}
+  dashPitch: 0.8
+  dashVolume: 1
   collideClip: {fileID: 8300000, guid: dbf992cbadcb90144a6688e962d491bf, type: 3}
-  firstJumpClips:
-  - {fileID: 8300000, guid: adb4f3cd0b948284eb021b8401bdc2fb, type: 3}
-  - {fileID: 8300000, guid: ecf627eac83dac44b8907513f99a5ad7, type: 3}
-  secondJumpClip: {fileID: 8300000, guid: 382b9b2ffe7b2294fb52bff5a2087bb6, type: 3}
+  collidePitch: 2
+  collideVolume: 0.15
+  stepClips: {fileID: 114394095737586570}
+  jumpClip: {fileID: 8300000, guid: a7f241e6251e62e45ae81bbdab27aae3, type: 3}
+  firstJumpPitch: 1.8
+  secondJumpPitch: 2.2
+  jumpVolume: 0.12
   landedClip: {fileID: 8300000, guid: 90e6cca24d03ba543bd70d72f94d3fdf, type: 3}
-  cutClips:
-  - {fileID: 8300000, guid: 54f4254f8b1886e4e8daa5a6fcc22014, type: 3}
-  - {fileID: 8300000, guid: 1bd6c0bd2ed3f3b4e8b766821326cca4, type: 3}
+  landedPitch: 1.4
+  landedVolume: 0.2
+  swordClip: {fileID: 8300000, guid: 54f4254f8b1886e4e8daa5a6fcc22014, type: 3}
+  swordPitch: 1.5
+  swordVolume: 0.25
 --- !u!114 &114394095737586570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1754,7 +1762,7 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.0005497709, y: -0.001124531, z: 0.2966968}
+    m_Center: {x: 0.0005497718, y: -0.001124531, z: 0.29669678}
     m_Extent: {x: 0.074516185, y: 0.060148157, z: 0.089366116}
   m_DirtyAABB: 0
 --- !u!137 &137439987489747716
@@ -1798,8 +1806,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.024458233, y: 0.029816568, z: 0.1710147}
-    m_Extent: {x: 0.02500804, y: 0.020567838, z: 0.0987649}
+    m_Center: {x: -0.024458231, y: 0.029816538, z: 0.17101471}
+    m_Extent: {x: 0.02500804, y: 0.020567838, z: 0.09876491}
   m_DirtyAABB: 0
 --- !u!137 &137513401500145078
 SkinnedMeshRenderer:
@@ -1902,7 +1910,7 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.022186026, y: 0.031266242, z: 0.18595526}
+    m_Center: {x: 0.022186032, y: 0.031266212, z: 0.18595527}
     m_Extent: {x: 0.021636644, y: 0.022077939, z: 0.07899218}
   m_DirtyAABB: 0
 --- !u!137 &137919322813234362

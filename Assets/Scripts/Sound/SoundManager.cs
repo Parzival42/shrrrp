@@ -41,7 +41,7 @@ public class SoundManager : MonoBehaviour
             if (soundManagerInstance == null)
             {
                 soundManagerInstance = new GameObject("_SoundManager").AddComponent<SoundManager>();
-                audioMixer = Resources.Load<AudioMixer>("MixerGroups/MainMixer");
+                audioMixer = Resources.Load<AudioMixer>("ShrrrpMixer");
                 DontDestroyOnLoad(soundManagerInstance);
             }
 
@@ -52,7 +52,7 @@ public class SoundManager : MonoBehaviour
     void Awake()
     {
         if(audioMixer == null)
-            audioMixer = Resources.Load<AudioMixer>("MixerGroups/MainMixer");
+            audioMixer = Resources.Load<AudioMixer>("ShrrrpMixer");
         audioSources = new List<AudioSource>();
     }
 

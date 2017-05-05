@@ -37,19 +37,63 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     private AudioClip dashClip;
 
     [SerializeField]
+    [Range(-3,3)]
+    private float dashPitch;
+
+    [SerializeField]
+    [Range(0,1)]
+    private float dashVolume;
+
+    [SerializeField]
     private AudioClip collideClip;
 
     [SerializeField]
-    private AudioClip[] firstJumpClips;
+    [Range(-3,3)]
+    private float collidePitch;
 
     [SerializeField]
-    private AudioClip secondJumpClip;
+    [Range(0,1)]
+    private float collideVolume;
+
+    [SerializeField]
+    private MultipleAudioclips stepClips;
+
+    [SerializeField]
+    private AudioClip jumpClip;
+
+    [SerializeField]
+    [Range(-3,3)]
+    private float firstJumpPitch;
+
+     [SerializeField]
+    [Range(-3,3)]
+    private float secondJumpPitch;
+
+    [SerializeField]
+    [Range(0,1)]
+    private float jumpVolume;
 
     [SerializeField]
     private AudioClip landedClip;
 
     [SerializeField]
-    private AudioClip[] cutClips; //first: sword, second: plane
+    [Range(-3,3)]
+    private float landedPitch;
+
+    [SerializeField]
+    [Range(0,1)]
+    private float landedVolume;
+
+    [SerializeField]
+    private AudioClip swordClip;
+
+    [SerializeField]
+    [Range(-3,3)]
+    private float swordPitch;
+
+    [SerializeField]
+    [Range(0,1)]
+    private float swordVolume;
 
     #endregion
 
@@ -82,6 +126,7 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
         // Dash Controller events
         inputHandler.DashController.OnDashStarted += HandleDash;
+        inputHandler.DashController.OnDashCollision += HandleDashCollision;
     }
 
     private void Update()
@@ -146,13 +191,28 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
         // Particle
         if (swooshParticle != null)
             swooshParticle.Play(true);
+
+        // Sound
+        if(swordClip != null)
+            SoundManager.SoundManagerInstance.Play(swordClip, transform, swordVolume, swordPitch, false, AudioGroup.Character);
     }
 
     private void HandleDash()
     {
         // Animation
         playerAnimator.SetTrigger(ANIMATOR_DASH);
+
+        // Sound
+        if(dashClip != null)
+            SoundManager.SoundManagerInstance.Play(dashClip, transform, dashVolume, dashPitch, false, AudioGroup.Character);
     }
+
+     private void HandleDashCollision(GameObject player, GameObject other){
+
+         // Sound
+         if(collideClip != null)
+            SoundManager.SoundManagerInstance.Play(collideClip, transform, collideVolume, collidePitch, false, AudioGroup.Character);
+     }
 
     private void HandleFirstJump()
     {
@@ -163,6 +223,10 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
         // Animation
         playerAnimator.SetTrigger(ANIMATOR_JUMPED);
+
+        // Sound
+        if(jumpClip != null)
+            SoundManager.SoundManagerInstance.Play(jumpClip, transform, jumpVolume, firstJumpPitch, false, AudioGroup.Character);
     }
 
     private void HandleSecondJump()
@@ -173,6 +237,10 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
         // Animation
         playerAnimator.SetTrigger(ANIMATOR_JUMPED);
+
+        // Sound
+        if(jumpClip != null)
+            SoundManager.SoundManagerInstance.Play(jumpClip, transform, jumpVolume, secondJumpPitch, false, AudioGroup.Character);
     }
 
     private void HandleGrounded()
@@ -183,5 +251,15 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
         // Landed particles
         if (landedParticles != null)
             Instantiate(landedParticles, transform.position, landedParticles.transform.rotation);
+
+        // Sound
+        if(landedClip != null)
+            SoundManager.SoundManagerInstance.Play(landedClip, transform, landedVolume, landedPitch, false, AudioGroup.Character);
+    }
+
+    // Step sounds
+    public void Step(){
+        if(stepClips != null)
+            stepClips.PlayRandomClip();
     }
 }
