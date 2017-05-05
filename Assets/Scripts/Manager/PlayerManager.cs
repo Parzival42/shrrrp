@@ -4,6 +4,7 @@ using UnityEngine;
 public delegate void AllPlayerDeadHandler();
 public delegate void OnePlayerLeftHandler(Player lastPlayer);
 public delegate void PlayerDiedHandler(Player player);
+public delegate void AllPlayersFoundHandler(Player[] players);
 
 /// <summary>
 /// Keeps track of the players (Alive, Dead, How Many, ...).
@@ -29,6 +30,7 @@ public class PlayerManager : MonoBehaviour
     public event AllPlayerDeadHandler OnAllPlayersDied;
     public event OnePlayerLeftHandler OnOnePlayerLeft;
     public event PlayerDiedHandler OnPlayerDied;
+    public event AllPlayersFoundHandler OnAllPlayersFound;
     #endregion
 
     #region Properties
@@ -66,6 +68,10 @@ public class PlayerManager : MonoBehaviour
         // Assign initial player count
         sessionPlayerCount = playersByType.Count;
         currentPlayerCount = sessionPlayerCount;
+
+        Player[] players = new Player[playersByType.Count];
+        playersByType.Values.CopyTo(players, 0);
+        OnAllPlayersFound(players);
 
         Debug.Log("[PlayerManager]: " + sessionPlayerCount + " spawned!");
     }
@@ -125,6 +131,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (OnOnePlayerLeft != null)
             OnOnePlayerLeft(lastPlayer);
+    }
+
+    private void AllPlayersFound(Player[] players)
+    {
+        if (OnAllPlayersFound != null)
+            OnAllPlayersFound(players);
     }
     #endregion
 }
