@@ -95,6 +95,18 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     [Range(0,1)]
     private float swordVolume;
 
+    [FancyHeader("Dash reaction")]
+    [SerializeField]
+    private float dashShakePlayer = 3f;
+
+    [SerializeField]
+    private float dashTimePlayer = 0.1f;
+
+    [SerializeField]
+    private float dashShakeWall = 1f;
+
+    [SerializeField]
+    private float dashTimeWall = 0.1f;
     #endregion
 
     #region Internal Members
@@ -104,18 +116,22 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     private static readonly string ANIMATOR_DASH = "Dash";
     private static readonly string ANIMATOR_CUT = "Cut";
 
+    private static readonly string PLAYER_TAG = "Player";
+
     private RigidBodyInput inputHandler;
     private float originalRunningParticleRate = 0f;
     private float vectorOneMagnitude = Vector2.one.magnitude;
     private ParticleSystem.EmissionModule runningEmission;
     private Vector2 inputVector = Vector2.zero;
     private Animator playerAnimator;
+    private Camera cam;
     #endregion
 
     private void Start ()
     {
         inputHandler = GetComponent<RigidBodyInput>();
         playerAnimator = GetComponent<Animator>();
+        cam = CameraUtil.GetMainCamera();
         SetupRunningParticle();
 
         // Input Controller events
@@ -207,10 +223,16 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
             SoundManager.SoundManagerInstance.Play(dashClip, transform, dashVolume, dashPitch, false, AudioGroup.Character);
     }
 
-     private void HandleDashCollision(GameObject player, GameObject other){
+     private void HandleDashCollision(GameObject player, GameObject other)
+    {
+        // Dash Camera Shake
+        if(other.tag.Equals(PLAYER_TAG))
+            CameraUtil.DirectionalShake(cam, player.transform, dashShakePlayer, dashTimePlayer);
+        else
+            CameraUtil.DirectionalShake(cam, player.transform, dashShakeWall, dashTimeWall);
 
-         // Sound
-         if(collideClip != null)
+        // Sound
+        if (collideClip != null)
             SoundManager.SoundManagerInstance.Play(collideClip, transform, collideVolume, collidePitch, false, AudioGroup.Character);
      }
 

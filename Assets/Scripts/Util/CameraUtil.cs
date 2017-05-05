@@ -6,6 +6,7 @@ public class CameraUtil
 {
     public static string CAMERA_TAG = "MainCamera";
     public static string CAMERA_NAME = "Main Camera";
+    private static Vector2 VIEW_MIDDLE_POINT = Vector2.one * 0.5f;
 
     /// <summary>
     /// Tries to fetch the current main camera.
@@ -19,7 +20,7 @@ public class CameraUtil
 
         if (cam == null)
             cam = GameObject.Find(CAMERA_TAG).GetComponent<Camera>();
-        if(cam == null)
+        if (cam == null)
             cam = GameObject.Find(CAMERA_NAME).GetComponent<Camera>();
 
         if (cam == null)
@@ -44,12 +45,43 @@ public class CameraUtil
 
         // Slow the camera shake down to zero
         LeanTween.value(cam.gameObject, shakeAmount, 0f, dropOffTime)
-            .setOnUpdate((float value) => {
+            .setOnUpdate((float value) =>
+            {
                 shakeTween.setTo(Vector3.right * value);
             })
             .setEase(LeanTweenType.easeOutQuad)
-            .setOnComplete(() => {
+            .setOnComplete(() =>
+            {
                 LeanTween.cancel(shakeTween.uniqueId);
             });
+    }
+
+    /// <summary>
+    /// Performs a directional camera shake based on the forward vector of the given Transform.
+    /// </summary>
+    /// <param name="cam">Camera</param>
+    /// <param name="player">Player Transform, Forward vector is used</param>
+    /// <param name="shakeAmount">The shake amount in degrees</param>
+    /// <param name="shakeTime">Time of the shake</param>
+    public static void DirectionalShake(Camera cam, Transform player, float shakeAmount, float shakeTime)
+    {
+        Vector2 direction = new Vector2(player.forward.x, player.forward.z).normalized;
+        DirectionalShake(cam, direction, shakeAmount, shakeTime);
+    }
+
+    /// <summary>
+    /// Performs a directional camera shake based on the given screen direction.
+    /// </summary>
+    /// <param name="cam">Camera</param>
+    /// <param name="screenDirection">Direction of the Shake</param>
+    /// <param name="shakeAmount">The shake amount in degrees</param>
+    /// <param name="shakeTime">Time of the shake</param>
+    public static void DirectionalShake(Camera cam, Vector2 screenDirection, float shakeAmount, float shakeTime)
+    {
+        LTDescr shakeTween = LeanTween.rotateAroundLocal(cam.gameObject,
+            new Vector3(-screenDirection.y, screenDirection.x, 0f), shakeAmount, shakeTime)
+                .setEase(LeanTweenType.easeInOutQuad)
+                .setLoopClamp()
+                .setLoopPingPong(1);
     }
 }
