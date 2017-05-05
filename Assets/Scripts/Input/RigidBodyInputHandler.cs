@@ -103,7 +103,10 @@ public class RigidBodyInputHandler : InputHandler
     private void HandleJumpInput()
     {
         bool jumpButtonDown = player.PlayerAction.Jump.WasPressed;
-        
+
+        // Safety check
+        if (firstJump && secondJump && IsGrounded)
+            ResetJumpStateOnLanding();
 
         // Normal ground jump
         if (!firstJump && jumpButtonDown)
