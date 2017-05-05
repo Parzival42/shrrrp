@@ -5,10 +5,14 @@ public class TerrainSliceCreator : SliceCreator
     public override void CreateSlice(Transform original, MeshContainer slice)
     {
         GameObject newSlice = new GameObject(original.gameObject.name+" - slice");
+		Transform reference = original.parent;
+		if(reference == null){
+			reference = original;
+		}
 		
-		newSlice.transform.position = original.position;
-		newSlice.transform.rotation = original.rotation;
-		newSlice.transform.localScale = original.localScale;
+		newSlice.transform.position = reference.position;
+		newSlice.transform.rotation = reference.rotation;
+		newSlice.transform.localScale = reference.localScale;
 		newSlice.layer = LayerMask.NameToLayer("Ground");
 		newSlice.tag = "CuttingPlane";
 
@@ -51,9 +55,9 @@ public class TerrainSliceCreator : SliceCreator
 		GameObject g = new GameObject(original.gameObject.name+" - slice");
 		g.layer = LayerMask.NameToLayer("TerrainPhysics");
 		
-		g.transform.position = original.position;
-		g.transform.rotation = original.rotation;
-		g.transform.localScale = original.localScale;
+		g.transform.position = reference.position;
+		g.transform.rotation = reference.rotation;
+		g.transform.localScale =reference.localScale;
 
 
 		MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
