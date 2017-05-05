@@ -39,8 +39,8 @@ public class CuttingPlaneControl : MonoBehaviour
 
     private void HandleControls()
     {
-        HandleRotation();
-        //HandleTranslation();
+        if(!isUsed)
+            HandleRotation();
 
         if (!isUsed && (inputHandler.PlayerAction.Jump.WasPressed || inputHandler.PlayerAction.Dash.WasPressed))
         {
