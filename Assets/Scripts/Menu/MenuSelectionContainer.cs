@@ -7,19 +7,16 @@ using InControl;
 /// level information which was filled during the menu life cycle.
 ///
 /// The player information for example should be used to spawn the players.
-/// If there is nu MenuSelectionContainer in the scene, it can be assumed that
+/// If there is no MenuSelectionContainer in the scene, it can be assumed that
 /// the scene is started in the editor.
 /// </summary>
 public class MenuSelectionContainer : MonoBehaviour
 {
     #region Inspector
-    [Header("Level information")]
+    [FancyHeader("Level information")]
     public string levelName;
 
-    [Header("Beware of the order of the prefabs! Should be the same like in character menu.")]
-    [Tooltip("The order of the character prefabs should be the same order like in the character menu."
-        + " If wrong characters are spawned, check this order first!")]
-    public GameObject[] playerPrefabs;
+    public GameObject playerPrefab;
     #endregion
 
     #region Data (Should be filled in menu)
@@ -45,17 +42,16 @@ public class MenuSelectionContainer : MonoBehaviour
     }
     #endregion
 
-
     #region Inner class
     public class PlayerInfo
     {
         public InputDevice playerInputDevice;
-        public int playerPrefabIndex;
+        public PlayerType playerType;
 
-        public PlayerInfo(InputDevice inputDevice, int prefabIndex)
+        public PlayerInfo(InputDevice inputDevice, PlayerType playerType)
         {
             this.playerInputDevice = inputDevice;
-            this.playerPrefabIndex = prefabIndex;
+            this.playerType = playerType;
         }
     }
     #endregion
