@@ -71,7 +71,7 @@ public class PlayerManager : MonoBehaviour
 
         Player[] players = new Player[playersByType.Count];
         playersByType.Values.CopyTo(players, 0);
-        OnAllPlayersFound(players);
+        AllPlayersFound(players);
 
         Debug.Log("[PlayerManager]: " + sessionPlayerCount + " spawned!");
     }
