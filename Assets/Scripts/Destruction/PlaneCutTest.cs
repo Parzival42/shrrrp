@@ -180,23 +180,47 @@ public class PlaneCutTest : MonoBehaviour {
         
         List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
         capPoints = capOutlinePolygon;
-        //capOutlinePolygon = gameObject.AddComponent<Poly2DCreator>().GetPolygon();
-        // Debug.Log("polygon size: "+capOutlinePolygon.Count);
-        //  if(capPoints != null && capPoints.Count >1){
-        //    Debug.Log("cap vertices: "+capPoints.Count);
-		// 	for(int i = 0; i < capPoints.Count-1; i++){
-		// 		DebugExtension.DebugArrow(transform.TransformPoint(capPoints[i]), transform.TransformPoint(capPoints[i+1])-transform.TransformPoint(capPoints[i]), Color.black, 10.0f);
-		// 	}
+        Debug.Log("polygon size: "+capOutlinePolygon.Count);
+         if(capPoints != null && capPoints.Count >1){
+           Debug.Log("cap vertices: "+capPoints.Count);
+			for(int i = 0; i < capPoints.Count-1; i++){
+				DebugExtension.DebugArrow(transform.TransformPoint(capPoints[i]), transform.TransformPoint(capPoints[i+1])-transform.TransformPoint(capPoints[i]), Color.black, 10.0f);
+			}
 
-		// 	DebugExtension.DebugArrow(transform.TransformPoint(capPoints[capPoints.Count-1]), transform.TransformPoint(capPoints[0])-transform.TransformPoint(capPoints[capPoints.Count-1]), Color.black, 10.0f);
-		// }
+			DebugExtension.DebugArrow(transform.TransformPoint(capPoints[capPoints.Count-1]), transform.TransformPoint(capPoints[0])-transform.TransformPoint(capPoints[capPoints.Count-1]), Color.black, 10.0f);
+		}
+
+
+        //check which plane the polygon vertices should be projected on
+        float minDistance = Vector3.SqrMagnitude(Vector3.ProjectOnPlane(cuttingPlane.normal, Vector3.forward));
+        int projectCoordA = 0;
+        int projectCoordB = 1;
+
+        float dist =  Vector3.SqrMagnitude(Vector3.ProjectOnPlane(cuttingPlane.normal, Vector3.up));
+        if(dist < minDistance){
+            minDistance = dist;
+            projectCoordA = 0;
+            projectCoordB = 2;
+        }
+
+        dist =  Vector3.SqrMagnitude(Vector3.ProjectOnPlane(cuttingPlane.normal, Vector3.right));
+        if(dist < minDistance){
+            minDistance = dist;
+            projectCoordA = 1;
+            projectCoordB = 2;
+        }
+
+
+
 
         TriangulatorTest triangualtor = GetComponent<TriangulatorTest>();
-        MeshContainer cap = triangualtor.Triangulate(capOutlinePolygon);
+        MeshContainer cap = triangualtor.Triangulate(capOutlinePolygon, projectCoordA, projectCoordB);
 
-        
+        Helper.DrawTriangles(cap);
+
         sliceCreator = GetComponent<SliceCreator>();
         meshMerger = GetComponent<MeshMerger>();
+
 
         //create the slices as gameobjects and add needed components
         if (rightMesh.Vertices.Count != 0)
@@ -229,7 +253,6 @@ public class PlaneCutTest : MonoBehaviour {
 		
 		if(cut){
 			StartSplitInTwo(new Plane(),false);	
-            //GetComponent<TriangulatorTest>().Triangulate(polygonVertices);	
 		}
 	}
 

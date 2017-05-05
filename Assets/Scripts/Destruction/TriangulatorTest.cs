@@ -27,7 +27,7 @@ public class TriangulatorTest : MonoBehaviour {
 		Debug.Log("triangles: "+c);
 	}
 
-    public MeshContainer Triangulate(List<Vector3> polygon)
+    public MeshContainer Triangulate(List<Vector3> polygon, int projectCoordA, int projectCoordB)
     {
 		float time = Time.realtimeSinceStartup;
 		MeshContainer result = new MeshContainer();
@@ -52,7 +52,7 @@ public class TriangulatorTest : MonoBehaviour {
 
 		//find the leftmost vertex
 		for(int i = 0; i < polygon.Count; i++){
-			if(polygon[i].x < left.x || (Helper.VectorIsIdentical(polygon[i], left)&&(polygon[i].y < left.y))){
+			if(polygon[i][projectCoordA] < left[projectCoordA] || (Helper.FloatIsIdentical(polygon[i][projectCoordA], left[projectCoordA])&&(polygon[i][projectCoordB] < left[projectCoordB]))){
 				startIndex = i;
 				left = polygon[startIndex];
 			}
@@ -65,7 +65,7 @@ public class TriangulatorTest : MonoBehaviour {
 		Helper.FillTriangle(startIndex, polygon, triangle);
 
 		//get the triangle orientation (based on this orientation the other triangle orientations are meassured)
-		bool orientation = Helper.orientation(triangle);
+		bool orientation = Helper.orientation(triangle, projectCoordA, projectCoordB);
 
 		//triangle indices are stored here that contradict the leftmost triangle orientation
 		List<int> reflexIndices = new List<int>();
@@ -85,7 +85,7 @@ public class TriangulatorTest : MonoBehaviour {
 				Helper.FillTriangle(index, polygon, triangle);
 
 				//if the orientation is different to the inital one add the triangle index to the reflex list 
-				if(Helper.orientation(triangle) != orientation){
+				if(Helper.orientation(triangle, projectCoordA, projectCoordB) != orientation){
 					reflexIndices.Add(index);
 					continue;
 				}
@@ -104,7 +104,7 @@ public class TriangulatorTest : MonoBehaviour {
 					}
 
 					//if a reflex vertex is contained then the triangle is not an ear
-					if(Helper.isPointInTriangle(polygon[reflexIndices[j]], polygon[prev], polygon[index], polygon[next])){
+					if(Helper.isPointInTriangle(polygon[reflexIndices[j]], polygon[prev], polygon[index], polygon[next], projectCoordA, projectCoordB)){
 						isEar = false;
 						break;
 					}
@@ -116,19 +116,19 @@ public class TriangulatorTest : MonoBehaviour {
 					Vector3 end = polygon[polygon.Count-1];
 
 					int count = -1;
-					while(!Helper.VectorIsIdentical(start,end)){
+					while(!Helper.Vector2IsIdentical(start[projectCoordA], start[projectCoordB],end[projectCoordA], end[projectCoordB])){
 						count++;
 						//Debug.Log(count);
 						start = polygon[Helper.GetNextIndex(polygon, index)+count];
 
-						if(Helper.VectorIsIdentical(start, polygon[prev])||
-							Helper.VectorIsIdentical(start, polygon[index]) ||
-							Helper.VectorIsIdentical(start, polygon[next])){
+						if(Helper.Vector2IsIdentical(start[projectCoordA], start[projectCoordB], polygon[prev][projectCoordA], polygon[prev][projectCoordB])||
+							Helper.Vector2IsIdentical(start[projectCoordA], start[projectCoordB], polygon[index][projectCoordA], polygon[index][projectCoordB]) ||
+							Helper.Vector2IsIdentical(start[projectCoordA], start[projectCoordB], polygon[next][projectCoordA], polygon[index][projectCoordB])){
 							
 							continue;
 						}			
 
-						if(Helper.isPointInTriangle(start, polygon[prev], polygon[index], polygon[next])){
+						if(Helper.isPointInTriangle(start, polygon[prev], polygon[index], polygon[next], projectCoordA, projectCoordB)){
 							isEar = false;
 							break;
 						}			
