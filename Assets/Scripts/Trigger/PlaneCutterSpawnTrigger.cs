@@ -6,6 +6,12 @@ public class PlaneCutterSpawnTrigger : TriggerAction
     [SerializeField]
     private GameObject planeCutter;
 
+    [SerializeField]
+    private float tweenTime = 0.4f;
+
+    [SerializeField]
+    private LeanTweenType easeType = LeanTweenType.easeInBack;
+
     protected override void PerformOnTriggerAction(Collider other)
     {
         if (planeCutter != null)
@@ -24,5 +30,13 @@ public class PlaneCutterSpawnTrigger : TriggerAction
         }
         else
             Debug.LogError("No plane cutter prefab assigned!", gameObject);
+    }
+
+    protected override void DestroyTrigger()
+    {
+        LeanTween.scale(gameObject, Vector3.zero, tweenTime).setEase(easeType)
+            .setOnComplete(() => {
+                base.DestroyTrigger();
+            });
     }
 }

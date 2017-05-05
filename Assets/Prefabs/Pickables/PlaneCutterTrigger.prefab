@@ -98,6 +98,8 @@ MonoBehaviour:
   destroyAfterTriggering: 1
   planeCutter: {fileID: 1194988630189366, guid: 00605986feea5754aa94d4183c5816bb,
     type: 2}
+  tweenTime: 0.35
+  easeType: 26
 --- !u!114 &114363771474890972
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -35,8 +35,13 @@ public abstract class TriggerAction : MonoBehaviour
         {
             PerformOnTriggerAction(other);
             if (destroyAfterTriggering)
-                Destroy(gameObject);
+                DestroyTrigger();
         }
+    }
+
+    protected virtual void DestroyTrigger()
+    {
+        Destroy(gameObject);
     }
 
     protected abstract void PerformOnTriggerAction(Collider other);
