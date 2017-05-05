@@ -40,7 +40,7 @@ public class CuttingPlaneControl : MonoBehaviour
     private void HandleControls()
     {
         HandleRotation();
-        HandleTranslation();
+        //HandleTranslation();
 
         if (!isUsed && (inputHandler.PlayerAction.Jump.WasPressed || inputHandler.PlayerAction.Dash.WasPressed))
         {
@@ -58,16 +58,16 @@ public class CuttingPlaneControl : MonoBehaviour
 
     private void HandleRotation()
     {
-        rotationWorld.Set(0f,
-            inputHandler.PlayerAction.Move.X * rotationSpeed,
-            0f);
+        float xRotation = inputHandler.PlayerAction.Move.X * rotationSpeed;
+        float yRotation = -inputHandler.PlayerAction.Move.Y * rotationSpeed;
+        rotationWorld.Set(0f, xRotation, 0f);
 
-        rotationLocal.Set(0f,
-            0f,
-            -inputHandler.PlayerAction.Move.Y * rotationSpeed);
+        rotationLocal.Set(0f, 0f, yRotation);
 
         transform.Rotate(rotationWorld * Time.deltaTime, Space.World);
         transform.Rotate(rotationLocal * Time.deltaTime, Space.Self);
+
+        inputHandler.transform.Rotate(Vector3.up, xRotation * Time.deltaTime);
     }
 
     private void HandleTranslation()
@@ -85,8 +85,9 @@ public class CuttingPlaneControl : MonoBehaviour
     public void Initialize(RigidBodyInput input)
     {
         inputHandler = input;
-        SetInputHandlerMovemet(false);
+        transform.up = inputHandler.transform.right;
 
+        SetInputHandlerMovemet(false);
         isInitialized = true;
     }
 
