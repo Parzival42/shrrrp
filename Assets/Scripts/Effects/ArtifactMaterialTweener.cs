@@ -12,7 +12,18 @@ public class ArtifactMaterialTweener : MonoBehaviour
     [SerializeField]
     private float amountDistanceThreshold = 2f;
 
+    [FancyHeader("Emission parameter")]
+    [SerializeField]
+    private float emissionMin = 2.31f;
+
+    [SerializeField]
+    private float emissionMax = 6.85f;
+
+    [SerializeField]
+    private float emissionDistanceThreshold = 2f;
+
     private static readonly string PARAM_AMOUNT = "_Amount";
+    private static readonly string PARAM_EMISSION = "_EmissionStrength";
     private PlayerManager playerManager;
     private Player[] players = null;
     private Material material;
@@ -36,12 +47,18 @@ public class ArtifactMaterialTweener : MonoBehaviour
         {
             float nearestDistance = GetNearestPlayerDistance();
             HandleAmountParameter(nearestDistance);
+            HandleEmissionParameter(nearestDistance);
         }
 	}
 
     private void HandleAmountParameter(float nearestDistance)
     {
         material.SetFloat(PARAM_AMOUNT, GetAmountFor(amountMin, amountMax, nearestDistance));
+    }
+
+    private void HandleEmissionParameter(float nearestDistance)
+    {
+        material.SetFloat(PARAM_EMISSION, GetAmountFor(emissionMin, emissionMax, nearestDistance));
     }
 
     private float GetAmountFor(float min, float max, float currentValue)

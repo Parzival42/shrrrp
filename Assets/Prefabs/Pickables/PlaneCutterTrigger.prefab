@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 135851336591278146}
   - component: {fileID: 23581425921769732}
   - component: {fileID: 114160814102279276}
+  - component: {fileID: 114363771474890972}
   m_Layer: 0
   m_Name: PlaneCutterTrigger
   m_TagString: Untagged
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1057924307782140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.19, y: 0.91, z: 1.29}
+  m_LocalPosition: {x: 3.18, y: 2.454, z: 2.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -56,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: eb3052be64af48f408be63e3d3ad7f80, type: 2}
+  - {fileID: 2100000, guid: 5c68416d2a9e1e3409fbc6957d92cfbc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,6 +98,23 @@ MonoBehaviour:
   destroyAfterTriggering: 1
   planeCutter: {fileID: 1194988630189366, guid: 00605986feea5754aa94d4183c5816bb,
     type: 2}
+--- !u!114 &114363771474890972
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1057924307782140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9708122f2b019864b921eed336800f78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amountMin: 2
+  amountMax: 5
+  amountDistanceThreshold: 5
+  emissionMin: 2.31
+  emissionMax: 6.85
+  emissionDistanceThreshold: 3.5
 --- !u!135 &135851336591278146
 SphereCollider:
   m_ObjectHideFlags: 1
