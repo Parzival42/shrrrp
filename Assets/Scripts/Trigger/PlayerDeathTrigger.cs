@@ -13,11 +13,13 @@ public class PlayerDeathTrigger : TriggerAction
 
     #region Internal variables
     private PlayerManager playerManager;
+    private Camera cam;
     #endregion
 
     protected override void Start()
     {
         base.Start();
+        cam = CameraUtil.GetMainCamera();
         CheckForPlayerManager();
     }
 
@@ -35,6 +37,7 @@ public class PlayerDeathTrigger : TriggerAction
         {
             playerManager.PlayerDied(player);
             SpawnDeathParticles(player.transform.position);
+            CameraUtil.CameraShake(cam, 2.4f, 0.11f, 0.9f);
         }
         else
             Debug.LogError("No player script attached on player!", gameObject);

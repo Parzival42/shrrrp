@@ -14,11 +14,19 @@ public class ParticleSelfDestruct : MonoBehaviour
     [Tooltip("This time is added to the particle life time.")]
     private float addDestroyTime = 0f;
 
+    [SerializeField]
+    [Tooltip("Should the duration field of the particle system be used? Otherwise the start life time is used.")]
+    private bool useDuration = false;
+
     private ParticleSystem particles;
 
     private void Start()
     {
         particles = GetComponent<ParticleSystem>();
-        Destroy(gameObject, particles.main.startLifetime.constant + addDestroyTime);
+
+        if (!useDuration)
+            Destroy(gameObject, particles.main.startLifetime.constant + addDestroyTime);
+        else
+            Destroy(gameObject, particles.main.duration + addDestroyTime);
     }
 }
