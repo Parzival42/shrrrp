@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class TerrainSliceCreator : SliceCreator
 {
-    public override void CreateSlice(Transform original, MeshContainer slice)
+    public override void CreateSlice(Transform original, MeshContainer slice, Vector3 forceDirection)
     {
         GameObject newSlice = new GameObject(original.gameObject.name+" - slice");
 		Transform reference = original.parent;
@@ -19,7 +20,6 @@ public class TerrainSliceCreator : SliceCreator
 		Mesh mesh = new Mesh();
 		mesh.SetVertices(slice.Vertices);
 
-
 		mesh.subMeshCount = slice.Indices.Length;
 		for (int i = 0; i < slice.Indices.Length; i++)
 		{
@@ -28,8 +28,7 @@ public class TerrainSliceCreator : SliceCreator
 
 		mesh.SetNormals(slice.Normals);
 		mesh.SetUVs(0, slice.Uvs);		
-		mesh.RecalculateNormals();
-
+		mesh.RecalculateNormals();		
 		
 		MeshRenderer renderer = newSlice.AddComponent<MeshRenderer>();
 		MeshFilter filter = newSlice.AddComponent<MeshFilter>();
@@ -46,7 +45,6 @@ public class TerrainSliceCreator : SliceCreator
 		rigidbody.useGravity = false;
 		rigidbody.isKinematic = true;
 
-
 		newSlice.AddComponent<TerrainSliceCreator>();
 		newSlice.AddComponent<PlaneCutTest>();
 		newSlice.AddComponent<FlatMeshMerger>();
@@ -59,17 +57,24 @@ public class TerrainSliceCreator : SliceCreator
 		g.transform.rotation = reference.rotation;
 		g.transform.localScale =reference.localScale;
 
-
 		MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
 		convexMeshCollider.sharedMesh = mesh;
 		convexMeshCollider.convex = true;
+		//convexMeshCollider.enabled = false;
 
 		Rigidbody parentRigidBody = g.AddComponent<Rigidbody>();
 		parentRigidBody.useGravity = false;
-		parentRigidBody.mass = 1000;
-		parentRigidBody.drag = 5.0f;
-		parentRigidBody.angularDrag = 5.0f;
+		parentRigidBody.mass = AssignMass(convexMeshCollider);
+		parentRigidBody.drag = 1.0f;
+		parentRigidBody.angularDrag = 0.25f;
+		parentRigidBody.AddForce(forceDirection*250, ForceMode.Impulse);
 
 		newSlice.transform.parent = g.transform;
+    }
+
+    private float AssignMass(MeshCollider collider)
+    {
+	    Vector3 size = collider.bounds.size;
+	    return size.x * size.y * size.z * 10;
     }
 }

@@ -66,7 +66,7 @@ public static class Helper {
 	}
 
 	public static bool FloatIsIdentical(float a, float b){
-		return FloatIsIdentical(a,b, 1e-0008f);
+		return FloatIsIdentical(a,b, 1e-0006f);
 	}
 
 	public static bool FloatIsIdentical(float a, float b, float epsilon){
@@ -80,7 +80,7 @@ public static class Helper {
 	public static bool Vector2IsIdentical(float x1, float y1, float x2, float y2){
 		compareA.Set(x1,y1);
 		compareB.Set(x2,y2);
-		return Vector2.SqrMagnitude(compareA-compareB)< 1e-005f;
+		return Vector2.SqrMagnitude(compareA-compareB)< 1e-0005f;
 	}
 
 	public static void FillTriangle(int index, List<Vector3> polygon, Vector3[] triangle){
@@ -129,15 +129,17 @@ public static class Helper {
 
 		for(int i = 0; i < triangles.Length; i++){
 			for(int j = 0; j < triangles[i].Count; j+=3){
-				Debug.DrawLine(container.Vertices[triangles[i][j]], container.Vertices[triangles[i][j+1]], Color.black, 10.0f);
-				Debug.DrawLine(container.Vertices[triangles[i][j+1]], container.Vertices[triangles[i][j+2]], Color.black, 10.0f);
-				Debug.DrawLine(container.Vertices[triangles[i][j+2]], container.Vertices[triangles[i][j]], Color.black, 10.0f);
-
-
+				Debug.DrawLine(container.Vertices[triangles[i][j]], container.Vertices[triangles[i][j+1]], Color.white, 10.0f);
+				Debug.DrawLine(container.Vertices[triangles[i][j+1]], container.Vertices[triangles[i][j+2]], Color.white, 10.0f);
+				Debug.DrawLine(container.Vertices[triangles[i][j+2]], container.Vertices[triangles[i][j]], Color.white, 10.0f);
 			}
 		}
+	 }
 
-
+	 public static void UnProjectVertices(Transform transform, MeshContainer meshContainer){
+		for(int i = 0; i < meshContainer.Vertices.Count; i++){
+			meshContainer.Vertices[i] = transform.InverseTransformPoint(meshContainer.Vertices[i]);
+		}
 	 }
 
 

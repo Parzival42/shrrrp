@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class StandardSliceCreator : SliceCreator
 {
-    public override void CreateSlice(Transform original, MeshContainer slice)
+    public override void CreateSlice(Transform original, MeshContainer slice, Vector3 forceDirection)
     {
 		GameObject newSlice = new GameObject(original.gameObject.name+" - slice");
 		
@@ -24,15 +24,6 @@ public class StandardSliceCreator : SliceCreator
 
 		mesh.SetNormals(slice.Normals);
 		mesh.SetUVs(0, slice.Uvs);
-		// if(slice.Uvs!=null && slice.Uvs.Count == slice.Vertices.Count){
-		// 	mesh.SetUVs(0, slice.Uvs);
-		// }else{
-		// 	List<Vector2> uvs = new List<Vector2>();
-		// 	for(int i = 0; i < slice.Vertices.Count; i++){
-		// 		uvs[i] = new Vector2();
-		// 	}
-		// 	mesh.SetUVs(0,uvs );
-		// }
 		mesh.RecalculateNormals();
 
 		

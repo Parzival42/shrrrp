@@ -17,7 +17,7 @@ public class OutlinePreparator : MonoBehaviour {
 
 	public void Add(Vector3 a, Vector3 b){
 		neighbourData.Add(new VertexNeighbourInfo(a,b));
-		Debug.Log("connection added!");
+		//Debug.Log("connection added!");
 
 		//Debug.Log(a + " -> " + b);
 		//DebugExtension.DebugArrow(a,b-a,Color.blue, 10.0f);

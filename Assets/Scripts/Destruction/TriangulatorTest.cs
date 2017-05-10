@@ -43,6 +43,8 @@ public class TriangulatorTest : MonoBehaviour {
 			result.Indices[0].Add(0);
 			result.Indices[0].Add(1);
 			result.Indices[0].Add(2);
+
+			Debug.Log("Polygon is size of 3 only!!!!!!");
 			return result;
 		}
 
@@ -66,6 +68,15 @@ public class TriangulatorTest : MonoBehaviour {
 
 		//get the triangle orientation (based on this orientation the other triangle orientations are meassured)
 		bool orientation = Helper.orientation(triangle, projectCoordA, projectCoordB);
+		bool convex = true;
+		for(int i = 0; i < polygon.Count; i++){
+			Helper.FillTriangle(i, polygon, triangle);
+			if(Helper.orientation(triangle, projectCoordA, projectCoordB) != orientation){
+				convex  = false;
+			}
+		}
+
+		Debug.Log("Polygon is convex: "+convex);
 
 		//triangle indices are stored here that contradict the leftmost triangle orientation
 		List<int> reflexIndices = new List<int>();
@@ -159,6 +170,8 @@ public class TriangulatorTest : MonoBehaviour {
 			polygon.Remove(triangle[1]);
 			removedVertices++;
 		}
+
+		Debug.Log("polygon leftovers: "+ polygon.Count);
 
 		float duration = Time.realtimeSinceStartup - time;
 		Debug.Log("triangulation duration: "+ duration);
