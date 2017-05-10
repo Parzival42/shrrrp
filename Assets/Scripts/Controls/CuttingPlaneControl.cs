@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CuttingPlaneControl : MonoBehaviour
@@ -14,28 +13,59 @@ public class CuttingPlaneControl : MonoBehaviour
 
     [SerializeField]
     private float waitForDestruction = 0.8f;
+
+    [FancyHeader("Tween settings")]
+    [SerializeField]
+    private float isoLineTweenTime = 0.6f;
     #endregion
 
     #region Internal variables
     private Camera cam;
+    private IsoLine isoLine;
     private bool isInitialized = false;
     private bool isUsed = false;
     private RigidBodyInput inputHandler;
     private Vector3 rotationWorld = Vector3.zero;
     private Vector3 rotationLocal = Vector3.zero;
     private Vector3 translation = Vector3.zero;
+    private float originalLineCount;
+    private float originalLineAlpha;
     #endregion
 
     private void Start()
     {
         cam = CameraUtil.GetMainCamera();
+
+        // Plane tween
+        Vector3 originalScale = transform.localScale;
+        transform.localScale = Vector3.zero;
+        LeanTween.scale(gameObject, originalScale, isoLineTweenTime).setEase(LeanTweenType.easeOutBack);
+
+        InitializeIsoLine();
     }
 
     private void Update ()
     {
         if (isInitialized)
+        {
             HandleControls();
+            HandleIsoLineParameters();
+        }
 	}
+
+    private void InitializeIsoLine()
+    {
+        isoLine = cam.GetComponent<IsoLine>();
+
+        isoLine.enabled = true;
+        isoLine.OriginPosition = transform.position;
+        originalLineAlpha = isoLine.LineColor.a;
+        originalLineCount = isoLine.LineCount;
+        LeanTween.value(gameObject, 0f, originalLineCount, isoLineTweenTime).setEase(LeanTweenType.easeOutBack)
+            .setOnUpdate((float value) => {
+                isoLine.LineCount = value;
+            });
+    }
 
     private void HandleControls()
     {
@@ -79,6 +109,11 @@ public class CuttingPlaneControl : MonoBehaviour
         transform.Translate(translation * Time.deltaTime, Space.World);
     }
 
+    private void HandleIsoLineParameters()
+    {
+        isoLine.LineDirection = transform.up;
+    }
+
     /// <summary>
     /// This method must be called before this script can do anything.
     /// </summary>
@@ -96,6 +131,18 @@ public class CuttingPlaneControl : MonoBehaviour
     /// </summary>
     private void DestroyPlaneControl()
     {
+        float time = waitForDestruction * 0.5f;
+        LeanTween.scale(gameObject, Vector3.zero, time).setEase(LeanTweenType.easeInBack);
+        LeanTween.value(gameObject, isoLine.LineCount, 20f, time).setEase(LeanTweenType.easeInBack)
+            .setOnUpdate((float value) => {
+                isoLine.LineCount = value;
+            });
+
+        LeanTween.value(gameObject, originalLineAlpha, 0f, time).setEase(LeanTweenType.easeInBack)
+             .setOnUpdate((float value) => {
+                isoLine.LineColor = new Color(isoLine.LineColor.r, isoLine.LineColor.g, isoLine.LineColor.b, value);
+             });
+
         inputHandler.StartCoroutine(WaitForDestruction());
     }
 
@@ -103,6 +150,11 @@ public class CuttingPlaneControl : MonoBehaviour
     {
         yield return new WaitForSeconds(waitForDestruction);
         SetInputHandlerMovemet(true);
+
+        isoLine.enabled = false;
+        isoLine.LineCount = originalLineCount;
+        isoLine.LineColor = new Color(isoLine.LineColor.r, isoLine.LineColor.g, isoLine.LineColor.b, originalLineAlpha);
+
         Destroy(gameObject);
     }
 

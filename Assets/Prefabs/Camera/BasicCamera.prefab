@@ -186,15 +186,18 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1376924146609310}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e10b7ca4ce882d849998c553e54060a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentShader: {fileID: 4800000, guid: 53ca5537a6ccc6a44b487e34fd701d89, type: 3}
-  lineColor: {r: 1, g: 1, b: 1, a: 1}
-  lineThickness: 0.5
-  lineDirection: {x: 0, y: 0, z: 0, w: 0}
+  lineColor: {r: 0, g: 0.6275859, b: 1, a: 0.509}
+  colorExponent: 0.53
+  lineThickness: 0.987
+  lineCount: 7
+  lineDirection: {x: -0.647377, y: -0.12480572, z: 0.7518822, w: 0}
+  fadeOutDistance: 11.5
 --- !u!114 &114629965475056756
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -95,3 +95,4 @@ MonoBehaviour:
   rotationSpeed: 100
   translationSpeed: 5
   waitForDestruction: 1.1
+  isoLineTweenTime: 0.9
