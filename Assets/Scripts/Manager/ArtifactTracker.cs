@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ArtifactTracker : MonoBehaviour
@@ -54,7 +53,7 @@ public class ArtifactTracker : MonoBehaviour
     protected IEnumerator StartRaycast()
     {
         yield return new WaitForSeconds(GetRandomSpawnTime());
-        if (CanSpawnArtifact())
+        if (CanSpawnArtifact() && !IsIntersectionPlaneActive())
         {
             RaycastHit hitInfo;
             if (RandomSphereCast(out hitInfo))
@@ -80,6 +79,12 @@ public class ArtifactTracker : MonoBehaviour
             Debug.LogError("More than one artifacts are not allowed!", gameObject);
             return false;
         } 
+    }
+
+    protected bool IsIntersectionPlaneActive()
+    {
+        GameObject plane = GameObject.FindGameObjectWithTag("IntersectionPlane");
+        return plane == null ? false : true;
     }
 
     protected bool RandomSphereCast(out RaycastHit hitInfo)

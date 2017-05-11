@@ -107,11 +107,11 @@ public class RigidBodyInput : MonoBehaviour
         dashHandler = new RigidBodyDashHandler(this);
     }
 
-	private void Update ()
+    private void Update()
     {
         inputHandler.HandleInput();
         dashHandler.HandleDash();
-	}
+    }
 
     private void SetPlayerAction(StandardPlayerAction newPlayerAction)
     {

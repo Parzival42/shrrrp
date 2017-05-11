@@ -178,7 +178,7 @@ public class RigidBodyInputHandler : InputHandler
 
     private void ApplyMovement(Vector3 movementVector)
     {
-        player.Rigid.MovePosition(player.transform.position + movementVector);
+        player.Rigid.MovePosition(player.transform.position + movementVector * Time.deltaTime);
     }
 
     private void ApplyMovement(float movementSpeed, Vector3 direction)

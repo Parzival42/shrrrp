@@ -1480,7 +1480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c85a26dab80124dbaa99f1cc62dd4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 0.12
+  movementSpeed: 22
   rotationSpeed: 20
   allowMovement: 1
   cameraBasedControl: 1
