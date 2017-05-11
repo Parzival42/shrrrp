@@ -13,9 +13,12 @@ public class ColorOverlay : BaseImageEffect
     public Color OverlayColor { get { return overlayColor; } set { overlayColor = value; } }
     public float OverlayStrength { get { return overlayStrength; } set { overlayStrength = value; } }
 
+    private static readonly string COLOR_OVERLAY = "_ColorOverlay";
+    private static readonly string COLOR_STRENGTH = "_OverlayStrength";
+
     protected override void SetMaterialParameters(Material m)
     {
-        m.SetColor("_ColorOverlay", overlayColor);
-        m.SetFloat("_OverlayStrength", overlayStrength);
+        m.SetColor(COLOR_OVERLAY, overlayColor);
+        m.SetFloat(COLOR_STRENGTH, overlayStrength);
     }
 }

@@ -29,15 +29,24 @@ public class IsoLine : RaycastCornerImageEffect
     public Color LineColor { get { return lineColor; } set { lineColor = value; } }
     public Vector3 OriginPosition { get; set; }
 
+    private static readonly string WORLD_SPACE_CAMERA = "_WorldSpaceCameraPosition";
+    private static readonly string FADE_OUT_DISTANCE = "_FadeOutDistance";
+    private static readonly string WORLD_SPACE_ORIGIN = "_WorldSpaceOrigin";
+    private static readonly string COLOR = "_Color";
+    private static readonly string COLOR_EXPONENT = "_ColorExponent";
+    private static readonly string LINE_THICKNESS = "_LineThickness";
+    private static readonly string LINE_COUNT = "_LineCount";
+    private static readonly string LINE_DIRECTION = "_LineDirection";
+
     protected override void SetMaterialParameters(Material m)
     {
-        m.SetVector("_WorldSpaceCameraPosition", cam.transform.position);
-        m.SetFloat("_FadeOutDistance", fadeOutDistance);
-        m.SetVector("_WorldSpaceOrigin", OriginPosition);
-        m.SetColor("_Color", lineColor);
-        m.SetFloat("_ColorExponent", colorExponent);
-        m.SetFloat("_LineThickness", lineThickness);
-        m.SetFloat("_LineCount", lineCount);
-        m.SetVector("_LineDirection", lineDirection);
+        m.SetVector(WORLD_SPACE_CAMERA, cam.transform.position);
+        m.SetFloat(FADE_OUT_DISTANCE, fadeOutDistance);
+        m.SetVector(WORLD_SPACE_ORIGIN, OriginPosition);
+        m.SetColor(COLOR, lineColor);
+        m.SetFloat(COLOR_EXPONENT, colorExponent);
+        m.SetFloat(LINE_THICKNESS, lineThickness);
+        m.SetFloat(LINE_COUNT, lineCount);
+        m.SetVector(LINE_DIRECTION, lineDirection);
     }
 }

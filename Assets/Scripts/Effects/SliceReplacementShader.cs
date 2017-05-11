@@ -13,9 +13,12 @@ public class SliceReplacementShader : ReplacementShader
     public float SliceThickness { get { return sliceThickness; } set { sliceThickness = value; } }
     public Vector4 SliceDirection { get { return sliceDirection; } set { sliceDirection = value; } }
 
+    private static readonly string SLICE_THICKNESS = "_SliceThickness";
+    private static readonly string SLICE_DIRECTION = "_SliceDirection";
+
     protected override void SetShaderParameters()
     {
-        Shader.SetGlobalFloat("_SliceThickness", sliceThickness);
-        Shader.SetGlobalVector("_SliceDirection", sliceDirection);
+        Shader.SetGlobalFloat(SLICE_THICKNESS, sliceThickness);
+        Shader.SetGlobalVector(SLICE_DIRECTION, sliceDirection);
     }
 }
