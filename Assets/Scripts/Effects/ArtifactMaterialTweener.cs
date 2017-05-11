@@ -22,6 +22,10 @@ public class ArtifactMaterialTweener : MonoBehaviour
     [SerializeField]
     private float emissionDistanceThreshold = 2f;
 
+    [FancyHeader("Tween settings")]
+    [SerializeField]
+    private float startTweenTime = 0.5f;
+
     private static readonly string PARAM_AMOUNT = "_Amount";
     private static readonly string PARAM_EMISSION = "_EmissionStrength";
     private PlayerManager playerManager;
@@ -33,12 +37,20 @@ public class ArtifactMaterialTweener : MonoBehaviour
         playerManager = FindObjectOfType<PlayerManager>();
         playerManager.OnAllPlayersFound += InitPlayers;
         material = GetComponent<Renderer>().material;
+        DoStartTween();
 	}
 
     private void InitPlayers(Player[] players)
     {
         this.players = players;
         playerManager.OnAllPlayersFound -= InitPlayers;
+    }
+
+    private void DoStartTween()
+    {
+        Vector3 originalScale = transform.localScale;
+        transform.localScale = Vector3.zero;
+        LeanTween.scale(gameObject, originalScale, startTweenTime).setEase(LeanTweenType.easeOutBack);
     }
 
 	private void Update ()
