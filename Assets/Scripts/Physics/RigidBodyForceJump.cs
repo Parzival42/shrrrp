@@ -17,7 +17,7 @@ public class RigidBodyForceJump : MonoBehaviour
 
     [FancyHeader("Collision settings")]
     [SerializeField]
-    private int collisionLayer = 8;
+    private LayerMask layerMask;
     #endregion
 
     #region Internal Members
@@ -36,7 +36,7 @@ public class RigidBodyForceJump : MonoBehaviour
         bool hitGround = CheckGround(out hitInfo);
 
         if (hitGround)
-            ApplyForce(hitInfo);
+            ApplyForce(hitInfo); Debug.Log("Hit Ground");
     }
 
     private void ApplyForce(RaycastHit hitInfo)
@@ -53,6 +53,6 @@ public class RigidBodyForceJump : MonoBehaviour
             rigidBodyInput.transform.position + rigidBodyInput.GroundPivotOffset,
             Vector3.down);
 
-        return Physics.Raycast(ray, out hitInfo, rigidBodyInput.GroundedDistance, 1 << collisionLayer);
+        return Physics.Raycast(ray, out hitInfo, rigidBodyInput.GroundedDistance, 1 << layerMask);
     }
 }

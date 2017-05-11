@@ -16,6 +16,9 @@ public abstract class ForceField : MonoBehaviour
 
     [SerializeField]
     private bool debugDraw = false;
+
+    [SerializeField]
+    private LayerMask layerMask;
     #endregion
 
     #region Abstract methods
@@ -58,7 +61,7 @@ public abstract class ForceField : MonoBehaviour
     /// </summary>
     protected virtual void OnTriggerStay(Collider other)
     {
-        if (other.attachedRigidbody)
+        if (other.attachedRigidbody && layerMask == (layerMask | (1 << other.gameObject.layer)))
             ApplyForce(other.attachedRigidbody);
     }
     #endregion

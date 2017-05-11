@@ -1574,7 +1574,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushAwayForce: 0.1
   forceMode: 2
-  collisionLayer: 8
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 2304
 --- !u!120 &120472502679458668
 LineRenderer:
   m_ObjectHideFlags: 1
