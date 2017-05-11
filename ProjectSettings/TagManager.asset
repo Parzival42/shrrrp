@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Spawn
   - CuttingPlane
+  - Artifact
   layers:
   - Default
   - TransparentFX
