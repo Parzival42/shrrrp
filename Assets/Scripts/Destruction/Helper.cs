@@ -93,25 +93,6 @@ public static class Helper {
 	}
 
 
-	/**
-	 * Calculates where a vector is positioned in comparison to another
-	 */
-	 public static int GetRelativePosition(Vector3 reference, Vector3 target){
-		 if(VectorIsIdentical(reference, target)){
-			 return 0;
-		 }
-
-		 if(target.x < reference.x || 
-		 	(FloatIsIdentical(target.x, reference.x) && target.y < reference.y) || 
-			(FloatIsIdentical(target.x, reference.x) && FloatIsIdentical(target.y, reference.y) && target.z < reference.z)){
-
-			return -1;	
-		 }else{
-			 return 1;
-		 }
-	 }
-
-
 	 //mesh util?
 	 public static void FlipTriangles(List<int>[] indices){
 		for(int i = 0; i < indices.Length; i++){

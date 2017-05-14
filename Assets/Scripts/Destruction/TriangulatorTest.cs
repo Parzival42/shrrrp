@@ -175,9 +175,6 @@ public class TriangulatorTest : MonoBehaviour {
 
 		float duration = Time.realtimeSinceStartup - time;
 		Debug.Log("triangulation duration: "+ duration);
-
-		//ShowTriangles(result);
-
 		return result;
     }
 }
