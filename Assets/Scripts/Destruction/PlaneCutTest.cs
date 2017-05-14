@@ -106,9 +106,9 @@ public class PlaneCutTest : MonoBehaviour {
             AssignSplitTriangles(t, d, e, left, right);
 
             if(t.negative){
-                outlinePreparator.Add(e,d);
-            }else{
                 outlinePreparator.Add(d,e);
+            }else{
+                outlinePreparator.Add(e,d);
             }
             
             Debug.DrawLine(d,e);
@@ -116,14 +116,14 @@ public class PlaneCutTest : MonoBehaviour {
             AssignSplitTriangles(t,d,e,right,left);
             
             if(t.negative){
-                outlinePreparator.Add(d,e);
-            }else{
                 outlinePreparator.Add(e,d);
+            }else{
+                outlinePreparator.Add(d,e);
             }
         }
     }
 
-    public void StartSplitInTwo(Plane cuttingPlane, bool set)
+    public void StartSplitInTwo(Plane cuttingPlane, bool set, SlicePhysicsProperties slicePhysicsProperties)
     {
         if (GetComponent<MeshFilter>() != null)
         {
@@ -165,16 +165,12 @@ public class PlaneCutTest : MonoBehaviour {
         //create correct cap polygon
         
         List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
-        capPoints = capOutlinePolygon;
-        Debug.Log("polygon size: "+capOutlinePolygon.Count);
-         if(capPoints != null && capPoints.Count >1){
-           Debug.Log("cap vertices: "+capPoints.Count);
-			for(int i = 0; i < capPoints.Count-1; i++){
-				DebugExtension.DebugArrow(capPoints[i], capPoints[i+1]-capPoints[i], Color.black, 10.0f);
-			}
 
-			DebugExtension.DebugArrow(capPoints[capPoints.Count-1], capPoints[0]-capPoints[capPoints.Count-1], Color.black, 10.0f);
-		}
+       
+
+
+        //capOutlinePolygon.Reverse();
+        
 
 
         //check which plane the polygon vertices should be projected on
@@ -199,11 +195,53 @@ public class PlaneCutTest : MonoBehaviour {
             projectCoordB = 2;
         }
 
-        //Debug.Log("Chosen coords: "+projectCoordA+","+projectCoordB);
+         if(!Helper.IsPolygonClockwise(capOutlinePolygon, projectCoordA, projectCoordB)){
+            capOutlinePolygon.Reverse();
+            Debug.Log("polygon is clockwise, reversed the order");
+         }
 
+
+         capPoints = capOutlinePolygon;
+
+
+        
+        // DebugExtension.DebugArrow(Vector3.zero, Vector3.forward, Color.green, 20.0f);
+        // DebugExtension.DebugArrow(Vector3.zero, cuttingPlane.normal, Color.cyan, 20.0f);
+        // Vector3 rotationAxis = Vector3.Cross(Vector3.forward, cuttingPlane.normal).normalized;
+        // DebugExtension.DebugArrow(Vector3.zero, rotationAxis, Color.red, 20.0f);
+    
+        // float rotationAngle = Mathf.Acos(Vector3.Dot(Vector3.forward, cuttingPlane.normal));
+        // Debug.Log("rotation angle is: "+(rotationAngle*Mathf.Rad2Deg));
+
+        // Quaternion q = Quaternion.AngleAxis(rotationAngle*Mathf.Rad2Deg, rotationAxis);
+
+        // for(int i = 0; i < capPoints.Count; i++){
+
+        //      capPoints[i] = q * capPoints[i];
+        //  }
+       // Debug.Log("polygon size: "+capOutlinePolygon.Count);
+         if(capPoints != null && capPoints.Count >1){
+           //Debug.Log("cap vertices: "+capPoints.Count);
+			for(int i = 0; i < capPoints.Count-1; i++){
+				DebugExtension.DebugArrow(capPoints[i], capPoints[i+1]-capPoints[i], Color.black, 10.0f);
+                DebugExtension.DebugWireSphere(capPoints[i], Color.magenta, 0.05f, 20.0f, false);
+			}
+			DebugExtension.DebugArrow(capPoints[capPoints.Count-1], capPoints[0]-capPoints[capPoints.Count-1], Color.black, 10.0f);
+		}
+
+        // Vector3 next = capOutlinePolygon[Helper.GetNextIndex(capOutlinePolygon, 0)];
+		// //Vector3 prev = capOutlinePolygon[Helper.GetPreviousIndex(capOutlinePolygon, 0)];
+
+        // if(next[projectCoordA] < capOutlinePolygon[0][projectCoordA] || (next[projectCoordA] == capOutlinePolygon[0][projectCoordA] && next[projectCoordB] < capOutlinePolygon[0][projectCoordB])){
+        //     //capOutlinePolygon.Reverse();
+        // }
 
 
         TriangulatorTest triangualtor = GetComponent<TriangulatorTest>();
+
+        //Triangulator t = new Triangulator(capOutlinePolygon);
+        //MeshContainer cap = Triangulator.Triangulate(capOutlinePolygon, projectCoordA, projectCoordB);
+
         MeshContainer cap = triangualtor.Triangulate(capOutlinePolygon, projectCoordA, projectCoordB);
 
 
@@ -220,7 +258,7 @@ public class PlaneCutTest : MonoBehaviour {
             ApplyIndexChange(rightMesh.Indices, vertexPosChange);
             rightMesh = meshMerger.Merge(rightMesh, splitMeshLeft);
             rightMesh = meshMerger.Merge(rightMesh, cap);
-            sliceCreator.CreateSlice(transform, rightMesh, cuttingPlane.normal);
+            sliceCreator.CreateSlice(transform, rightMesh, cuttingPlane.normal, slicePhysicsProperties);
         }
         
         if(leftMesh.Vertices.Count != 0)
@@ -231,7 +269,7 @@ public class PlaneCutTest : MonoBehaviour {
             Helper.FlipTriangles(cap.Indices);
             
             leftMesh = meshMerger.Merge(leftMesh, cap);
-            sliceCreator.CreateSlice(transform, leftMesh, -cuttingPlane.normal);
+            sliceCreator.CreateSlice(transform, leftMesh, -cuttingPlane.normal, slicePhysicsProperties);
         }
 
         Debug.Log("Time needed: "+ (Time.realtimeSinceStartup - startTime));
@@ -244,10 +282,8 @@ public class PlaneCutTest : MonoBehaviour {
     }
 
 	void Update () {
-     
-		
 		if(cut){
-			StartSplitInTwo(new Plane(),false);	
+			StartSplitInTwo(new Plane(),false, new SlicePhysicsProperties());	
 		}
 	}
 

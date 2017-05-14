@@ -143,5 +143,17 @@ public static class Helper {
 	 }
 
 
+	 public static bool IsPolygonClockwise(List<Vector3> vertices, int projectCoordA, int projectCoordB){
+		float sum = 0.0f;
+
+		for(int i = 0; i < vertices.Count; i++){
+			int next = Helper.GetNextIndex(vertices, i);
+			sum += (vertices[next][projectCoordA] - vertices[i][projectCoordA])*(vertices[next][projectCoordB] + vertices[i][projectCoordB]);
+		}
+
+		return sum < 0.0f;
+	 }
+
+
 	#endregion
 }

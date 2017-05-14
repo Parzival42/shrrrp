@@ -27,39 +27,6 @@ public class OutlinePreparator : MonoBehaviour {
 		// 	neighbourData[i].Replace(b);
 		// }	
 	}
-	public void AddVertexConnection(Vector3 a, Vector3 b){
-		AddNeighbour(a,b);
-		AddNeighbour(b,a);		
-		size++;
-	}
-
-	private void AddNeighbour(Vector3 origin, Vector3 neighbour){
-		int index = -1;
-		for(int i = 0; i < neighbourData.Count; i++){
-			if(Helper.VectorIsIdentical(neighbourData[i].Origin, origin)){
-				index = i;	
-			}
-		}
-
-		if(index == -1){			
-			neighbourData.Add(new VertexNeighbourInfo(origin, neighbour));
-			Debug.Log(neighbourData[neighbourData.Count-1].Origin);
-			Debug.Log("new connection");
-
-				
-		}else{
-			neighbourData[index].Neighbours.Add(neighbour);
-			Debug.Log("connection already there");
-		}
-
-		for(int i = 0; i < neighbourData.Count; i++){
-			if(index==-1){
-				neighbourData[i].Replace(origin);
-			}
-			neighbourData[i].Replace(neighbour);
-
-		}	
-	}
 
 	private VertexNeighbourInfo FindNeighbour(Vector3 origin){
 		for(int i = 0; i < neighbourData.Count; i++){
@@ -91,6 +58,9 @@ public class OutlinePreparator : MonoBehaviour {
 		
 			VisualizePolygonFlow(orderedPolygon);
 		}
+
+		
+
 		
 	
 		return orderedPolygon;

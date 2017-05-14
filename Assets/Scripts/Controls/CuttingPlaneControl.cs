@@ -76,10 +76,7 @@ public class CuttingPlaneControl : MonoBehaviour
         {
             isUsed = true;
 
-            // TODO: Cut the shit out of the mesh!
-            Debug.Log("Cut the shit out of the mesh!");
-
-            CuttingManager.CuttingManagerInstance.Cut(transform, GetComponent<MeshFilter>().mesh);
+            CuttingManagerLocator.GetInstance.Cut(transform, GetComponent<MeshFilter>().mesh);
 
             inputHandler.InputController.OnPlayerCutMove();
             DestroyPlaneControl();

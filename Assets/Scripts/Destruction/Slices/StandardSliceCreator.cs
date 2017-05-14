@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class StandardSliceCreator : SliceCreator
 {
-    public override void CreateSlice(Transform original, MeshContainer slice, Vector3 forceDirection)
+    public override void CreateSlice(Transform original, MeshContainer slice, Vector3 forceDirection, SlicePhysicsProperties slicePhysicsProperties)
     {
 		GameObject newSlice = new GameObject(original.gameObject.name+" - slice");
 		

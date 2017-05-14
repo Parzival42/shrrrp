@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TerrainSliceCreator : SliceCreator
 {
-    public override void CreateSlice(Transform original, MeshContainer slice, Vector3 forceDirection)
+    public override void CreateSlice(Transform original, MeshContainer slice, Vector3 forceDirection, SlicePhysicsProperties slicePhysicsProperties)
     {
         GameObject newSlice = new GameObject(original.gameObject.name+" - slice");
 		Transform reference = original.parent;
@@ -37,8 +37,7 @@ public class TerrainSliceCreator : SliceCreator
 		renderer.material = GetComponent<MeshRenderer>().material;
 		filter.sharedMesh.RecalculateBounds();
 
-		MeshCollider collider = newSlice.AddComponent<MeshCollider>();
-		//collider.convex = true;
+		newSlice.AddComponent<MeshCollider>();
 	
 		Rigidbody rigidbody = newSlice.AddComponent<Rigidbody>();
 		rigidbody.mass = 1000;
@@ -64,17 +63,19 @@ public class TerrainSliceCreator : SliceCreator
 
 		Rigidbody parentRigidBody = g.AddComponent<Rigidbody>();
 		parentRigidBody.useGravity = false;
-		parentRigidBody.mass = AssignMass(convexMeshCollider);
-		parentRigidBody.drag = 1.0f;
-		parentRigidBody.angularDrag = 0.25f;
+	
+		parentRigidBody.mass = AssignMass(renderer, slicePhysicsProperties.baseMass);
+		parentRigidBody.drag = slicePhysicsProperties.drag;
+		parentRigidBody.angularDrag = slicePhysicsProperties.angularDrag;
+		parentRigidBody.constraints = slicePhysicsProperties.constraints;
 		parentRigidBody.AddForce(forceDirection*250, ForceMode.Impulse);
 
 		newSlice.transform.parent = g.transform;
     }
 
-    private float AssignMass(MeshCollider collider)
+    private float AssignMass(Renderer renderer, float modifier)
     {
-	    Vector3 size = collider.bounds.size;
-	    return size.x * size.y * size.z * 10;
+	    Vector3 size = renderer.bounds.size;
+	    return size.x * size.y * size.z * modifier;
     }
 }

@@ -54,7 +54,7 @@ public class TriangulatorTest : MonoBehaviour {
 
 		//find the leftmost vertex
 		for(int i = 0; i < polygon.Count; i++){
-			if(polygon[i][projectCoordA] < left[projectCoordA] || (Helper.FloatIsIdentical(polygon[i][projectCoordA], left[projectCoordA])&&(polygon[i][projectCoordB] < left[projectCoordB]))){
+			if(polygon[i][projectCoordA] < left[projectCoordA] || (polygon[i][projectCoordA] == left[projectCoordA] &&(polygon[i][projectCoordB] < left[projectCoordB]))){
 				startIndex = i;
 				left = polygon[startIndex];
 			}
