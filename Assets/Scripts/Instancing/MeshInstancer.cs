@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MeshInstancer : MonoBehaviour
 {
@@ -80,7 +78,10 @@ public class MeshInstancer : MonoBehaviour
 	private void Update ()
     {
         Graphics.DrawMeshInstanced(mesh, 0, material, matrices);
-        DebugExtension.DebugLocalCube(transform, new Vector3(spawnPlane.x, 0.1f, spawnPlane.y));
+#if UNITY_EDITOR
+        Bounds b = new Bounds(transform.position, new Vector3(spawnPlane.x, 0.1f, spawnPlane.y));
+        DebugExtension.DebugBounds(b);
+#endif
         UpdateTransformations();
 	}
 
