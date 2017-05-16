@@ -235,8 +235,8 @@ MonoBehaviour:
   OcclusionColor: {r: 0, g: 0, b: 0, a: 1}
   CutoffDistance: 150
   CutoffFalloff: 50
-  Blur: 2
-  BlurDownsampling: 0
+  Blur: 1
+  BlurDownsampling: 1
   BlurPasses: 1
   BlurBilateralThreshold: 10
   DebugAO: 0

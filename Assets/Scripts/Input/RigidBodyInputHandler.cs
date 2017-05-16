@@ -178,13 +178,7 @@ public class RigidBodyInputHandler : InputHandler
 
     private void ApplyMovement(Vector3 movementVector)
     {
-        //player.Rigid.MovePosition(player.transform.position + movementVector);
-        player.Rigid.position = player.Rigid.position + movementVector;
-    }
-
-    private void ApplyMovement(float movementSpeed, Vector3 direction)
-    {
-        ApplyMovement(direction * movementSpeed);
+        player.Rigid.MovePosition(player.transform.position + movementVector);
     }
 
     private bool CheckPlayerGrounded()

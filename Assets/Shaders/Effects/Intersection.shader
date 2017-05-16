@@ -29,7 +29,7 @@
       #include "UnityCG.cginc"
       #include "../Includes/Noise.cginc"
  
-      uniform sampler2D_float _CameraDepthTexture; //Depth Texture
+      uniform sampler2D _CameraDepthTexture; //Depth Texture
       sampler2D _MainTexture;
       fixed _ScreenSpaceTexture;
       sampler2D _EdgeNoise;

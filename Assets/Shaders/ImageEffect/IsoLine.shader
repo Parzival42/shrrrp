@@ -23,7 +23,7 @@
 
 			sampler2D _MainTex;
 			float4 _MainTex_TexelSize;
-			uniform sampler2D_float _CameraDepthTexture;
+			uniform sampler2D _CameraDepthTexture;
 			half4 _Color;
 			half _ColorExponent;
 			half _LineThickness;
