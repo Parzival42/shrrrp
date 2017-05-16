@@ -88,7 +88,7 @@ public class RigidBodyDashHandler : DashHandler
     private void AddForce(Vector3 forceVector)
     {
         player.Rigid.velocity = Vector3.zero;
-
+        
         dashTween = LeanTween.value(player.gameObject, player.transform.position, player.transform.position + forceVector, player.DashTime)
             .setOnUpdate((Vector3 value) => {
                 player.Rigid.MovePosition(value);
