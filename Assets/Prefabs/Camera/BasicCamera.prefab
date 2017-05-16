@@ -226,7 +226,7 @@ MonoBehaviour:
   NoiseTexture: {fileID: 2800000, guid: 45ca7cd7d934d6245bb4539f780e4892, type: 3}
   UseHighPrecisionDepthMap: 0
   Samples: 2
-  Downsampling: 1
+  Downsampling: 2
   Radius: 0.211
   Intensity: 2.6
   Distance: 1.18
