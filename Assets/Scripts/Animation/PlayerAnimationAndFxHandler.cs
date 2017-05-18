@@ -32,6 +32,12 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
     [SerializeField]
     private ParticleSystem swooshParticle;
 
+    [SerializeField]
+    private ParticleSystem dashPlayerCollisionParticle;
+
+    [SerializeField]
+    private ParticleSystem dashWallCollisionParticle;
+
     [FancyHeader("Player Sounds")]
     [SerializeField]
     private AudioClip dashClip;
@@ -225,11 +231,27 @@ public class PlayerAnimationAndFxHandler : MonoBehaviour
 
      private void HandleDashCollision(GameObject player, GameObject other)
     {
+
         // Dash Camera Shake
-        if(other.tag.Equals(PLAYER_TAG))
+        if (other.tag.Equals(PLAYER_TAG))
+        {
+            Vector3 particlePosition = other.transform.position + Vector3.up * 0.6f;
             CameraUtil.DirectionalShake(cam, player.transform, dashShakePlayer, dashTimePlayer);
+            if (dashPlayerCollisionParticle != null)
+            {
+                ParticleSystem g = Instantiate(dashPlayerCollisionParticle, particlePosition, dashPlayerCollisionParticle.transform.rotation) as ParticleSystem;
+                g.transform.forward = player.transform.forward;
+            }
+        }
         else
+        {
             CameraUtil.DirectionalShake(cam, player.transform, dashShakeWall, dashTimeWall);
+            if (dashWallCollisionParticle != null)
+            {
+                //ParticleSystem g = Instantiate(dashWallCollisionParticle, transform.position, dashPlayerCollisionParticle.transform.rotation) as ParticleSystem;
+                //g.transform.forward = player.transform.forward;
+            }
+        }
 
         // Sound
         if (collideClip != null)

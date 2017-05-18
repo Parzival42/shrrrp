@@ -1410,6 +1410,10 @@ MonoBehaviour:
   landedParticles: {fileID: 198652094387334740, guid: c3d9e87471fdaad4bb3fb1c483879f32,
     type: 2}
   swooshParticle: {fileID: 198646784025651110}
+  dashPlayerCollisionParticle: {fileID: 198333039742260386, guid: c3a0be3c5aa34f04b8b768df616d1b3d,
+    type: 2}
+  dashWallCollisionParticle: {fileID: 198763891291753220, guid: 4f977458853475a458cd3e10fa84e6b1,
+    type: 2}
   dashClip: {fileID: 8300000, guid: f256bda1bb4775b4ba38b08c653ee8af, type: 3}
   dashPitch: 0.8
   dashVolume: 1
