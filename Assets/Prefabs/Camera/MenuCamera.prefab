@@ -40,13 +40,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1183386548345456}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.060576677, y: -0, z: -0, w: 0.9981636}
+  m_LocalPosition: {x: 0, y: -49.7, z: 12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.946, y: 0, z: 0}
 --- !u!20 &20173375361227486
 Camera:
   m_ObjectHideFlags: 1
@@ -77,7 +77,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentShader: {fileID: 4800000, guid: 53ca5537a6ccc6a44b487e34fd701d89, type: 3}
-  lineColor: {r: 0, g: 0.6275859, b: 1, a: 0.509}
+  lineColor: {r: 0, g: 0.6275859, b: 1, a: 0}
   colorExponent: 0.53
   lineThickness: 0.987
   lineCount: 7
@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: c4efc989f9399634f8d15a5dc303adeb, type: 2}
+  profile: {fileID: 11400000, guid: ed2a79c9c2c59d341b4451a314d6bf15, type: 2}
 --- !u!114 &114696828797055356
 MonoBehaviour:
   m_ObjectHideFlags: 1
