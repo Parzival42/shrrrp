@@ -15,3 +15,4 @@ MonoBehaviour:
   drag: 0.1
   angularDrag: 1
   constraints: 0
+  physicMaterial: {fileID: 13400000, guid: 3608122b41850cc4dac5d16e93e518f3, type: 2}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class OutlinePreparator : MonoBehaviour {
+public class OutlinePreparator{
 
 	private List<Vector3> addedVertices = new List<Vector3>();
 

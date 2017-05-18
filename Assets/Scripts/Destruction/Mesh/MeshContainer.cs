@@ -42,8 +42,43 @@ public class MeshContainer {
 		uvs = new List<Vector2>();
 	}
 
-	public MeshContainer(): this(1){}
+	public MeshContainer(Mesh mesh, bool deepCopy){
+		if(deepCopy){
+			DeepCopy(mesh);
+		}else{
+			ShallowCopy(mesh);
+		}
+	}
 
+	private void DeepCopy(Mesh mesh){
+		vertices = new List<Vector3>();
+		vertices.AddRange(mesh.vertices);
+
+		normals = new List<Vector3>();
+		normals.AddRange(mesh.normals);
+
+		uvs = new List<Vector2>();
+		uvs.AddRange(mesh.uv);
+
+		indices = new List<int>[mesh.subMeshCount];
+		for(int i = 0; i < mesh.subMeshCount; i++){
+			indices[i] = new List<int>();
+			indices[i].AddRange(mesh.GetIndices(i));
+		}
+	}
+
+	private void ShallowCopy(Mesh mesh){
+		mesh.GetVertices(vertices);
+		mesh.GetNormals(normals);
+		mesh.GetUVs(0, uvs);
+		
+		indices = new List<int>[mesh.subMeshCount];
+		for(int i = 0; i < mesh.subMeshCount; i++){
+			indices[i].AddRange(mesh.GetIndices(i));
+		}
+	}
+
+	public MeshContainer(): this(1){}
 
 	public Mesh GetMesh(){
 		Mesh mesh = new Mesh();

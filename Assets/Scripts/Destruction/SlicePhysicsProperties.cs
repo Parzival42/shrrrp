@@ -6,5 +6,6 @@ public class SlicePhysicsProperties : ScriptableObject {
 	public float drag = 0.1f;
 	public float angularDrag = 0.05f;
 	public RigidbodyConstraints constraints;
+	public PhysicMaterial physicMaterial;
 
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using CielaSpike;
 using UnityEngine;
 
 public class StandardCuttingManager : MonoBehaviour, CuttingManager {
@@ -38,8 +39,10 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 				go.AddComponent<FlatMeshMerger>();
 				pct = go.AddComponent<PlaneCutTest>();				
 			}
-
-			pct.StartSplitInTwo(cuttingPlane, true, sliceProperties);
+			
+			//Task task;
+			//this.StartCoroutineAsync(pct.CuttingCoroutine(cuttingPlane, new MeshContainer(go.GetComponent<MeshFilter>().mesh, true), sliceProperties), out task);
+			pct.StartSplitInTwo(cuttingPlane, new MeshContainer( go.GetComponent<MeshFilter>().mesh, true), sliceProperties);
 		}
 	}
 }
