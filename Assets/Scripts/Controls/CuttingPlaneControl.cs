@@ -76,6 +76,7 @@ public class CuttingPlaneControl : MonoBehaviour
         {
             isUsed = true;
 
+            TimeUtil.TimescalePingPong(0.1f, 0.2f, LeanTweenType.easeInOutCubic);
             CuttingManagerLocator.GetInstance.Cut(transform, GetComponent<MeshFilter>().mesh);
 
             inputHandler.InputController.OnPlayerCutMove();

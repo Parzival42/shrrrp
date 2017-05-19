@@ -14,7 +14,9 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: be7ba667b9b81e64b9feed2d83158a8f
+    name: Pitch
   m_AudioMixerGroupViews:
   - guids:
     - 2476db86cc0da83459e7d323982421bc
@@ -42,7 +44,7 @@ AudioMixerGroupController:
   m_Pitch: be7ba667b9b81e64b9feed2d83158a8f
   m_Effects:
   - {fileID: 24400004}
-  m_UserColorIndex: 0
+  m_UserColorIndex: 1
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
@@ -68,6 +70,7 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 7156a5b991833b34daaa7be2adba786d
   m_FloatValues:
+    e08438e7792fedf4b8959037e517557b: 1
     d068e2b9ed18ba74589a050d3416c2dd: -25
   m_TransitionOverrides: {}
 --- !u!243 &243448004683601750
