@@ -107,6 +107,23 @@ public class RigidBodyInput : MonoBehaviour
         dashHandler = new RigidBodyDashHandler(this);
     }
 
+    private void Start()
+    {
+        StartSpawnTween();
+    }
+
+    private void StartSpawnTween()
+    {
+        // Scale tween
+        transform.localScale = Vector3.zero;
+        LeanTween.scale(gameObject, Vector3.one, 0.5f).setEase(LeanTweenType.easeOutBack);
+
+        // Position tween (Falling down)
+        float originalY = transform.position.y;
+        transform.position = new Vector3(transform.position.x, transform.position.y + 6f, transform.position.z);
+        LeanTween.moveY(gameObject, originalY, 0.25f).setEase(LeanTweenType.easeOutQuad);
+    }
+
     private void Update()
     {
         dashHandler.HandleDash();

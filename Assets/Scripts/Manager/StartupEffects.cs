@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
+public delegate void StartupEventHandler();
 
 public class StartupEffects : MonoBehaviour
 {
@@ -36,11 +36,17 @@ public class StartupEffects : MonoBehaviour
 
     #region Internal members
     private Camera cam;
+    public event StartupEventHandler OnStartupFinished;
     #endregion
 
     private void Start()
     {
         cam = CameraUtil.GetMainCamera();
+        StartEffects();
+    }
+
+    private void StartEffects()
+    {
         StartIntroSliceEffect();
         StartFovEffect();
         StartColorOverlay();
@@ -69,6 +75,7 @@ public class StartupEffects : MonoBehaviour
             }).setLoopClamp().setLoopPingPong(1).setDelay(sliceTime * 0.5f)
             .setOnComplete(() => {
                 LeanTween.reset();
+                OnStartupFinish();
             });
     }
 
@@ -86,5 +93,11 @@ public class StartupEffects : MonoBehaviour
             .setOnComplete(() => {
                 overlay.enabled = false;
             });
+    }
+
+    protected void OnStartupFinish()
+    {
+        if (OnStartupFinished != null)
+            OnStartupFinished();
     }
 }

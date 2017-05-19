@@ -23,6 +23,18 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Start ()
     {
+        StartupEffects startupEffects = FindObjectOfType<StartupEffects>();
+        if (startupEffects != null)
+            startupEffects.OnStartupFinished += PerformPlayerSpawn;
+        else
+        {
+            Debug.Log("No <b>StartupEffects</b> script foud -> Spawn player without delay", gameObject);
+            PerformPlayerSpawn();
+        }
+	}
+
+    private void PerformPlayerSpawn()
+    {
         // Only run this script if the level is started withouth menu cycle
         if (IsLevelStartedDirectlyInEditor())
         {
@@ -30,7 +42,7 @@ public class PlayerSpawner : MonoBehaviour
             Initialize();
             SpawnPlayersAtSpawnPoints();
         }
-	}
+    }
 
     private void Initialize()
     {
