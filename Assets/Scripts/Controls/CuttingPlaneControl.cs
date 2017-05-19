@@ -76,12 +76,18 @@ public class CuttingPlaneControl : MonoBehaviour
         {
             isUsed = true;
 
+            PositionPlayerWhenDuringCut();
             TimeUtil.TimescalePingPong(0.1f, 0.2f, LeanTweenType.easeInOutCubic);
             CuttingManagerLocator.GetInstance.Cut(transform, GetComponent<MeshFilter>().mesh);
 
             inputHandler.InputController.OnPlayerCutMove();
             DestroyPlaneControl();
         }
+    }
+
+    private void PositionPlayerWhenDuringCut()
+    {
+        LeanTween.moveY(inputHandler.gameObject, inputHandler.transform.position.y + 3.5f, 0.36f).setEase(LeanTweenType.easeOutExpo);
     }
 
     private void HandleRotation()
@@ -119,6 +125,8 @@ public class CuttingPlaneControl : MonoBehaviour
     {
         inputHandler = input;
         transform.up = inputHandler.transform.right;
+        input.Rigid.useGravity = false;
+        input.Rigid.velocity = Vector3.zero;
 
         SetInputHandlerMovemet(false);
         isInitialized = true;
@@ -141,6 +149,7 @@ public class CuttingPlaneControl : MonoBehaviour
                 isoLine.LineColor = new Color(isoLine.LineColor.r, isoLine.LineColor.g, isoLine.LineColor.b, value);
              });
 
+        inputHandler.Rigid.useGravity = true;
         inputHandler.StartCoroutine(WaitForDestruction());
     }
 
