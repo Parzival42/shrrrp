@@ -41,7 +41,15 @@ public class PlayerManager : MonoBehaviour
     private void Start ()
     {
         OnPlayerDied += HandlePlayerDeath;
-        FindAllPlayers();
+
+        StartupEffects startupEffects = FindObjectOfType<StartupEffects>();
+        if (startupEffects != null)
+            startupEffects.OnStartupFinished += FindAllPlayers;
+        else
+        {
+            Debug.Log("No <b>StartupEffects</b> script found.", gameObject);
+            FindAllPlayers();
+        }
 	}
 
     /// <summary>
