@@ -3,11 +3,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Prime31.TransitionKit;
 
-public abstract class BaseMenu : MonoBehaviour {
+public class BaseMenu : MonoBehaviour {
 
 	
     [SerializeField]
     private Shader transitionShader;
+
+	[SerializeField]
+	public GameObject cuttingPlane;
 
 	/// <summary>
 	/// Performs the switch to next scene.
@@ -17,7 +20,15 @@ public abstract class BaseMenu : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Performs the switch to previous level or exits the game.
+	/// Performs the switch to next scene and cuts with a given cutting GameObject.
+	/// </summary>
+	public virtual void CutAndLoadNextLevel(string levelName){
+		//CuttingManagerLocator.GetInstance.Cut(cuttingPlane.transform, cuttingPlane.GetComponent<MeshFilter>().mesh);
+		PerformSceneSwitch(levelName);
+	}
+
+	/// <summary>
+	/// Performs the switch to previous scene or exits the game.
 	/// </summary>
 	public virtual void LoadPreviousLevel(string levelName){
 		PerformSceneSwitch(levelName);

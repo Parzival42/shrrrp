@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class MainMenu : BaseMenu {
 
+	[SerializeField]
+	private GameObject menuEnvironment;
+
 	void Start () {
 
 		// Find the MenuSelectionContainer and reset it OR initialize it if not found
@@ -15,6 +18,9 @@ public class MainMenu : BaseMenu {
 			containerObject.name = "MenuSelectionContainer";
 			containerObject.AddComponent(typeof(MenuSelectionContainer));
 		}
+
+		// Clouds should stay when loading next scene
+		DontDestroyOnLoad(menuEnvironment);
 	}
 
 	/// <summary>
