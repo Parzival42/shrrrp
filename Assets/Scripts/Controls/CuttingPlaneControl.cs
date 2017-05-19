@@ -127,6 +127,7 @@ public class CuttingPlaneControl : MonoBehaviour
         transform.up = inputHandler.transform.right;
         input.Rigid.useGravity = false;
         input.Rigid.velocity = Vector3.zero;
+        input.Rigid.constraints = RigidbodyConstraints.FreezeAll;
 
         SetInputHandlerMovemet(false);
         isInitialized = true;
@@ -148,6 +149,9 @@ public class CuttingPlaneControl : MonoBehaviour
              .setOnUpdate((float value) => {
                 isoLine.LineColor = new Color(isoLine.LineColor.r, isoLine.LineColor.g, isoLine.LineColor.b, value);
              });
+
+        inputHandler.Rigid.constraints = RigidbodyConstraints.None;
+        inputHandler.Rigid.constraints = RigidbodyConstraints.FreezeRotation;
 
         inputHandler.Rigid.useGravity = true;
         inputHandler.StartCoroutine(WaitForDestruction());
