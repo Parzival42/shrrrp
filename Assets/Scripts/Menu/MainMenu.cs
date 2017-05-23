@@ -5,6 +5,9 @@ public class MainMenu : BaseMenu {
 
 	[SerializeField]
 	private GameObject menuEnvironment;
+	
+	[SerializeField]
+	public GameObject cuttingPlane;
 
 	void Start () {
 
@@ -28,6 +31,14 @@ public class MainMenu : BaseMenu {
 	/// </summary>
 	public override void LoadPreviousLevel(string levelName){
 		Application.Quit();
+	}
+
+	/// <summary>
+	/// Loads the next scene and cuts the given mesh.
+	/// </summary>
+	public override void LoadNextLevel(string levelName){
+		//CuttingManagerLocator.GetInstance.Cut(cuttingPlane.transform, cuttingPlane.GetComponent<MeshFilter>().mesh);
+		base.LoadNextLevel(levelName);
 	}
 	
 }

@@ -21,13 +21,10 @@ public class LevelButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 	private GameObject sphere;
 	private GameObject plane;
 	private MenuSelectionContainer menuSelectionContainer;
-	private BaseMenu baseMenu;
 
 	void Start(){
 		menuSelectionContainer = (MenuSelectionContainer)FindObjectOfType(typeof(MenuSelectionContainer));
-		baseMenu = (BaseMenu)FindObjectOfType(typeof(BaseMenu));
 		sphere = GetComponentsInChildren<Transform>()[1].gameObject;
-		plane =  GetComponentsInChildren<Transform>()[2].gameObject;
 		initScale = sphere.transform.localScale;
 	}
 
@@ -35,8 +32,6 @@ public class LevelButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
 		// Fill level name in MenuSelectionContainer
 		menuSelectionContainer.levelName = gameObject.name;
-		// Choose the cutting plane for the scene switch
-		baseMenu.cuttingPlane = plane;
 		
         LeanTween.scale(sphere, initScale * scaleFactor, tweenDuration).setEase(easeTypeSelect);
     }

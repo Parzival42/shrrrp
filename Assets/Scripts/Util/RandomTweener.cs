@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-[RequireComponent(typeof(RectTransform))]
 public class RandomTweener : MonoBehaviour
 {
     [SerializeField]
@@ -39,23 +37,35 @@ public class RandomTweener : MonoBehaviour
 
 	private void Start ()
     {
+        Transform transf = transform;
         RectTransform rect = GetComponent<RectTransform>();
+        if(rect != null)
+            transf = rect;
 
-        if(enablePositionTweenX)
-            LeanTween.moveX(rect, rect.anchoredPosition.x + posOffset, posTime).setLoopPingPong().setEase(easeType);
+        if(enablePositionTweenX){
+            if(rect != null)
+                LeanTween.moveX(rect, rect.anchoredPosition.x + posOffset, posTime).setLoopPingPong().setEase(easeType);
+            else
+                LeanTween.moveX(gameObject, transform.position.x + posOffset, posTime).setLoopPingPong().setEase(easeType);
+        }
 
-        if(enablePositionTweenY)
-            LeanTween.moveY(rect, rect.anchoredPosition.y + posOffset, posTime * 0.8f).setLoopPingPong().setEase(easeType);
+        if(enablePositionTweenY){
+            if(rect != null)
+                LeanTween.moveY(rect, rect.anchoredPosition.y + posOffset, posTime * 0.8f).setLoopPingPong().setEase(easeType);
+            else
+                LeanTween.moveY(gameObject, transform.position.y + posOffset, posTime * 0.8f).setLoopPingPong().setEase(easeType);
+        }
+
 
         if(enableScaleTween){
-		    LeanTween.scaleX(gameObject, rect.localScale.x * scaleFactor, scaleTime).setLoopPingPong().setEase(easeType);
-            LeanTween.scaleY(gameObject, rect.localScale.x * scaleFactor, scaleTime * 0.8f).setLoopPingPong().setEase(easeType);
-		    LeanTween.scaleZ(gameObject, rect.localScale.z * scaleFactor, scaleTime * 0.6f).setLoopPingPong().setEase(easeType);
+		    LeanTween.scaleX(gameObject, transf.localScale.x * scaleFactor, scaleTime).setLoopPingPong().setEase(easeType);
+            LeanTween.scaleY(gameObject, transf.localScale.x * scaleFactor, scaleTime * 0.8f).setLoopPingPong().setEase(easeType);
+		    LeanTween.scaleZ(gameObject, transf.localScale.z * scaleFactor, scaleTime * 0.6f).setLoopPingPong().setEase(easeType);
         }
         
         if(enableRotationTween){
-		    LeanTween.rotateX(gameObject, rect.localEulerAngles.x + rotOffset, rotTime).setLoopPingPong().setEase(easeType);
-            LeanTween.rotateY(gameObject, rect.localEulerAngles.y + rotOffset, rotTime * 0.6f).setLoopPingPong().setEase(easeType);
+		    LeanTween.rotateX(gameObject, transf.localEulerAngles.x + rotOffset, rotTime).setLoopPingPong().setEase(easeType);
+            LeanTween.rotateY(gameObject, transf.localEulerAngles.y + rotOffset, rotTime * 0.6f).setLoopPingPong().setEase(easeType);
         }
     }
 }

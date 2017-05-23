@@ -9,21 +9,10 @@ public class BaseMenu : MonoBehaviour {
     [SerializeField]
     private Shader transitionShader;
 
-	[SerializeField]
-	public GameObject cuttingPlane;
-
 	/// <summary>
 	/// Performs the switch to next scene.
 	/// </summary>
 	public virtual void LoadNextLevel(string levelName){
-		PerformSceneSwitch(levelName);
-	}
-
-	/// <summary>
-	/// Performs the switch to next scene and cuts with a given cutting GameObject.
-	/// </summary>
-	public virtual void CutAndLoadNextLevel(string levelName){
-		//CuttingManagerLocator.GetInstance.Cut(cuttingPlane.transform, cuttingPlane.GetComponent<MeshFilter>().mesh);
 		PerformSceneSwitch(levelName);
 	}
 
