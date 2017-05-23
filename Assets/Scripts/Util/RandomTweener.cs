@@ -25,6 +25,9 @@ public class RandomTweener : MonoBehaviour
 	 [SerializeField]
     private float scaleTime = 0.8f;
 
+     [SerializeField]
+    private bool enableRotationTween = true;
+
 	[SerializeField]
     private float rotOffset = 0.2f;
 
@@ -50,7 +53,9 @@ public class RandomTweener : MonoBehaviour
 		    LeanTween.scaleZ(gameObject, rect.localScale.z * scaleFactor, scaleTime * 0.6f).setLoopPingPong().setEase(easeType);
         }
         
-		LeanTween.rotateX(gameObject, rect.localEulerAngles.x + rotOffset, rotTime).setLoopPingPong().setEase(easeType);
-        LeanTween.rotateY(gameObject, rect.localEulerAngles.y + rotOffset, rotTime * 0.6f).setLoopPingPong().setEase(easeType);
+        if(enableRotationTween){
+		    LeanTween.rotateX(gameObject, rect.localEulerAngles.x + rotOffset, rotTime).setLoopPingPong().setEase(easeType);
+            LeanTween.rotateY(gameObject, rect.localEulerAngles.y + rotOffset, rotTime * 0.6f).setLoopPingPong().setEase(easeType);
+        }
     }
 }
