@@ -7,7 +7,7 @@ using InControl;
 /// assignment for development in order to start the scene normally with
 /// controls.
 /// </summary>
-public class PlayerSpawner : MonoBehaviour
+public class PlayerSpawnerEditor : MonoBehaviour
 {
     [Comment("The PlayerSpawner is only a script for development. It only spawns when you directly start playing in a level.", 15)]
     [FancyHeader("Assign Slots", "Player/Controller assignment")]
@@ -28,7 +28,7 @@ public class PlayerSpawner : MonoBehaviour
             startupEffects.OnStartupFinished += PerformPlayerSpawn;
         else
         {
-            Debug.Log("No <b>StartupEffects</b> script foud -> Spawn player without delay", gameObject);
+            Debug.Log("No <b>StartupEffects</b> script found -> Spawn player without delay", gameObject);
             PerformPlayerSpawn();
         }
 	}
@@ -38,7 +38,7 @@ public class PlayerSpawner : MonoBehaviour
         // Only run this script if the level is started withouth menu cycle
         if (IsLevelStartedDirectlyInEditor())
         {
-            Debug.Log("Direct Editor level start! Spawn players via PlayerSpawner.", gameObject);
+            Debug.Log("Direct Editor level start! Spawn players via <b>PlayerSpawner</b>.", gameObject);
             Initialize();
             SpawnPlayersAtSpawnPoints();
         }
