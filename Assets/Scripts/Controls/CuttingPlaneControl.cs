@@ -17,6 +17,10 @@ public class CuttingPlaneControl : MonoBehaviour
     [FancyHeader("Tween settings")]
     [SerializeField]
     private float isoLineTweenTime = 0.6f;
+
+    [FancyHeader("Cut effect parameters")]
+    [SerializeField]
+    private CuttingEffectParameters cutEffectParams;
     #endregion
 
     #region Internal variables
@@ -76,8 +80,9 @@ public class CuttingPlaneControl : MonoBehaviour
         {
             isUsed = true;
 
-            PositionPlayerWhenDuringCut();
-            TimeUtil.TimescalePingPong(0.1f, 0.2f, LeanTweenType.easeInOutCubic);
+            PositionPlayerDuringCut();
+            TimeUtil.TimescalePingPong(cutEffectParams.timeDestination, cutEffectParams.timeEffectDuration, cutEffectParams.timeEase);
+            CameraUtil.FovPingPong(cam, cam.fieldOfView, cam.fieldOfView + cutEffectParams.fovAdd, cutEffectParams.fovTime, cutEffectParams.fovEase);
             CuttingManagerLocator.GetInstance.Cut(transform, GetComponent<MeshFilter>().mesh);
 
             inputHandler.InputController.OnPlayerCutMove();
@@ -85,9 +90,9 @@ public class CuttingPlaneControl : MonoBehaviour
         }
     }
 
-    private void PositionPlayerWhenDuringCut()
+    private void PositionPlayerDuringCut()
     {
-        LeanTween.moveY(inputHandler.gameObject, inputHandler.transform.position.y + 3.5f, 0.36f).setEase(LeanTweenType.easeOutExpo);
+        LeanTween.moveY(inputHandler.gameObject, inputHandler.transform.position.y + cutEffectParams.playerHeightOffset, cutEffectParams.playerTime).setEase(cutEffectParams.playerEase);
     }
 
     private void HandleRotation()

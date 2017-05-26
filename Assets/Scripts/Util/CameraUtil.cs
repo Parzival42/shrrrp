@@ -84,4 +84,15 @@ public class CameraUtil
                 .setLoopClamp()
                 .setLoopPingPong(1);
     }
+
+    /// <summary>
+    /// Tweens the fov of the given camera to the given value and back again.
+    /// </summary>
+    public static void FovPingPong(Camera cam, float fromFov, float toFov, float time, LeanTweenType easeType)
+    {
+        LeanTween.value(cam.gameObject, fromFov, toFov, time).setEase(easeType)
+            .setOnUpdate((float value) => {
+                cam.fieldOfView = value;
+            }).setLoopClamp().setLoopPingPong(1);
+    }
 }
