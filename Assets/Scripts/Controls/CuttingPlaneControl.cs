@@ -12,6 +12,9 @@ public class CuttingPlaneControl : MonoBehaviour
     private float translationSpeed = 100f;
 
     [SerializeField]
+    private float maxZRotationOffset = 50f;
+
+    [SerializeField]
     private float waitForDestruction = 0.8f;
 
     [FancyHeader("Tween settings")]
@@ -99,6 +102,7 @@ public class CuttingPlaneControl : MonoBehaviour
     {
         float xRotation = inputHandler.PlayerAction.Move.X * rotationSpeed;
         float yRotation = -inputHandler.PlayerAction.Move.Y * rotationSpeed;
+
         rotationWorld.Set(0f, xRotation, 0f);
 
         rotationLocal.Set(0f, 0f, yRotation);
@@ -106,16 +110,9 @@ public class CuttingPlaneControl : MonoBehaviour
         transform.Rotate(rotationWorld * Time.deltaTime, Space.World);
         transform.Rotate(rotationLocal * Time.deltaTime, Space.Self);
 
+        // Clamp angles
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, MathUtil.ClampAngle(transform.localEulerAngles.z, 270f - maxZRotationOffset, 270f + maxZRotationOffset));
         inputHandler.transform.Rotate(Vector3.up, xRotation * Time.deltaTime);
-    }
-
-    private void HandleTranslation()
-    {
-        // TODO: Translate to local x and z direction, but with a projected direction on the world x-z plane
-        translation.Set(inputHandler.PlayerAction.RightStick.Y * translationSpeed, 0f, -inputHandler.PlayerAction.RightStick.X * translationSpeed);
-
-        translation = Vector3.ProjectOnPlane(translation, Vector3.up);
-        transform.Translate(translation * Time.deltaTime, Space.World);
     }
 
     private void HandleIsoLineParameters()
