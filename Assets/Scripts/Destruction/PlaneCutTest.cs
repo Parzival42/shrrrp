@@ -42,19 +42,20 @@ public class PlaneCutTest : MonoBehaviour {
 
     private OutlinePreparator outlinePreparator;
 
-    private List<Vector3> capPoints;
-
     private MeshContainer cap;
 
-    private void AssignSplitTriangles(ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor){
-        minor.Vertices.Add(transform.InverseTransformPoint(t.a));
-        minor.Vertices.Add(transform.InverseTransformPoint(d));
-        minor.Vertices.Add(transform.InverseTransformPoint(e));
+    private Matrix4x4 worldToLocal;
+    private Matrix4x4 localToWorld;
+
+    private void AssignSplitTriangles(Matrix4x4 worldToLocalMatrix, ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor){
+        minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(t.a));
+        minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(d));
+        minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(e));
         
-        major.Vertices.Add(transform.InverseTransformPoint(d));
-        major.Vertices.Add(transform.InverseTransformPoint(e));
-        major.Vertices.Add(transform.InverseTransformPoint(t.c));
-        major.Vertices.Add(transform.InverseTransformPoint(t.b));
+        major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(d));
+        major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(e));
+        major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(t.c));
+        major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(t.b));
 
         if(t.negative){
             minor.Indices[0].Add(minor.Vertices.Count-1);
@@ -108,7 +109,7 @@ public class PlaneCutTest : MonoBehaviour {
         bool leftMajor = (t.aLeft && t.bLeft) || (t.aLeft && t.cLeft) || (t.bLeft && t.cLeft) ? true : false; 
 
         if(leftMajor){
-            AssignSplitTriangles(t, d, e, left, right);
+            AssignSplitTriangles(worldToLocal, t, d, e, left, right);
 
             if(t.negative){
                 outlinePreparator.Add(d,e);
@@ -116,9 +117,8 @@ public class PlaneCutTest : MonoBehaviour {
                 outlinePreparator.Add(e,d);
             }
             
-            Debug.DrawLine(d,e);
         }else{
-            AssignSplitTriangles(t,d,e,right,left);
+            AssignSplitTriangles(worldToLocal, t,d,e,right,left);
             
             if(t.negative){
                 outlinePreparator.Add(e,d);
@@ -129,8 +129,15 @@ public class PlaneCutTest : MonoBehaviour {
     }
 
     public IEnumerator CuttingCoroutine(Plane cuttingPlane, MeshContainer mesh, SlicePhysicsProperties slicePhysicsProperties){
-        // yield return Ninja.JumpToUnity;
+        yield return Ninja.JumpToUnity;
 
+        localToWorld = transform.localToWorldMatrix;
+        worldToLocal = transform.worldToLocalMatrix;
+
+        sliceCreator = GetComponent<SliceCreator>();
+        meshMerger = GetComponent<MeshMerger>();
+
+        yield return Ninja.JumpBack;
         // if (GetComponent<MeshFilter>() != null)
         // {
         //     M = GetComponent<MeshFilter>().mesh;
@@ -154,25 +161,19 @@ public class PlaneCutTest : MonoBehaviour {
         {
             ApplyIndexChange(rightMesh.Indices, vertexPosChange);
             rightMesh = meshMerger.Merge(rightMesh, splitMeshLeft);
+            Helper.FlipTriangles(cap.Indices);
             rightMesh = meshMerger.Merge(rightMesh, cap);
-            // Helper.FlipTriangles(cap.Indices);
-            // rightMesh = meshMerger.Merge(rightMesh, cap);
             sliceCreator.CreateSlice(transform, rightMesh, cuttingPlane.normal, slicePhysicsProperties);
         }
         
         if(leftMesh.Vertices.Count != 0)
         {
-            //index change is necessary as the vertex count is different for the two new meshes -> indices need to be adjusted
             ApplyIndexChange(leftMesh.Indices, vertexPosChange);
             leftMesh = meshMerger.Merge(leftMesh, splitMeshRight);
-            //leftMesh = meshMerger.Merge(leftMesh, cap);
             Helper.FlipTriangles(cap.Indices);
-            
             leftMesh = meshMerger.Merge(leftMesh, cap);
             sliceCreator.CreateSlice(transform, leftMesh, -cuttingPlane.normal, slicePhysicsProperties);
         }
-
-       
 
         // kill the original object
         if(transform.parent!=null){
@@ -184,62 +185,42 @@ public class PlaneCutTest : MonoBehaviour {
 
     public void StartSplitInTwo(Plane cuttingPlane, MeshContainer mesh, SlicePhysicsProperties slicePhysicsProperties)
     {
-
-        //Debug.Log("stuff");
-       
-      
-      
-
-        // //adjust plane orientation
-        // if(!set){
-        //     referencePlane = GameObject.FindGameObjectWithTag("CuttingPlane");
-        //     Mesh pM = referencePlane.GetComponent<MeshFilter>().mesh;
-        //     Transform pT = referencePlane.transform;           
-        //     cuttingPlane.Set3Points(pT.TransformPoint(pM.vertices[pM.triangles[0]]), pT.TransformPoint(pM.vertices[pM.triangles[1]]),pT.TransformPoint(pM.vertices[pM.triangles[2]]));
-        // }
-
-        //float startTime = Time.realtimeSinceStartup;
-        
-
-       
         vertexPosChange = new int[mesh.Vertices.Count];
 		conflictTriangles = new List<ConflictTriangle>();
 
        
+
+       
         //determine whether the triangle indices belong to the left or right  
-        DetermineIndexPositions(mesh, cuttingPlane);       
+        DetermineIndexPositions(localToWorld, mesh, cuttingPlane);       
 
-        //determine whether the vertices belongto the left or right
-        DetermineVertexPositions(mesh.Vertices, mesh.Normals, mesh.Uvs, cuttingPlane);
+        //determine whether the vertices belong to the left or right
+        DetermineVertexPositions(localToWorld, mesh.Vertices, mesh.Normals, mesh.Uvs, cuttingPlane);
         
-        Debug.Log("leftMesh vertices: "+leftMesh.Vertices.Count + " -- rightMesh vertices: "+rightMesh.Vertices.Count);
-
+        //if the cut does not affect the mesh we are done
         if(leftMesh.Vertices.Count == 0 || rightMesh.Vertices.Count == 0){
             return;
         }
 
+        //--- splitting conflict triangles and feed the big mean poly machine
         outlinePreparator = new OutlinePreparator();
 
         //split the plane-intersecting triangles
         for(int i = 0; i < conflictTriangles.Count; i++){
             SplitTriangle(cuttingPlane, conflictTriangles[i], splitMeshLeft, splitMeshRight);
         }
-        Debug.Log("conflict triangle amount: "+conflictTriangles.Count);
 
-        //create correct cap polygon
-        
+        //create ordered cap polygon
         List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
-        List<Vector3> capCopy = new List<Vector3>();
+        //--- end
 
 
-        //check which plane the polygon vertices should be projected on
+        //--- approximate vertex projection (check which plane the polygon vertices should be projected on)
         float minDistance = Vector3.SqrMagnitude(Vector3.ProjectOnPlane(cuttingPlane.normal, Vector3.forward));
-        //Debug.Log("projection x,y: "+minDistance);
         int projectCoordA = 0;
         int projectCoordB = 1;
 
         float dist =  Vector3.SqrMagnitude(Vector3.ProjectOnPlane(cuttingPlane.normal, Vector3.up));
-        // Debug.Log("projection x,z: "+dist);
         if(dist < minDistance){
             minDistance = dist;
             projectCoordA = 0;
@@ -247,94 +228,65 @@ public class PlaneCutTest : MonoBehaviour {
         }
 
         dist =  Vector3.SqrMagnitude(Vector3.ProjectOnPlane(cuttingPlane.normal, Vector3.right));
-        // Debug.Log("projection y,z: "+dist);
         if(dist < minDistance){
             minDistance = dist;
             projectCoordA = 1;
             projectCoordB = 2;
         }
 
-         if(!Helper.IsPolygonClockwise(capOutlinePolygon, projectCoordA, projectCoordB)){
-            capOutlinePolygon.Reverse();
-            Debug.Log("polygon is counter-clockwise, reversed the order");
-         }
+        //if(!Helper.IsPolygonClockwise(capOutlinePolygon, projectCoordA, projectCoordB)){
+        //   capOutlinePolygon.Reverse();
+        //   Debug.Log("polygon is counter-clockwise, reversed the order");
+        //}
+        //--- end
 
 
-        //  capPoints = new List<Vector3>();
+        //--- exact vertex projection on xy plane
+        //// DebugExtension.DebugArrow(Vector3.zero, Vector3.forward, Color.green, 20.0f);
+        //// DebugExtension.DebugArrow(Vector3.zero, cuttingPlane.normal, Color.cyan, 20.0f);
+        // Vector3 rotationAxis = Vector3.Cross(Vector3.forward, cuttingPlane.normal).normalized;
+        // //DebugExtension.DebugArrow(Vector3.zero, rotationAxis, Color.red, 20.0f);
 
-        
+        // float rotationAngle = Mathf.Acos(Vector3.Dot(Vector3.forward, cuttingPlane.normal));
+        // Debug.Log("rotation angle is: "+(rotationAngle*Mathf.Rad2Deg));
 
-        capPoints = capOutlinePolygon;
+        //  Quaternion q = Quaternion.AngleAxis(-rotationAngle*Mathf.Rad2Deg, rotationAxis);
+        //  Quaternion qReverse = Quaternion.AngleAxis(rotationAngle*Mathf.Rad2Deg, rotationAxis);
 
-       // DebugExtension.DebugArrow(Vector3.zero, Vector3.forward, Color.green, 20.0f);
-       // DebugExtension.DebugArrow(Vector3.zero, cuttingPlane.normal, Color.cyan, 20.0f);
-        Vector3 rotationAxis = Vector3.Cross(Vector3.forward, cuttingPlane.normal).normalized;
-        //DebugExtension.DebugArrow(Vector3.zero, rotationAxis, Color.red, 20.0f);
-    
-        float rotationAngle = Mathf.Acos(Vector3.Dot(Vector3.forward, cuttingPlane.normal));
-        Debug.Log("rotation angle is: "+(rotationAngle*Mathf.Rad2Deg));
+        //  //DebugExtension.DebugArrow(Vector3.zero, q*cuttingPlane.normal, Color.yellow, 20.0f);
 
-         Quaternion q = Quaternion.AngleAxis(-rotationAngle*Mathf.Rad2Deg, rotationAxis);
-         Quaternion qReverse = Quaternion.AngleAxis(rotationAngle*Mathf.Rad2Deg, rotationAxis);
+        //  for(int i = 0; i < capPoints.Count; i++){
 
-         //DebugExtension.DebugArrow(Vector3.zero, q*cuttingPlane.normal, Color.yellow, 20.0f);
+        //       capPoints[i] = q * capPoints[i];
+        //   }
 
-         for(int i = 0; i < capPoints.Count; i++){
+        // for(int i = 0; i < capPoints.Count; i++){
+        //    capCopy.Add(capPoints[i]);
+        //}
+        //--- end
 
-              capPoints[i] = q * capPoints[i];
-          }
+        //--- polygon debug
+        //Helper.DrawPolygon(capOutlinePolygon);
+        //--- end
 
-        for(int i = 0; i < capPoints.Count; i++){
-           capCopy.Add(capPoints[i]);
-       }
-
-        // for(int i = 0; i < capOutlinePolygon.Count; i++){
-        //     capPoints.Add(capOutlinePolygon[i]);
-
-        //  }
-
-        // Debug.Log("polygon size: "+capOutlinePolygon.Count);
-        //  if(capPoints != null && capPoints.Count >1){
-        //    //Debug.Log("cap vertices: "+capPoints.Count);
-        
-		// 	for(int i = 0; i < capPoints.Count-1; i++){
-		// 		DebugExtension.DebugArrow(capPoints[i], capPoints[i+1]-capPoints[i], new Color(0+(20.0f*i), 0+(20.0f*i),255), 10.0f);
-        //         DebugExtension.DebugWireSphere(capPoints[i], new Color(0+(20.0f*i), 0+(20.0f*i), 255), 0.05f, 20.0f, true);
-		// 	}
-		// 	//DebugExtension.DebugArrow(capPoints[capPoints.Count-1], capPoints[0]-capPoints[capPoints.Count-1], Color.black, 10.0f);
-		// }
-
-
-        TriangulatorTest triangualtor = GetComponent<TriangulatorTest>();
-
-        //Triangulator t = new Triangulator(capOutlinePolygon);
-        //MeshContainer cap = Triangulator.Triangulate(capOutlinePolygon, projectCoordA, projectCoordB);
-
-        //MeshContainer cap = triangualtor.Triangulate(capOutlinePolygon, projectCoordA, projectCoordB);
+        //--- triangulation
+        TriangulatorTest triangualtor = new TriangulatorTest();
         cap = triangualtor.Triangulate(capOutlinePolygon, 0, 1);
+        //--- end
 
+        //--- exact vertex projection
+        //for(int i = 0; i < cap.Vertices.Count; i++){
 
-        if(capOutlinePolygon.Count>3){
-            capCopy.Reverse();
-            cap = triangualtor.Triangulate(capCopy, 0 , 1);
-        }
+        //    cap.Vertices[i] = qReverse * cap.Vertices[i];
+        //}
+        //--- end
 
-        
-        for(int i = 0; i < cap.Vertices.Count; i++){
+        Helper.UnProjectVertices(worldToLocal, cap);
+        //Helper.DrawTriangles(cap);
 
-            cap.Vertices[i] = qReverse * cap.Vertices[i];
-        }
+       
 
-        Helper.UnProjectVertices(transform, cap);
-        Helper.DrawTriangles(cap);
-
-        sliceCreator = GetComponent<SliceCreator>();
-        meshMerger = GetComponent<MeshMerger>();
-
-
-         //Debug.Log("Time needed: "+ (Time.realtimeSinceStartup - startTime));
-
-         CreateStuff(cuttingPlane, slicePhysicsProperties);
+        // CreateStuff(cuttingPlane, slicePhysicsProperties);
     }
 
 	void Update () {
@@ -352,14 +304,14 @@ public class PlaneCutTest : MonoBehaviour {
         polygonVertices.Add(vertex);
     }
 
-    private void DetermineVertexPositions(List<Vector3> vertices, List<Vector3> normals, List<Vector2> uvs, Plane cuttingPlane)
+    private void DetermineVertexPositions(Matrix4x4 localToWorldMatrix, List<Vector3> vertices, List<Vector3> normals, List<Vector2> uvs, Plane cuttingPlane)
     {
         for (int i = 0; i < vertices.Count; i++)
         {
-            if (cuttingPlane.GetSide(transform.TransformPoint(vertices[i])))
+            if (cuttingPlane.GetSide(localToWorldMatrix.MultiplyPoint3x4(vertices[i])))
             {
                 rightMesh.Vertices.Add(vertices[i]);
-                rightMesh.Uvs.Add(uvs[i]);
+                //rightMesh.Uvs.Add(uvs[i]);
                 rightMesh.Normals.Add(normals[i]);
                
                 vertexPosChange[i] = rightMesh.Vertices.Count -1;
@@ -367,7 +319,7 @@ public class PlaneCutTest : MonoBehaviour {
             else
             {
                 leftMesh.Vertices.Add(vertices[i]);
-                leftMesh.Uvs.Add(uvs[i]);
+                //leftMesh.Uvs.Add(uvs[i]);
                 leftMesh.Normals.Add(normals[i]);
 
                 vertexPosChange[i] = leftMesh.Vertices.Count -1;
@@ -383,7 +335,7 @@ public class PlaneCutTest : MonoBehaviour {
          }
      }
 
-    private void DetermineIndexPositions(MeshContainer mesh, Plane cuttingPlane)
+    private void DetermineIndexPositions(Matrix4x4 localToWorldMatrix, MeshContainer mesh, Plane cuttingPlane)
     {
         int above = 0;
         int below = 0;
@@ -406,7 +358,7 @@ public class PlaneCutTest : MonoBehaviour {
                 bool b = false;
                 bool c = false;
 
-                if (cuttingPlane.GetSide(transform.TransformPoint(vertices[subMeshIndices[i]])))
+                if (cuttingPlane.GetSide(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]])))
                 {
                     a= true;
                     below++;
@@ -417,7 +369,7 @@ public class PlaneCutTest : MonoBehaviour {
                     above++;
                 }
 
-                if (cuttingPlane.GetSide(transform.TransformPoint(vertices[subMeshIndices[i+1]])))
+                if (cuttingPlane.GetSide(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i+1]])))
                 {
                     b = true;
                     below++;
@@ -427,7 +379,7 @@ public class PlaneCutTest : MonoBehaviour {
                     b = false;
                     above++;
                 }
-                if (cuttingPlane.GetSide(transform.TransformPoint(vertices[subMeshIndices[i+2]])))
+                if (cuttingPlane.GetSide(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i+2]])))
                 {
                     c = true;
                     below++;
@@ -454,11 +406,11 @@ public class PlaneCutTest : MonoBehaviour {
                     }
                 }else{                   
                     if(a == c){
-                        conflictTriangles.Add(new ConflictTriangle(transform.TransformPoint(vertices[subMeshIndices[i + 1]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i+2]]),b,a,c, true));
+                        conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i+2]]),b,a,c, true));
                     }else if(a == b){
-                        conflictTriangles.Add(new ConflictTriangle(transform.TransformPoint(vertices[subMeshIndices[i + 2]]), transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i + 1]]),c,a,b, false));
+                        conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]),c,a,b, false));
                     }else if(b == c){
-                        conflictTriangles.Add(new ConflictTriangle(transform.TransformPoint(vertices[subMeshIndices[i]]), transform.TransformPoint(vertices[subMeshIndices[i+1]]), transform.TransformPoint(vertices[subMeshIndices[i + 2]]),a,b,c, false));
+                        conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i+1]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]),a,b,c, false));
                     }                   
 				}
             }

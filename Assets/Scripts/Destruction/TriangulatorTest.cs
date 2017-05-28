@@ -3,33 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriangulatorTest : MonoBehaviour {
-
-	private void ShowTriangles(MeshContainer cap){
-		int c = 0;
-		for(int i = 0; i < cap.Indices[0].Count; i+=3){
-			Debug.DrawLine(cap.Vertices[cap.Indices[0][i]], cap.Vertices[cap.Indices[0][i+1]], Color.white, 5.0f, false);
-			Debug.DrawLine(cap.Vertices[cap.Indices[0][i+1]], cap.Vertices[cap.Indices[0][i+2]], Color.white, 5.0f, false);
-			Debug.DrawLine(cap.Vertices[cap.Indices[0][i+2]], cap.Vertices[cap.Indices[0][i]], Color.white, 5.0f, false);
-			c++;
-		}
-
-		Mesh mesh = new Mesh();
-		mesh.name = "cap";
-		mesh.SetVertices(cap.Vertices);
-		mesh.SetIndices(cap.Indices[0].ToArray(), MeshTopology.Triangles, 0);
-		mesh.RecalculateNormals();
-		mesh.RecalculateBounds();
-		
-		MeshFilter meshFilter = GetComponent<MeshFilter>();
-		meshFilter.mesh = mesh;
-
-		Debug.Log("triangles: "+c);
-	}
+public class TriangulatorTest {
 
     public MeshContainer Triangulate(List<Vector3> polygon, int projectCoordA, int projectCoordB)
     {
-		float time = Time.realtimeSinceStartup;
+		//float time = Time.realtimeSinceStartup;
 		MeshContainer result = new MeshContainer();
 		int removedVertices = 0;
 
@@ -44,7 +22,7 @@ public class TriangulatorTest : MonoBehaviour {
 			result.Indices[0].Add(1);
 			result.Indices[0].Add(2);
 
-			Debug.Log("Polygon is size of 3 only!!!!!!");
+			//Debug.Log("Polygon is size of 3 only!!!!!!");
 			return result;
 		}
 
@@ -76,7 +54,7 @@ public class TriangulatorTest : MonoBehaviour {
 			}
 		}
 
-		Debug.Log("Polygon is convex: "+convex);
+		//Debug.Log("Polygon is convex: "+convex);
 
 		//triangle indices are stored here that contradict the leftmost triangle orientation
 		List<int> reflexIndices = new List<int>();
@@ -171,10 +149,10 @@ public class TriangulatorTest : MonoBehaviour {
 			removedVertices++;
 		}
 
-		Debug.Log("polygon leftovers: "+ polygon.Count);
+		//Debug.Log("polygon leftovers: "+ polygon.Count);
 
-		float duration = Time.realtimeSinceStartup - time;
-		Debug.Log("triangulation duration: "+ duration);
+		//float duration = Time.realtimeSinceStartup - time;
+		//Debug.Log("triangulation duration: "+ duration);
 		return result;
     }
 }

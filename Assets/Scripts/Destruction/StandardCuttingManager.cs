@@ -35,14 +35,14 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 			PlaneCutTest pct = go.GetComponent<PlaneCutTest>();
 			if(pct==null){
 				go.AddComponent<TerrainSliceCreator>();
-				go.AddComponent<TriangulatorTest>();
+				//go.AddComponent<TriangulatorTest>();
 				go.AddComponent<FlatMeshMerger>();
 				pct = go.AddComponent<PlaneCutTest>();				
 			}
 			
-			//Task task;
-			//this.StartCoroutineAsync(pct.CuttingCoroutine(cuttingPlane, new MeshContainer(go.GetComponent<MeshFilter>().mesh, true), sliceProperties), out task);
-			pct.StartSplitInTwo(cuttingPlane, new MeshContainer( go.GetComponent<MeshFilter>().mesh, true), sliceProperties);
+			Task task;
+			this.StartCoroutineAsync(pct.CuttingCoroutine(cuttingPlane, new MeshContainer(go.GetComponent<MeshFilter>().mesh, true), sliceProperties), out task);
+			//pct.StartSplitInTwo(cuttingPlane, new MeshContainer( go.GetComponent<MeshFilter>().mesh, true), sliceProperties);
 		}
 	}
 }

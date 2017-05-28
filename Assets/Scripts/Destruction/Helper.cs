@@ -115,16 +115,37 @@ public static class Helper {
 				Debug.DrawLine(container.Vertices[triangles[i][j+2]], container.Vertices[triangles[i][j]], Color.white, 10.0f);
 			}
 		}
-	 }
+    }
 
-	 public static void UnProjectVertices(Transform transform, MeshContainer meshContainer){
+    public static void DrawPolygon(List<Vector3> capOutlinePolygon)
+    {
+        for (int i = 0; i < capOutlinePolygon.Count - 1; i++)
+        {
+            DebugExtension.DebugArrow(capOutlinePolygon[i], capOutlinePolygon[i + 1] - capOutlinePolygon[i], new Color(0 + (20.0f * i), 0 + (20.0f * i), 255), 10.0f);
+            DebugExtension.DebugWireSphere(capOutlinePolygon[i], new Color(0 + (20.0f * i), 0 + (20.0f * i), 255), 0.05f, 20.0f, true);
+        }
+        DebugExtension.DebugArrow(capOutlinePolygon[capOutlinePolygon.Count - 1], capOutlinePolygon[0] - capOutlinePolygon[capOutlinePolygon.Count - 1], Color.black, 10.0f);
+    }
+
+      
+
+	 public static void UnProjectVertices(Matrix4x4 worldToLocal, MeshContainer meshContainer){
 		for(int i = 0; i < meshContainer.Vertices.Count; i++){
-			meshContainer.Vertices[i] = transform.InverseTransformPoint(meshContainer.Vertices[i]);
+            meshContainer.Vertices[i] = worldToLocal.MultiplyPoint3x4(meshContainer.Vertices[i]);
 		}
 	 }
 
+    public static void UnProjectVertices(Transform transform, MeshContainer meshContainer)
+    {
+        for (int i = 0; i < meshContainer.Vertices.Count; i++)
+        {
+            meshContainer.Vertices[i] = transform.InverseTransformPoint( meshContainer.Vertices[i]);
+        }
+    }
 
-	 public static bool IsPolygonClockwise(List<Vector3> vertices, int projectCoordA, int projectCoordB){
+
+
+    public static bool IsPolygonClockwise(List<Vector3> vertices, int projectCoordA, int projectCoordB){
 		float sum = 0.0f;
 
 		for(int i = 0; i < vertices.Count; i++){

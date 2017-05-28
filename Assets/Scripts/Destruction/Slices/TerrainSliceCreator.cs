@@ -27,7 +27,7 @@ public class TerrainSliceCreator : SliceCreator
 		}
 
 		mesh.SetNormals(slice.Normals);
-		mesh.SetUVs(0, slice.Uvs);		
+//		mesh.SetUVs(0, slice.Uvs);		
 		mesh.RecalculateNormals();		
 		
 		MeshRenderer renderer = newSlice.AddComponent<MeshRenderer>();
@@ -48,7 +48,7 @@ public class TerrainSliceCreator : SliceCreator
 		newSlice.AddComponent<TerrainSliceCreator>();
 		newSlice.AddComponent<PlaneCutTest>();
 		newSlice.AddComponent<FlatMeshMerger>();
-		newSlice.AddComponent<TriangulatorTest>();
+		//newSlice.AddComponent<TriangulatorTest>();
 
 		GameObject g = new GameObject(original.gameObject.name+" - slice");
 		g.layer = LayerMask.NameToLayer("TerrainPhysics");
