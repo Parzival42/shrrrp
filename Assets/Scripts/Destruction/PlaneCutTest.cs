@@ -42,7 +42,7 @@ public class PlaneCutTest : MonoBehaviour {
 
     private OutlinePreparator outlinePreparator;
 
-    private MeshContainer cap;
+    private List<MeshContainer> cap;
 
     private Matrix4x4 worldToLocal;
     private Matrix4x4 localToWorld;
@@ -156,13 +156,16 @@ public class PlaneCutTest : MonoBehaviour {
 
     public void CreateStuff(Plane cuttingPlane, SlicePhysicsProperties slicePhysicsProperties){
 
-//create the slices as gameobjects and add needed components
         if (rightMesh.Vertices.Count != 0)
         {
             ApplyIndexChange(rightMesh.Indices, vertexPosChange);
             rightMesh = meshMerger.Merge(rightMesh, splitMeshLeft);
-            Helper.FlipTriangles(cap.Indices);
-            rightMesh = meshMerger.Merge(rightMesh, cap);
+            for(int i = 0; i < cap.Count; i++)
+            {
+                Helper.FlipTriangles(cap[i].Indices);
+                rightMesh = meshMerger.Merge(rightMesh, cap[i]);
+            }
+            
             sliceCreator.CreateSlice(transform, rightMesh, cuttingPlane.normal, slicePhysicsProperties);
         }
         
@@ -170,8 +173,12 @@ public class PlaneCutTest : MonoBehaviour {
         {
             ApplyIndexChange(leftMesh.Indices, vertexPosChange);
             leftMesh = meshMerger.Merge(leftMesh, splitMeshRight);
-            Helper.FlipTriangles(cap.Indices);
-            leftMesh = meshMerger.Merge(leftMesh, cap);
+            for(int i = 0; i < cap.Count; i++)
+            {
+                Helper.FlipTriangles(cap[i].Indices);
+                leftMesh = meshMerger.Merge(leftMesh, cap[i]);
+            }
+           
             sliceCreator.CreateSlice(transform, leftMesh, -cuttingPlane.normal, slicePhysicsProperties);
         }
 
@@ -211,7 +218,12 @@ public class PlaneCutTest : MonoBehaviour {
         }
 
         //create ordered cap polygon
-        List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
+        List<List<Vector3>> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygons();
+        Debug.Log(capOutlinePolygon.Count);
+        //List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
+        //List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygons()[0];
+
+
         //--- end
 
 
@@ -271,7 +283,12 @@ public class PlaneCutTest : MonoBehaviour {
 
         //--- triangulation
         TriangulatorTest triangualtor = new TriangulatorTest();
-        cap = triangualtor.Triangulate(capOutlinePolygon, 0, 1);
+        cap = new List<MeshContainer>();
+        for(int i = 0; i < capOutlinePolygon.Count; i++)
+        {
+            cap.Add(triangualtor.Triangulate(capOutlinePolygon[i], projectCoordA, projectCoordB));
+        }
+       
         //--- end
 
         //--- exact vertex projection
@@ -281,28 +298,13 @@ public class PlaneCutTest : MonoBehaviour {
         //}
         //--- end
 
-        Helper.UnProjectVertices(worldToLocal, cap);
-        //Helper.DrawTriangles(cap);
-
-       
-
-        // CreateStuff(cuttingPlane, slicePhysicsProperties);
-    }
-
-	void Update () {
-		if(cut){
-			StartSplitInTwo(new Plane(), new MeshContainer(GetComponent<MeshFilter>().mesh, true), new SlicePhysicsProperties());	
-		}
-	}
-
-    private void AddPolygonVertex(Vector3 vertex){
-        for(int i = 0; i < polygonVertices.Count; i++){
-            if(Helper.VectorIsIdentical(polygonVertices[i], vertex)){
-                return;
-            }
+        for(int i = 0; i < cap.Count; i++)
+        {
+            Helper.UnProjectVertices(worldToLocal, cap[i]);
         }
-        polygonVertices.Add(vertex);
     }
+    
+
 
     private void DetermineVertexPositions(Matrix4x4 localToWorldMatrix, List<Vector3> vertices, List<Vector3> normals, List<Vector2> uvs, Plane cuttingPlane)
     {
