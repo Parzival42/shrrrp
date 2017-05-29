@@ -1485,7 +1485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 0.15
-  rotationSpeed: 20
+  rotationSpeed: 50
   allowMovement: 1
   cameraBasedControl: 1
   jumpIntensity: 12
@@ -1498,9 +1498,10 @@ MonoBehaviour:
   dashTime: 0.35
   dashCoolDownTime: 0.7
   dashGroundCheckDistance: 0.5
-  dashCollisionForwardOffset: 0.7
-  dashCheckRadius: 0.6
-  dashPushBackForce: 18
+  dashCollisionForwardOffset: 0.55
+  dashCheckRadius: 0.8
+  dashGroundCheckRadius: 0.2
+  dashPushBackForce: 21
 --- !u!114 &114550925458687184
 MonoBehaviour:
   m_ObjectHideFlags: 1

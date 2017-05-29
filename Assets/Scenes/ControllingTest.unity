@@ -1357,12 +1357,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb99093b2daabb42a5959e42bb6d56a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMultiplier: 2
+  forceMultiplier: 0.08
   forceMode: 1
   debugDraw: 0
   layerMask:
     serializedVersion: 2
-    m_Bits: 2304
+    m_Bits: 2048
   uniformForce: 0
   randomizeForce: 0
   noiseTurbulence: 1

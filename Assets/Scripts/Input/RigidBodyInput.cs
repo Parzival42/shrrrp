@@ -60,8 +60,12 @@ public class RigidBodyInput : MonoBehaviour
     private float dashCollisionForwardOffset = 0.7f;
 
     [SerializeField]
-    [Tooltip("Collision sphere radius during the dash.")]
+    [Tooltip("Collision sphere radius during the dash. (For player)")]
     private float dashCheckRadius = 0.7f;
+
+    [SerializeField]
+    [Tooltip("Collision sphere radius for ground.")]
+    private float dashGroundCheckRadius = 0.3f;
 
     [SerializeField]
     [Tooltip("The other player will be pushed back by this force.")]
@@ -95,6 +99,7 @@ public class RigidBodyInput : MonoBehaviour
     public float DashGroundCheckDistance { get { return dashGroundCheckDistance; } }
     public float DashCollisionForwardOffset { get { return dashCollisionForwardOffset; } }
     public float DashCheckRadius { get { return dashCheckRadius; } }
+    public float DashGroundCheckRadius { get { return dashGroundCheckRadius; } }
     public float DashPushBackForce { get { return dashPushBackForce; } }
     public StandardPlayerAction PlayerAction { get { return playerAction; } set { SetPlayerAction(value); } }
     #endregion

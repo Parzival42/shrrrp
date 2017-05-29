@@ -49,7 +49,7 @@ public class RigidBodyDashHandler : DashHandler
             {
                 Vector3 force = other.transform.position - self.transform.position;
                 rigid.AddForce(force.normalized * this.player.DashPushBackForce, ForceMode.VelocityChange);
-                Debug.Log("Force on " + other.name + " !");
+                //Debug.Log("Force on " + other.name + " !");
             }
         }
     }
@@ -105,13 +105,18 @@ public class RigidBodyDashHandler : DashHandler
 
     private bool CheckDashCollision()
     {
-        int layerMask = 1 << player.gameObject.layer | 1 << player.GroundedLayer;
-        Collider[] collider = Physics.OverlapSphere(GetPlayerCenter(), player.DashCheckRadius, layerMask);
+        int layerMaskPlayer = 1 << player.gameObject.layer;
+        int layerMaskGround = 1 << player.GroundedLayer;
+
+        Collider[] playerCollider = Physics.OverlapSphere(GetPlayerCenter(), player.DashCheckRadius, layerMaskPlayer);
+        Collider[] groundCollider = Physics.OverlapSphere(GetPlayerCenter(), player.DashGroundCheckRadius, layerMaskGround);
 
 #if UNITY_EDITOR
         DebugExtension.DebugWireSphere(GetPlayerCenter(), Color.red, player.DashCheckRadius);
+        DebugExtension.DebugWireSphere(GetPlayerCenter(), Color.green, player.DashGroundCheckRadius);
+
 #endif
-        return IsValidCollision(collider);
+        return IsValidCollision(playerCollider) || IsValidCollision(groundCollider);
     }
 
     /// <summary>

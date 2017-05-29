@@ -169,10 +169,15 @@ public class RigidBodyInputHandler : InputHandler
         {
             Quaternion lookAtRotation = Quaternion.LookRotation(movementVector, Vector3.up);
 
-            player.Rigid.MoveRotation(
+            //player.Rigid.MoveRotation(
+            //    Quaternion.Lerp(player.transform.rotation,
+            //    lookAtRotation,
+            //    Time.deltaTime * player.RotationSpeed));
+
+            player.Rigid.rotation = 
                 Quaternion.Lerp(player.transform.rotation,
                 lookAtRotation,
-                Time.deltaTime * player.RotationSpeed));
+                Time.deltaTime * player.RotationSpeed);
         }
     }
 
