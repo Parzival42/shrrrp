@@ -37,6 +37,7 @@ public class OutlinePreparator{
                 orderedPolygon.Add(neighbourData[next].Neighbour);
             }
             orderedPolygon.RemoveAt(orderedPolygon.Count - 1);
+
 		}
 
         return orderedPolygon;
@@ -71,6 +72,13 @@ public class OutlinePreparator{
                 neighbourData.RemoveAt(next);
             }
             orderedPolygon[currentList].RemoveAt(orderedPolygon[currentList].Count - 1);
+
+
+            if (orderedPolygon[currentList].Count < 3)
+            {
+                orderedPolygon.RemoveAt(currentList);
+                currentList--;
+            }
         }
        
         return orderedPolygon;

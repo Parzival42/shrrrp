@@ -25,11 +25,16 @@ public class DissolveObject : MonoBehaviour {
 		 rend.material = dissolveMaterial;
 
 		 LeanTween.value(gameObject, Dissolve, 0f, 1f, dissolveTime).setEase(dissolveTweenType).setOnComplete(() => {
-			Destroy(gameObject);
+			CleanUp();
 		 });
 	}
 
-	void Dissolve( float val ){
+    protected virtual void CleanUp()
+    {
+        Destroy(gameObject);
+    }
+
+	private void Dissolve( float val ){
 		rend.material.SetFloat("_DissolvePercentage", val);
 	}
 }

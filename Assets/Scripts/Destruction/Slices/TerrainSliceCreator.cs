@@ -69,7 +69,7 @@ public class TerrainSliceCreator : SliceCreator
 		parentRigidBody.mass = AssignMass(renderer, slicePhysicsProperties.baseMass);
         if (parentRigidBody.mass < 100)
         {
-            newSlice.AddComponent<DissolveObject>();
+            newSlice.AddComponent<DissolveObjectWithParent>();
         }
 		parentRigidBody.drag = slicePhysicsProperties.drag;
 		parentRigidBody.angularDrag = slicePhysicsProperties.angularDrag;
