@@ -126,7 +126,7 @@ public class CuttingPlaneControl : MonoBehaviour
     public void Initialize(RigidBodyInput input)
     {
         inputHandler = input;
-        transform.up = inputHandler.transform.right;
+        transform.rotation = Quaternion.LookRotation(inputHandler.transform.forward, input.transform.right);
         input.Rigid.useGravity = false;
         input.Rigid.velocity = Vector3.zero;
         input.Rigid.constraints = RigidbodyConstraints.FreezeAll;

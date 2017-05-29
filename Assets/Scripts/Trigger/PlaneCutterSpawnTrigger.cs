@@ -20,9 +20,9 @@ public class PlaneCutterSpawnTrigger : TriggerAction
             if (playerInput != null)
             {
                 // TODO: Find better initial rotation?
-                GameObject prefab = Instantiate(planeCutter, playerInput.transform.position, planeCutter.transform.rotation);
+                GameObject prefab = Instantiate(planeCutter, playerInput.transform.position, Quaternion.identity);
                 CuttingPlaneControl cuttingPlane = prefab.GetComponent<CuttingPlaneControl>();
-
+                
                 cuttingPlane.Initialize(playerInput);
             }
             else
