@@ -34,7 +34,8 @@ public class TerrainSliceCreator : SliceCreator
 		MeshFilter filter = newSlice.AddComponent<MeshFilter>();
 
 		filter.mesh = mesh;
-		renderer.material = GetComponent<MeshRenderer>().material;
+        
+		renderer.material = Instantiate(GetComponent<MeshRenderer>().material);
 		filter.sharedMesh.RecalculateBounds();
 
 		MeshCollider collider = newSlice.AddComponent<MeshCollider>();
@@ -66,6 +67,10 @@ public class TerrainSliceCreator : SliceCreator
 		parentRigidBody.useGravity = false;
 	
 		parentRigidBody.mass = AssignMass(renderer, slicePhysicsProperties.baseMass);
+        if (parentRigidBody.mass < 100)
+        {
+            newSlice.AddComponent<DissolveObject>();
+        }
 		parentRigidBody.drag = slicePhysicsProperties.drag;
 		parentRigidBody.angularDrag = slicePhysicsProperties.angularDrag;
 		parentRigidBody.constraints = slicePhysicsProperties.constraints;
