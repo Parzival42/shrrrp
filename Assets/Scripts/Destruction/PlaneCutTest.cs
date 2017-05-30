@@ -183,7 +183,7 @@ public class PlaneCutTest : MonoBehaviour {
         }
 
         // kill the original object
-        if(transform.parent!=null){
+        if(transform.parent!=null && transform.parent.tag!= "IndestructibleParent"){
             Destroy(transform.parent.gameObject);
         }
       	Destroy(this.gameObject);
@@ -219,6 +219,9 @@ public class PlaneCutTest : MonoBehaviour {
 
         //create ordered cap polygon
         List<List<Vector3>> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygons();
+        for(int i = 0; i < capOutlinePolygon.Count; i++){
+             Debug.Log("cap polygon "+i+" vertexcount: "+capOutlinePolygon[capOutlinePolygon.Count-1].Count);
+        }
         Debug.Log(capOutlinePolygon.Count);
         //List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
         //List<Vector3> capOutlinePolygon = outlinePreparator.PrepareOutlinePolygons()[0];
@@ -282,11 +285,12 @@ public class PlaneCutTest : MonoBehaviour {
         //--- end
 
         //--- triangulation
-        TriangulatorTest triangualtor = new TriangulatorTest();
+        TriangulatorTest triangulator = new TriangulatorTest();
         cap = new List<MeshContainer>();
         for(int i = 0; i < capOutlinePolygon.Count; i++)
         {
-            cap.Add(triangualtor.Triangulate(capOutlinePolygon[i], projectCoordA, projectCoordB));
+            cap.Add(triangulator.Triangulate(capOutlinePolygon[i], projectCoordA, projectCoordB));
+           
         }
        
         //--- end

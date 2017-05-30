@@ -7,6 +7,9 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 
 	#region variables
 	[SerializeField]
+	private bool isMenu;
+
+	[SerializeField]
 	private LayerMask layerMask;
 	[SerializeField]
 	private SlicePhysicsProperties sliceProperties;
@@ -34,7 +37,11 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 
 			PlaneCutTest pct = go.GetComponent<PlaneCutTest>();
 			if(pct==null){
-				go.AddComponent<TerrainSliceCreator>();
+				if(!isMenu){
+					go.AddComponent<TerrainSliceCreator>();
+				}else{
+					go.AddComponent<MenuLetterSliceCreator>();
+				}
 				//go.AddComponent<TriangulatorTest>();
 				go.AddComponent<FlatMeshMerger>();
 				pct = go.AddComponent<PlaneCutTest>();				

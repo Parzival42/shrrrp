@@ -108,6 +108,9 @@ public class TriangulatorTest {
 					while(!Helper.Vector2IsIdentical(start[projectCoordA], start[projectCoordB],end[projectCoordA], end[projectCoordB])){
 						count++;
 						//Debug.Log(count);
+						if(Helper.GetNextIndex(polygon, index)+count >= polygon.Count){
+							break;
+						}
 						start = polygon[Helper.GetNextIndex(polygon, index)+count];
 
 						if(Helper.Vector2IsIdentical(start[projectCoordA], start[projectCoordB], polygon[prev][projectCoordA], polygon[prev][projectCoordB])||

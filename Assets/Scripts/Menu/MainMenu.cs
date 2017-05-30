@@ -8,6 +8,10 @@ public class MainMenu : BaseMenu {
 	
 	[SerializeField]
 	public GameObject cuttingPlane;
+	
+	[SerializeField]
+	[RangeAttribute(0.0f,4.0f)]
+	private float sceneSwitchDelayTime = 0.4f;
 
 	void Start () {
 
@@ -37,8 +41,17 @@ public class MainMenu : BaseMenu {
 	/// Loads the next scene and cuts the given mesh.
 	/// </summary>
 	public override void LoadNextLevel(string levelName){
-		//CuttingManagerLocator.GetInstance.Cut(cuttingPlane.transform, cuttingPlane.GetComponent<MeshFilter>().mesh);
+		CuttingManagerLocator.GetInstance.Cut(cuttingPlane.transform, cuttingPlane.GetComponent<MeshFilter>().mesh);
+		StartCoroutine("DelayedLoadNextLevel", levelName);
+	}
+
+	/// <summary>
+	/// Delays the scene switch by the specified amount of time
+	/// </summary>
+	private IEnumerator DelayedLoadNextLevel(string levelName){
+		yield return new WaitForSeconds(sceneSwitchDelayTime);
 		base.LoadNextLevel(levelName);
 	}
+
 	
 }
