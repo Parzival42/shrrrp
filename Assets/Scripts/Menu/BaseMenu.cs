@@ -9,6 +9,25 @@ public class BaseMenu : MonoBehaviour {
     [SerializeField]
     private Shader transitionShader;
 
+	[SerializeField]
+    private string previousLevel;
+
+	[SerializeField]
+	private GameObject menuEnvironment;
+	private GameObject environment;
+
+	void OnEnable(){
+		// register Cancel event at Input module
+		InputModuleActionAdapter.OnCancel += LoadPreviousLevel;
+
+		// Clouds should stay when loading next scene but only instantiate once
+		environment = GameObject.FindGameObjectWithTag("MenuEnvironment");
+		if(environment == null){
+			environment = Instantiate(menuEnvironment, Vector3.zero, Quaternion.identity);
+			DontDestroyOnLoad(environment);
+		}
+	}
+
 	/// <summary>
 	/// Performs the switch to next scene.
 	/// </summary>
@@ -19,8 +38,8 @@ public class BaseMenu : MonoBehaviour {
 	/// <summary>
 	/// Performs the switch to previous scene or exits the game.
 	/// </summary>
-	public virtual void LoadPreviousLevel(string levelName){
-		PerformSceneSwitch(levelName);
+	public virtual void LoadPreviousLevel(){
+		PerformSceneSwitch(previousLevel);
 	}
 
 	/// <summary>
@@ -40,5 +59,9 @@ public class BaseMenu : MonoBehaviour {
 
         TransitionKit.instance.transitionWithDelegate(fishEye);
     }
+
+	void OnDisable(){
+		InputModuleActionAdapter.OnCancel -= LoadPreviousLevel;
+	}
 
 }

@@ -19,7 +19,6 @@ public class LevelButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
 	private Vector3 initScale;
 	private GameObject sphere;
-	private GameObject plane;
 	private MenuSelectionContainer menuSelectionContainer;
 
 	void Start(){

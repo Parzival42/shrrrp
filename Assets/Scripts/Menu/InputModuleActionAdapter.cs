@@ -6,28 +6,33 @@ using InControl;
 [RequireComponent( typeof(InControlInputModule) )]
 public class InputModuleActionAdapter : MonoBehaviour
 {
-    StandardMenuAction actions;
+    StandardMenuAction menuAction;
+
+    #region delegate events
+    public delegate void MenuCancelAction();
+    public static event MenuCancelAction OnCancel;
+    #endregion
 
     void OnEnable()
     {
-        actions = StandardMenuAction.CreateStandardBinding();
+        menuAction = StandardMenuAction.CreateStandardBinding();
 
-        var inputModule = GetComponent<InControlInputModule>();
+        InControlInputModule inputModule = GetComponent<InControlInputModule>();
         if (inputModule != null)
         {
-            inputModule.SubmitAction = actions.Submit;
-            inputModule.CancelAction = actions.Cancel;
-            inputModule.MoveAction = actions.Move;
+            inputModule.SubmitAction = menuAction.Submit;
+            inputModule.CancelAction = menuAction.Cancel;
+            inputModule.MoveAction = menuAction.Move;
         }
+    }
+
+    void Update(){
+        if(menuAction.Cancel.WasPressed)
+            OnCancel();
     }
 
     void OnDisable()
     {
-        DestroyActions();
-    }
-
-    void DestroyActions()
-    {
-        actions.Destroy();
+         menuAction.Destroy();
     }
 }

@@ -2375,6 +2375,18 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114181056192900396, guid: d3bcd2a5c75e7184db943db753b49b82,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bcb075ce58ec1de439d7b7a715cda48f,
+        type: 3}
+    - target: {fileID: 114416158933123414, guid: d3bcd2a5c75e7184db943db753b49b82,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f94c67a8300244448a8b79659cac3408,
+        type: 3}
     m_RemovedComponents:
     - {fileID: 114338710117482634, guid: d3bcd2a5c75e7184db943db753b49b82, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: d3bcd2a5c75e7184db943db753b49b82, type: 2}
@@ -2396,7 +2408,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transitionShader: {fileID: 4800000, guid: 84ea0194fc9852045ab36a59ec810e91, type: 3}
-  cuttingPlane: {fileID: 0}
+  previousLevel: MainMenu
+  menuEnvironment: {fileID: 1644261970205200, guid: 351519bd073df1b4c91abedc0c44bc4e,
+    type: 2}
+  destroyEnvironment: 1
 --- !u!224 &1434465473 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224077220426979604, guid: d3bcd2a5c75e7184db943db753b49b82,

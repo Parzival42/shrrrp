@@ -2,15 +2,11 @@
 using UnityEngine;
 
 public class MainMenu : BaseMenu {
-
-	[SerializeField]
-	private GameObject menuEnvironment;
 	
 	[SerializeField]
 	public GameObject cuttingPlane;
 
 	void Start () {
-
 		// Find the MenuSelectionContainer and reset it OR initialize it if not found
 		MenuSelectionContainer menuSelectionContainer = (MenuSelectionContainer)FindObjectOfType(typeof(MenuSelectionContainer));
 
@@ -21,15 +17,12 @@ public class MainMenu : BaseMenu {
 			containerObject.name = "MenuSelectionContainer";
 			containerObject.AddComponent(typeof(MenuSelectionContainer));
 		}
-
-		// Clouds should stay when loading next scene
-		DontDestroyOnLoad(menuEnvironment);
 	}
 
 	/// <summary>
-	/// Exits the game and ignores the parameter given.
+	/// Exits the game.
 	/// </summary>
-	public override void LoadPreviousLevel(string levelName){
+	public override void LoadPreviousLevel(){
 		Application.Quit();
 	}
 
