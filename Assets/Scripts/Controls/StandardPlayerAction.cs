@@ -142,7 +142,7 @@ public class StandardPlayerAction : PlayerActionSet
         playerAction.Dash.AddDefaultBinding(Key.LeftAlt);
         playerAction.Dash.AddDefaultBinding(Key.LeftControl);
 
-        // Xbox one specific
+        // Pause
         playerAction.Pause.AddDefaultBinding(Key.Escape);
         playerAction.Pause.AddDefaultBinding(Key.Backspace);
 
@@ -152,6 +152,91 @@ public class StandardPlayerAction : PlayerActionSet
     public static StandardPlayerAction CreateStandardKeyboardBinding(InputDevice inputDevice)
     {
         StandardPlayerAction playerAction = CreateStandardKeyboardBinding();
+        playerAction.Device = inputDevice;
+        return playerAction;
+    }
+
+    public static StandardPlayerAction CreateStandardBinding()
+    {
+        StandardPlayerAction playerAction = new StandardPlayerAction();
+
+        // KEYBOARD BINDING
+        // Left
+        playerAction.Left.AddDefaultBinding(Key.A);
+        playerAction.RightStickLeft.AddDefaultBinding(Key.LeftArrow);
+
+        // Right
+        playerAction.Right.AddDefaultBinding(Key.D);
+        playerAction.RightStickRight.AddDefaultBinding(Key.RightArrow);
+
+        // Up
+        playerAction.Up.AddDefaultBinding(Key.W);
+        playerAction.RightStickUp.AddDefaultBinding(Key.UpArrow);
+
+        // Down
+        playerAction.Down.AddDefaultBinding(Key.S);
+        playerAction.RightStickDown.AddDefaultBinding(Key.DownArrow);
+
+        // Jump
+        playerAction.Jump.AddDefaultBinding(Key.Space);
+        playerAction.Jump.AddDefaultBinding(Key.Return);
+
+        // Dash
+        playerAction.Dash.AddDefaultBinding(Key.LeftAlt);
+        playerAction.Dash.AddDefaultBinding(Key.LeftControl);
+
+        // Pause
+        playerAction.Pause.AddDefaultBinding(Key.Escape);
+        playerAction.Pause.AddDefaultBinding(Key.Backspace);
+
+        // GAMEPAD BINDING
+        // Left
+        playerAction.Left.AddDefaultBinding(InputControlType.LeftStickLeft);
+        playerAction.Left.AddDefaultBinding(InputControlType.DPadLeft);
+
+        // Right Stick Left
+        playerAction.RightStickLeft.AddDefaultBinding(InputControlType.RightStickLeft);
+
+        // Right
+        playerAction.Right.AddDefaultBinding(InputControlType.LeftStickRight);
+        playerAction.Right.AddDefaultBinding(InputControlType.DPadRight);
+
+        // Right Stick Right
+        playerAction.RightStickRight.AddDefaultBinding(InputControlType.RightStickRight);
+
+        // Up
+        playerAction.Up.AddDefaultBinding(InputControlType.LeftStickUp);
+        playerAction.Up.AddDefaultBinding(InputControlType.DPadUp);
+
+        // Right Stick Up
+        playerAction.RightStickUp.AddDefaultBinding(InputControlType.RightStickUp);
+
+        // Down
+        playerAction.Down.AddDefaultBinding(InputControlType.LeftStickDown);
+        playerAction.Down.AddDefaultBinding(InputControlType.DPadDown);
+
+        // Right Stick Down
+        playerAction.RightStickDown.AddDefaultBinding(InputControlType.RightStickDown);
+
+        // Jump
+        playerAction.Jump.AddDefaultBinding(InputControlType.Action1);
+        playerAction.Jump.AddDefaultBinding(InputControlType.Action2);
+
+        // Dash
+        playerAction.Dash.AddDefaultBinding(InputControlType.Action3);
+        playerAction.Dash.AddDefaultBinding(InputControlType.Action4);
+
+        // Xbox one specific
+        playerAction.Pause.AddDefaultBinding(InputControlType.Menu);
+        // Xbox 360 specific
+        playerAction.Pause.AddDefaultBinding(InputControlType.Start);
+
+        return playerAction;
+    }
+
+    public static StandardPlayerAction CreateStandardBinding(InputDevice inputDevice)
+    {
+        StandardPlayerAction playerAction = CreateStandardBinding();
         playerAction.Device = inputDevice;
         return playerAction;
     }

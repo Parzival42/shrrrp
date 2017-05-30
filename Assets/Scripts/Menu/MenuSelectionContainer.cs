@@ -12,14 +12,12 @@ using InControl;
 /// </summary>
 public class MenuSelectionContainer : MonoBehaviour
 {
-    #region Inspector
+    #region Data (Should be filled in menu)
     [FancyHeader("Level information")]
     public string levelName;
 
     public GameObject playerPrefab;
-    #endregion
 
-    #region Data (Should be filled in menu)
     public List<PlayerInfo> playerData = new List<PlayerInfo>();
     #endregion
 
