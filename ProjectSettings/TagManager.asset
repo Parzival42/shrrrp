@@ -8,6 +8,7 @@ TagManager:
   - CuttingPlane
   - Artifact
   - IntersectionPlane
+  - IndestructibleParent
   - MenuEnvironment
   layers:
   - Default
