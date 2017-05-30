@@ -10,6 +10,10 @@ public class DissolveObject : MonoBehaviour {
 	Renderer rend;
 
 	void Start () {
+		PrepareDissolve(dissolveTime);
+	}
+
+	protected void PrepareDissolve(float dissolveTime){
 		 dissolveMaterial = new Material(Resources.Load("DissolveMaterial", typeof(Material)) as Material);
 
 		 rend = GetComponent<Renderer>();

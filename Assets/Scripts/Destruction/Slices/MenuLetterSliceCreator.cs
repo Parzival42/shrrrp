@@ -49,5 +49,6 @@ public class MenuLetterSliceCreator : SliceCreator {
 		rigidbody.AddTorque(transform.right*Random.Range(-300,300), ForceMode.Impulse);
 
 		newSlice.transform.parent = original.parent;
+		newSlice.AddComponent<DissolveObjectWithDelay>();
     }
 }

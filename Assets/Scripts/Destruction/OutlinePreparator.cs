@@ -47,6 +47,7 @@ public class OutlinePreparator{
 
     public List<List<Vector3>> PrepareOutlinePolygons()
     {
+        Debug.Log("neighbour info: "+neighbourData.Count);
         List<List<Vector3>> orderedPolygon = new List<List<Vector3>>();
         int currentList = -1;
 
