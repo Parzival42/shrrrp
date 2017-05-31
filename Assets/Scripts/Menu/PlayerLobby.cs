@@ -88,9 +88,6 @@ public class PlayerLobby : MonoBehaviour {
         else
             input.PlayerAction = StandardPlayerAction.CreateStandardGamePadBinding(InputManager.ActiveDevice);
 
-        Debug.Log("DeviceName: " + input.PlayerAction.Device.Name, gameObject);
-        Debug.Log("DeviceStyle: " + input.PlayerAction.Device.GetType().ToString(), gameObject);
-
         // Add new player to currentPlayers list
         currentPlayers.Add(spawnedPlayer);
     }
