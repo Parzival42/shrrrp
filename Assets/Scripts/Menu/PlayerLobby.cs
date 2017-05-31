@@ -83,7 +83,13 @@ public class PlayerLobby : MonoBehaviour {
         RigidBodyInput input = spawnedPlayer.GetComponent<RigidBodyInput>();
 
         // Add standard input binding
-        input.PlayerAction = StandardPlayerAction.CreateStandardBinding(InputManager.ActiveDevice);
+        if(InControlUtil.IsKeyboardDevice(InputManager.ActiveDevice))
+            input.PlayerAction = StandardPlayerAction.CreateStandardKeyboardBinding(InputManager.ActiveDevice);
+        else
+            input.PlayerAction = StandardPlayerAction.CreateStandardGamePadBinding(InputManager.ActiveDevice);
+
+        Debug.Log("DeviceName: " + input.PlayerAction.Device.Name, gameObject);
+        Debug.Log("DeviceStyle: " + input.PlayerAction.Device.GetType().ToString(), gameObject);
 
         // Add new player to currentPlayers list
         currentPlayers.Add(spawnedPlayer);
