@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: c01a9109569e5444d877eb960a06d9c9
-timeCreated: 1496495571
+guid: 8a0ca215345c94511b517704462b6f37
+timeCreated: 1496738834
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: GrassIsland
+    4300000: GrassIsland_2
   materials:
     importMaterials: 0
     materialName: 0
