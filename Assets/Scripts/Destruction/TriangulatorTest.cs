@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TriangulatorTest {
@@ -50,11 +48,12 @@ public class TriangulatorTest {
 		for(int i = 0; i < polygon.Count; i++){
 			Helper.FillTriangle(i, polygon, triangle);
 			if(Helper.orientation(triangle, projectCoordA, projectCoordB) != orientation){
+				Debug.Log("orientation different");
 				convex  = false;
 			}
 		}
 
-		//Debug.Log("Polygon is convex: "+convex);
+		Debug.Log("Polygon is convex: "+convex);
 
 		//triangle indices are stored here that contradict the leftmost triangle orientation
 		List<int> reflexIndices = new List<int>();
@@ -87,13 +86,15 @@ public class TriangulatorTest {
 				int next = Helper.GetNextIndex(polygon, index);
 
 				//check for all reflex vertices of they are contained in the ear candiate
+				
 				for(int j = 0; j < reflexIndices.Count; j++){
 					if(reflexIndices[j] == prev ||reflexIndices[j] == next){
 						continue;
 					}
 
 					//if a reflex vertex is contained then the triangle is not an ear
-					if(Helper.isPointInTriangle(polygon[reflexIndices[j]], polygon[prev], polygon[index], polygon[next], projectCoordA, projectCoordB)){
+					if(Helper.PointInTriangle(polygon[reflexIndices[j]], polygon[prev], polygon[index], polygon[next], projectCoordA, projectCoordB)){
+						Debug.Log("not an ear");
 						isEar = false;
 						break;
 					}

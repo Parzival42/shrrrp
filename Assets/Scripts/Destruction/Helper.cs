@@ -65,6 +65,24 @@ public static class Helper {
 		return s > 0 && t > 0 && (s + t) < 2 * A * sign;
 	}
 
+	public static bool PointInTriangle(Vector3 p, Vector3 p0, Vector3 p1, Vector3 p2, int projectCoordA, int projectCoordB)
+	{
+		var s = p0[projectCoordB] * p2[projectCoordA] - p0[projectCoordA]  * p2[projectCoordB]  + (p2[projectCoordB]  - p0[projectCoordB] ) * p[projectCoordA]  + (p0[projectCoordA]  - p2[projectCoordA] ) * p[projectCoordB] ;
+		var t = p0[projectCoordA]  * p1[projectCoordB]  - p0[projectCoordB]  * p1[projectCoordA]  + (p0[projectCoordB]  - p1[projectCoordB] ) * p[projectCoordA]  + (p1[projectCoordA]  - p0[projectCoordB] ) * p[projectCoordB] ;
+
+		if ((s < 0) != (t < 0))
+			return false;
+
+		var A = -p1[projectCoordB]  * p2[projectCoordA]  + p0[projectCoordB]  * (p2[projectCoordA]  - p1[projectCoordA] ) + p0[projectCoordA]  * (p1[projectCoordB]  - p2[projectCoordB] ) + p1[projectCoordA]  * p2[projectCoordB] ;
+		if (A < 0.0)
+		{
+			s = -s;
+			t = -t;
+			A = -A;
+		}
+		return s > 0 && t > 0 && (s + t) <= A;
+	}
+
 	public static bool FloatIsIdentical(float a, float b){
 		return FloatIsIdentical(a,b, 1e-0006f);
 	}
@@ -74,13 +92,13 @@ public static class Helper {
 	}
 
 	public static bool VectorIsIdentical(Vector3 a, Vector3 b){
-		return Vector3.SqrMagnitude(a-b)< 1e-008f;
+		return Vector3.SqrMagnitude(a-b)< 0.000001f;
 	}
 
 	public static bool Vector2IsIdentical(float x1, float y1, float x2, float y2){
 		compareA.Set(x1,y1);
 		compareB.Set(x2,y2);
-		return Vector2.SqrMagnitude(compareA-compareB)< 1e-0005f;
+		return Vector2.SqrMagnitude(compareA-compareB)< 0.0000001;
 	}
 
 	public static void FillTriangle(int index, List<Vector3> polygon, Vector3[] triangle){
@@ -117,15 +135,19 @@ public static class Helper {
 		}
     }
 
-    public static void DrawPolygon(List<Vector3> capOutlinePolygon)
+    public static void DrawPolygon(List<List<Vector3>> capOutlinePolygon)
     {
+	
         for (int i = 0; i < capOutlinePolygon.Count - 1; i++)
         {
-            DebugExtension.DebugArrow(capOutlinePolygon[i], capOutlinePolygon[i + 1] - capOutlinePolygon[i], new Color(0 + (20.0f * i), 0 + (20.0f * i), 255), 10.0f);
-            DebugExtension.DebugWireSphere(capOutlinePolygon[i], new Color(0 + (20.0f * i), 0 + (20.0f * i), 255), 0.05f, 20.0f, true);
-        }
-        DebugExtension.DebugArrow(capOutlinePolygon[capOutlinePolygon.Count - 1], capOutlinePolygon[0] - capOutlinePolygon[capOutlinePolygon.Count - 1], Color.black, 10.0f);
+			Debug.Log("doing stuff");
+			for(int j = 0; j<capOutlinePolygon[i].Count; j++){
+    			DebugExtension.DebugArrow(capOutlinePolygon[i][j], capOutlinePolygon[i][j + 1] - capOutlinePolygon[i][j], Color.black, 10.0f);
+			}
+           DebugExtension.DebugArrow(capOutlinePolygon[i][capOutlinePolygon[i].Count - 1], capOutlinePolygon[i][0] - capOutlinePolygon[i][capOutlinePolygon[i].Count - 1], Color.black, 10.0f);
+ 		}
     }
+     
 
       
 
