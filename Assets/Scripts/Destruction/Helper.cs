@@ -178,6 +178,48 @@ public static class Helper {
 		return sum < 0.0f;
 	 }
 
+    public static MeshContainer generateSimplifiedMesh(MeshContainer mesh, int triangleCount)
+    {
+        MeshContainer simplifiedMesh = new MeshContainer();
+
+        List<int> usedTriangles = new List<int>();
+        int index = 0;
+        int indexCount = (mesh.Indices[0].Count-1)/3;
+        System.Random random = new System.Random();
+
+        for(int i = 0; i < triangleCount; i++)
+        {
+            index = random.Next(0, indexCount)*3;
+            if(isUsed(usedTriangles, index)){
+                i--;
+                continue;
+            }
+
+            usedTriangles.Add(index);
+
+            for(int j = 0; j < 3; j++)
+            {
+                simplifiedMesh.Vertices.Add(mesh.Vertices[mesh.Indices[0][index + j]]);
+                simplifiedMesh.Indices[0].Add((i*3) + j);
+                simplifiedMesh.Normals.Add(mesh.Normals[mesh.Indices[0][index + j]]);
+            }
+        }
+
+        return simplifiedMesh;
+    }
+
+    private static bool isUsed(List<int> usedTriangles, int index)
+    {
+        for(int i = 0; i < usedTriangles.Count; i++)
+        {
+            if(usedTriangles[i] == index)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 	#endregion
 }

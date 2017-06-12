@@ -48,7 +48,10 @@ public class PlaneCutTest : MonoBehaviour
     private Matrix4x4 worldToLocal;
     private Matrix4x4 localToWorld;
 
-    List<List<Vector3>> capMeshesOutlinePolygonCopy;
+    private List<List<Vector3>> capMeshesOutlinePolygonCopy;
+
+    private MeshContainer leftSimplifiedColliderMesh;
+    private MeshContainer rightSimplifiedColliderMesh;
 
     private void AssignSplitTriangles(Matrix4x4 worldToLocalMatrix, ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor)
     {
@@ -167,6 +170,8 @@ public class PlaneCutTest : MonoBehaviour
 
         yield return Ninja.JumpToUnity;
 
+        yield return new WaitForFixedUpdate();
+
         CreateStuff(cuttingPlane, slicePhysicsProperties);
 
     }
@@ -174,31 +179,16 @@ public class PlaneCutTest : MonoBehaviour
 
     public void CreateStuff(Plane cuttingPlane, SlicePhysicsProperties slicePhysicsProperties)
     {
-        Helper.DrawPolygon(capMeshesOutlinePolygonCopy);
+
+        //Helper.DrawPolygon(capMeshesOutlinePolygonCopy);
         if (rightMesh.Vertices.Count != 0)
         {
-            ApplyIndexChange(rightMesh.Indices, vertexPosChange);
-            rightMesh = meshMerger.Merge(rightMesh, splitMeshLeft);
-            for (int i = 0; i < capMeshes.Count; i++)
-            {
-                Helper.FlipTriangles(capMeshes[i].Indices);
-                rightMesh = meshMerger.Merge(rightMesh, capMeshes[i]);
-            }
-
-            sliceCreator.CreateSlice(transform, rightMesh, cuttingPlane.normal, slicePhysicsProperties);
+            sliceCreator.CreateSlice(transform, rightMesh, rightSimplifiedColliderMesh.GetMesh(), cuttingPlane.normal, slicePhysicsProperties);
         }
 
         if (leftMesh.Vertices.Count != 0)
         {
-            ApplyIndexChange(leftMesh.Indices, vertexPosChange);
-            leftMesh = meshMerger.Merge(leftMesh, splitMeshRight);
-            for (int i = 0; i < capMeshes.Count; i++)
-            {
-                Helper.FlipTriangles(capMeshes[i].Indices);
-                leftMesh = meshMerger.Merge(leftMesh, capMeshes[i]);
-            }
-
-            sliceCreator.CreateSlice(transform, leftMesh, -cuttingPlane.normal, slicePhysicsProperties);
+            sliceCreator.CreateSlice(transform, leftMesh, leftSimplifiedColliderMesh.GetMesh(), -cuttingPlane.normal, slicePhysicsProperties);
         }
 
         
@@ -252,7 +242,7 @@ public class PlaneCutTest : MonoBehaviour
             }
             Debug.Log("capMeshes polygon " + i + " vertexcount: " + capMeshesOutlinePolygon[capMeshesOutlinePolygon.Count - 1].Count);
         }
-        Debug.Log(capMeshesOutlinePolygonCopy.Count);
+        //Debug.Log(capMeshesOutlinePolygonCopy.Count);
         //List<Vector3> capMeshesOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
         //List<Vector3> capMeshesOutlinePolygon = outlinePreparator.PrepareOutlinePolygons()[0];
 
@@ -314,11 +304,11 @@ public class PlaneCutTest : MonoBehaviour
         //--- end
 
         //--- triangulation
-        TriangulatorTest triangulator = new TriangulatorTest();
+        //TriangulatorTest triangulator = new TriangulatorTest();
         capMeshes = new List<MeshContainer>();
         for (int i = 0; i < capMeshesOutlinePolygon.Count; i++)
         {
-            capMeshes.Add(triangulator.Triangulate(capMeshesOutlinePolygon[i], projectCoordA, projectCoordB));
+            capMeshes.Add(Triangulator.Triangulate(capMeshesOutlinePolygon[i], projectCoordA, projectCoordB));
 
         }
 
@@ -337,6 +327,36 @@ public class PlaneCutTest : MonoBehaviour
         {
             Helper.UnProjectVertices(worldToLocal, capMeshes[i]);
         }
+
+
+        if (rightMesh.Vertices.Count != 0)
+        {
+            ApplyIndexChange(rightMesh.Indices, vertexPosChange);
+            rightMesh = meshMerger.Merge(rightMesh, splitMeshLeft);
+            for (int i = 0; i < capMeshes.Count; i++)
+            {
+                Helper.FlipTriangles(capMeshes[i].Indices);
+                rightMesh = meshMerger.Merge(rightMesh, capMeshes[i]);
+            }
+
+            rightSimplifiedColliderMesh = Helper.generateSimplifiedMesh(rightMesh, 64);
+        }
+
+        if (leftMesh.Vertices.Count != 0)
+        {
+            ApplyIndexChange(leftMesh.Indices, vertexPosChange);
+            leftMesh = meshMerger.Merge(leftMesh, splitMeshRight);
+            for (int i = 0; i < capMeshes.Count; i++)
+            {
+                Helper.FlipTriangles(capMeshes[i].Indices);
+                leftMesh = meshMerger.Merge(leftMesh, capMeshes[i]);
+            }
+
+            leftSimplifiedColliderMesh = Helper.generateSimplifiedMesh(leftMesh, 64);
+        }
+
+
+
     }
 
 

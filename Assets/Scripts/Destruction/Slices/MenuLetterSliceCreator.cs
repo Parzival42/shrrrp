@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class MenuLetterSliceCreator : SliceCreator {
-    public override void CreateSlice(Transform original, MeshContainer slice, Vector3 forceDirection, SlicePhysicsProperties slicePhysicsProperties)
+    public override void CreateSlice(Transform original, MeshContainer slice, Mesh simplifiedColliderMesh, Vector3 forceDirection, SlicePhysicsProperties slicePhysicsProperties)
     {
         GameObject newSlice = new GameObject(original.gameObject.name+" - slice");
 		Transform reference = original.parent;

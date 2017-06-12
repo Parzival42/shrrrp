@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TerrainSliceCreator : SliceCreator
 {
-    public override void CreateSlice(Transform original, MeshContainer slice, Vector3 forceDirection, SlicePhysicsProperties slicePhysicsProperties)
+    public override void CreateSlice(Transform original, MeshContainer slice, Mesh simplifiedColliderMesh, Vector3 forceDirection, SlicePhysicsProperties slicePhysicsProperties)
     {
         GameObject newSlice = new GameObject(original.gameObject.name+" - slice");
 		Transform reference = original.parent;
@@ -49,7 +49,6 @@ public class TerrainSliceCreator : SliceCreator
 		newSlice.AddComponent<TerrainSliceCreator>();
 		newSlice.AddComponent<PlaneCutTest>();
 		newSlice.AddComponent<FlatMeshMerger>();
-		//newSlice.AddComponent<TriangulatorTest>();
 
 		GameObject g = new GameObject(original.gameObject.name+" - slice");
 		g.layer = LayerMask.NameToLayer("TerrainPhysics");
@@ -58,12 +57,11 @@ public class TerrainSliceCreator : SliceCreator
 		g.transform.rotation = reference.rotation;
 		g.transform.localScale =reference.localScale;
 
-		MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
-		convexMeshCollider.sharedMesh = mesh;
-		convexMeshCollider.convex = true;
-		//convexMeshCollider.enabled = false;
+        MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
+        convexMeshCollider.sharedMesh = simplifiedColliderMesh;
+        convexMeshCollider.convex = true;
 
-		Rigidbody parentRigidBody = g.AddComponent<Rigidbody>();
+        Rigidbody parentRigidBody = g.AddComponent<Rigidbody>();
 		parentRigidBody.useGravity = false;
 	
 		parentRigidBody.mass = AssignMass(renderer, slicePhysicsProperties.baseMass);
