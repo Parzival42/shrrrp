@@ -1,8 +1,11 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TerrainSliceCreator : SliceCreator
 {
+    private static int color = 0;
+    private static int change = 2;
+
     public override void CreateSlice(Transform original, MeshContainer slice, Mesh simplifiedColliderMesh, Vector3 forceDirection, SlicePhysicsProperties slicePhysicsProperties)
     {
         GameObject newSlice = new GameObject(original.gameObject.name+" - slice");
@@ -27,6 +30,39 @@ public class TerrainSliceCreator : SliceCreator
 		}
 
 		mesh.SetNormals(slice.Normals);
+
+        if (color != 0)
+        {
+            List<Color> vertexColors = new List<Color>();
+            for (int i = 0; i < mesh.vertexCount; i++)
+            {
+                if (color == 1)
+                {
+                    vertexColors.Add(Color.red);
+                }
+                else
+                {
+                    vertexColors.Add(Color.blue);
+                }
+            }
+            change--;
+
+            if (color == 1 && change==0)
+            {
+                color = 2;
+                change = 2;
+            }
+
+            if(color==2 && change==0)
+            {
+                color = 1;
+                change = 2;
+            }
+
+
+            mesh.SetColors(vertexColors);
+        }
+      
 //		mesh.SetUVs(0, slice.Uvs);		
 		mesh.RecalculateNormals();		
 		
@@ -36,6 +72,7 @@ public class TerrainSliceCreator : SliceCreator
 		filter.mesh = mesh;
         
 		renderer.material = Instantiate(GetComponent<MeshRenderer>().material);
+        
 		filter.sharedMesh.RecalculateBounds();
 
 		MeshCollider collider = newSlice.AddComponent<MeshCollider>();
