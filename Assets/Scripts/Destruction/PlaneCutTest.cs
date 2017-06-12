@@ -210,11 +210,14 @@ public class PlaneCutTest : MonoBehaviour
 
 
 
-        //determine whether the triangle indices belong to the left or right  
-        DetermineIndexPositions(localToWorld, mesh, cuttingPlane);
+     
+
 
         //determine whether the vertices belong to the left or right
         DetermineVertexPositions(localToWorld, mesh.Vertices, mesh.Normals, mesh.Uvs, cuttingPlane);
+
+        //determine whether the triangle indices belong to the left or right  
+        DetermineIndexPositions(localToWorld, mesh, cuttingPlane);
 
         //if the cut does not affect the mesh we are done
         if (leftMesh.Vertices.Count == 0 || rightMesh.Vertices.Count == 0)
@@ -469,15 +472,18 @@ public class PlaneCutTest : MonoBehaviour
                 {
                     if (a == c)
                     {
-                        conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]), b, a, c, true));
+                        conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]),
+                            subMeshIndices[i + 1], subMeshIndices[i], subMeshIndices[i + 2], b, a, c, true));
                     }
                     else if (a == b)
                     {
-                        conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]), c, a, b, false));
+                        conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]),
+                            subMeshIndices[i + 2], subMeshIndices[i], subMeshIndices[i + 1], c, a, b, false));
                     }
                     else if (b == c)
                     {
-                        conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]), a, b, c, false));
+                        conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]),
+                            subMeshIndices[i], subMeshIndices[i+1], subMeshIndices[i+2], a, b, c, false));
                     }
                 }
             }

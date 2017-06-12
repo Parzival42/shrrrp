@@ -186,12 +186,16 @@ public static class Helper {
         int index = 0;
         int indexCount = (mesh.Indices[0].Count-1)/3;
         System.Random random = new System.Random();
+        if (indexCount < 3)
+        {
+            return new MeshContainer();
+        }
 
+        int count = 0;
         for(int i = 0; i < triangleCount; i++)
         {
             index = random.Next(0, indexCount)*3;
-            if(isUsed(usedTriangles, index)){
-                i--;
+            if(isUsed(usedTriangles, index) || index<0){
                 continue;
             }
 
@@ -200,7 +204,7 @@ public static class Helper {
             for(int j = 0; j < 3; j++)
             {
                 simplifiedMesh.Vertices.Add(mesh.Vertices[mesh.Indices[0][index + j]]);
-                simplifiedMesh.Indices[0].Add((i*3) + j);
+                simplifiedMesh.Indices[0].Add(count++);
                 simplifiedMesh.Normals.Add(mesh.Normals[mesh.Indices[0][index + j]]);
             }
         }
