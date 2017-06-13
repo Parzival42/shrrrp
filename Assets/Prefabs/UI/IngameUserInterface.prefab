@@ -201,8 +201,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 207
+    m_Font: {fileID: 12800000, guid: 994febfb4a1a42d4989a56414dfb3270, type: 3}
+    m_FontSize: 90
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -213,7 +213,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Cut into pieces!
+  m_Text: CUT INTO PIECES!
 --- !u!114 &114593652795326444
 MonoBehaviour:
   m_ObjectHideFlags: 1
