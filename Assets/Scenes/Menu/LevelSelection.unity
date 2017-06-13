@@ -436,6 +436,11 @@ Prefab:
       propertyPath: m_FirstSelected
       value: 
       objectReference: {fileID: 936192052}
+    - target: {fileID: 114150349355297782, guid: 2c17bdba77bb6984fabebdf45b5c7994,
+        type: 2}
+      propertyPath: dontDestroyOnLoad
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2c17bdba77bb6984fabebdf45b5c7994, type: 2}
   m_IsPrefabParent: 0
