@@ -35,7 +35,7 @@ public class MenuSelectionContainer : MonoBehaviour
         levelName = "";
 
         foreach (PlayerInfo info in playerData)
-            info.playerInputDevice = null;
+            info.playerAction = null;
         playerData.Clear();
     }
     #endregion
@@ -43,12 +43,12 @@ public class MenuSelectionContainer : MonoBehaviour
     #region Inner class
     public class PlayerInfo
     {
-        public InputDevice playerInputDevice;
+        public StandardPlayerAction playerAction;
         public PlayerType playerType;
 
-        public PlayerInfo(InputDevice inputDevice, PlayerType playerType)
+        public PlayerInfo(StandardPlayerAction playerAction, PlayerType playerType)
         {
-            this.playerInputDevice = inputDevice;
+            this.playerAction = playerAction;
             this.playerType = playerType;
         }
     }

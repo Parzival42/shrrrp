@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using InControl;
+using Prime31.TransitionKit;
 
 public class PlayerLobby : MonoBehaviour {
 
@@ -13,10 +14,23 @@ public class PlayerLobby : MonoBehaviour {
     [SerializeField]
     private PlayerType[] playerTypes;
 
+    [SerializeField]
+    private PlayerButton[] playerButtons;
+
+    [SerializeField]
+    private Shader transitionShader;
+
+    [SerializeField]
+    private float transitionTimeout = 0.5f;
+
     #region internal members
     private bool[] isPlayerTypeUsed;
     private List<GameObject> currentPlayers;
 	private MenuSelectionContainer menuSelectionContainer;
+    private StandardPlayerAction defaultGamepadAction;
+    private StandardPlayerAction defaultKeyboardAction;
+    private bool keyboardRegistered = false;
+    private bool isStarting = false;
     #endregion
 
 	void Start () {
@@ -29,34 +43,50 @@ public class PlayerLobby : MonoBehaviour {
 
         isPlayerTypeUsed = new bool[playerTypes.Length];
         currentPlayers = new List<GameObject>();
+        defaultGamepadAction = StandardPlayerAction.CreateStandardGamePadBinding();
+        defaultKeyboardAction = StandardPlayerAction.CreateStandardKeyboardBinding();
 
         InputManager.OnDeviceDetached += inputDevice => OnDeviceDetach(inputDevice);
 	}
 	
 	void Update () {
+        if(IsTimeToStart() && !isStarting)
+            StartCoroutine(StartGame());
+
 		UpdatePlayerDevices();
 	}
 
 	private void UpdatePlayerDevices()
     {
         if(menuSelectionContainer.playerData.Count < 4){
-
-            InputDevice activeDevice = InputManager.ActiveDevice;
-
-            // Determine if device is in use already
-            // Iterate in reverse order to avoid concurrency issues
-            bool deviceRegistered = false;
-            foreach(MenuSelectionContainer.PlayerInfo data in menuSelectionContainer.playerData.AsEnumerable().Reverse()){
-                if(data.playerInputDevice.Equals(activeDevice)){
-                    deviceRegistered = true;
-                    break;
+            
+            if(defaultGamepadAction.Jump.WasPressed){
+                if(!IsDeviceRegistered(defaultGamepadAction)){
+                    CreateAndSpawnPlayer(defaultGamepadAction.ActiveDevice, false);
                 }
             }
 
-            if(!deviceRegistered){
-                CreateAndSpawnPlayer(activeDevice);
+            if(defaultKeyboardAction.Jump.WasPressed){
+                if(!keyboardRegistered){
+                    CreateAndSpawnPlayer(defaultKeyboardAction.ActiveDevice, true);
+                    keyboardRegistered = true;
+                }
             }
         }
+    }
+
+    /// <summary>
+    /// Determines if device is in use already.
+    /// </summary>
+    private bool IsDeviceRegistered(StandardPlayerAction action){
+        bool deviceRegistered = false;
+        foreach(MenuSelectionContainer.PlayerInfo data in menuSelectionContainer.playerData.AsEnumerable().Reverse()){
+            if(data.playerAction.Device.GUID.Equals(action.ActiveDevice.GUID)){
+                deviceRegistered = true;
+                break;
+            }
+        }
+        return deviceRegistered;
     }
 
     /// <summary>
@@ -73,23 +103,25 @@ public class PlayerLobby : MonoBehaviour {
         return PlayerType.NullPlayer;
     }
 
-    private void CreateAndSpawnPlayer(InputDevice device){
-        // Get unused PlayerType and add player to MenuSelectionContainer
+    private void CreateAndSpawnPlayer(InputDevice device, bool isKeyboard){
+        // Get unused PlayerType
         PlayerType type = GetFirstUnusedPlayerType();
-        menuSelectionContainer.playerData.Add(new MenuSelectionContainer.PlayerInfo(device, type));
 
         // Spawn player at specific spawn position
         GameObject spawnedPlayer = SpawnPointHelper.SpawnPlayer(menuSelectionContainer.playerPrefab, type);
         RigidBodyInput input = spawnedPlayer.GetComponent<RigidBodyInput>();
 
         // Add standard input binding
-        if(InControlUtil.IsKeyboardDevice(InputManager.ActiveDevice))
+        if(isKeyboard)
             input.PlayerAction = StandardPlayerAction.CreateStandardKeyboardBinding(InputManager.ActiveDevice);
         else
             input.PlayerAction = StandardPlayerAction.CreateStandardGamePadBinding(InputManager.ActiveDevice);
 
         // Add new player to currentPlayers list
         currentPlayers.Add(spawnedPlayer);
+        
+        // Add player to MenuSelectionContainer
+        menuSelectionContainer.playerData.Add(new MenuSelectionContainer.PlayerInfo(input.PlayerAction, type));
     }
 
     /// <summary>
@@ -99,7 +131,7 @@ public class PlayerLobby : MonoBehaviour {
     private void OnDeviceDetach(InputDevice device){
         for(int i = menuSelectionContainer.playerData.Count - 1; i > -1; i--){
             MenuSelectionContainer.PlayerInfo data = menuSelectionContainer.playerData[i];
-            if(data.playerInputDevice.Equals(device)){
+            if(data.playerAction.Device.GUID.Equals(device.GUID)){
                 // Reset PlayerType array and MenuSelectionContainer
                 isPlayerTypeUsed[i] = false;
                 menuSelectionContainer.playerData.Remove(data);
@@ -112,7 +144,40 @@ public class PlayerLobby : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Returns true if there are as many players as buttons activated.
+    /// </summary>
+    private bool IsTimeToStart(){
+        int count = 0;
+        foreach(PlayerButton b in playerButtons){
+            if(b.IsColliding)
+                count++;
+        }
+        return (count == currentPlayers.Count) && count > 1;
+    }
+
+    private IEnumerator StartGame(){
+        isStarting = true;
+        yield return new WaitForSeconds(transitionTimeout);
+
+         FishEyeTransition fishEye = new FishEyeTransition()
+        {
+            nextScene = menuSelectionContainer.levelName,
+            duration = 0.2f,
+            size = 0.0f,
+            zoom = 10.0f,
+            colorSeparation = 5.0f,
+            fishEyeShader = transitionShader
+        };
+
+        LeanTween.reset();
+        TransitionKit.instance.transitionWithDelegate(fishEye);
+    }
+
     void OnDisable(){
+        // Destroy the defaultActions and unregister event
         InputManager.OnDeviceDetached -= inputDevice => OnDeviceDetach(inputDevice);
+        defaultGamepadAction.Destroy();
+        defaultKeyboardAction.Destroy();
     }
 }

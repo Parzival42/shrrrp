@@ -720,57 +720,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: a69298c9fc50ce64fb376b7450ad15a4, type: 3}
   m_PrefabInternal: {fileID: 347333101}
---- !u!1 &383553080
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1116239517529008, guid: 8706c05d61f20f34995d490aa0a66414,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 383553081}
-  - component: {fileID: 383553082}
-  m_Layer: 0
-  m_Name: _StartupEffects
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &383553081
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4258197967281792, guid: 8706c05d61f20f34995d490aa0a66414,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 383553080}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 608782978}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &383553082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114585675629709032, guid: 8706c05d61f20f34995d490aa0a66414,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 383553080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b04f6909ecd1094fb90d569cccc8d57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sliceTime: 1.2
-  sliceEase: 21
-  fovAdd: -5
-  fovTime: 0.6
-  fovEase: 7
-  overlayTime: 0.24
-  overlayEase: 22
-  overlayMax: 0.9
 --- !u!1 &392154679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1031,6 +980,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4384800609694202, guid: 6877fc4abb3e63b4b80b6ee06a2fb856,
     type: 2}
   m_PrefabInternal: {fileID: 422329331}
+--- !u!114 &422329333 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114613413316073488, guid: 6877fc4abb3e63b4b80b6ee06a2fb856,
+    type: 2}
+  m_PrefabInternal: {fileID: 422329331}
+  m_Script: {fileID: 11500000, guid: 040e98b39d772214cad6bbcee9aa4a43, type: 3}
 --- !u!1001 &431837203
 Prefab:
   m_ObjectHideFlags: 0
@@ -1248,7 +1203,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1025622730}
-  - {fileID: 383553081}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1311,6 +1265,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4384800609694202, guid: 6877fc4abb3e63b4b80b6ee06a2fb856,
     type: 2}
   m_PrefabInternal: {fileID: 617582114}
+--- !u!114 &617582116 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114613413316073488, guid: 6877fc4abb3e63b4b80b6ee06a2fb856,
+    type: 2}
+  m_PrefabInternal: {fileID: 617582114}
+  m_Script: {fileID: 11500000, guid: 040e98b39d772214cad6bbcee9aa4a43, type: 3}
 --- !u!1 &657240500
 GameObject:
   m_ObjectHideFlags: 0
@@ -1672,6 +1632,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4384800609694202, guid: 6877fc4abb3e63b4b80b6ee06a2fb856,
     type: 2}
   m_PrefabInternal: {fileID: 927542292}
+--- !u!114 &927542294 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114613413316073488, guid: 6877fc4abb3e63b4b80b6ee06a2fb856,
+    type: 2}
+  m_PrefabInternal: {fileID: 927542292}
+  m_Script: {fileID: 11500000, guid: 040e98b39d772214cad6bbcee9aa4a43, type: 3}
 --- !u!1001 &953487441
 Prefab:
   m_ObjectHideFlags: 0
@@ -1815,6 +1781,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4384800609694202, guid: 6877fc4abb3e63b4b80b6ee06a2fb856,
     type: 2}
   m_PrefabInternal: {fileID: 977309637}
+--- !u!114 &977309639 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114613413316073488, guid: 6877fc4abb3e63b4b80b6ee06a2fb856,
+    type: 2}
+  m_PrefabInternal: {fileID: 977309637}
+  m_Script: {fileID: 11500000, guid: 040e98b39d772214cad6bbcee9aa4a43, type: 3}
 --- !u!1001 &1016802272
 Prefab:
   m_ObjectHideFlags: 0
@@ -1902,6 +1874,13 @@ MonoBehaviour:
   playerPrefab: {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a,
     type: 2}
   playerTypes: 00000000010000000200000003000000
+  playerButtons:
+  - {fileID: 422329333}
+  - {fileID: 617582116}
+  - {fileID: 927542294}
+  - {fileID: 977309639}
+  transitionShader: {fileID: 4800000, guid: 84ea0194fc9852045ab36a59ec810e91, type: 3}
+  transitionTimeout: 0.2
 --- !u!4 &1025622730
 Transform:
   m_ObjectHideFlags: 0

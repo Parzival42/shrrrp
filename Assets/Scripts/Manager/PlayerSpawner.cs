@@ -46,7 +46,7 @@ public class PlayerSpawner : MonoBehaviour
             RigidBodyInput rigidInput = spawnedPlayer.GetComponent<RigidBodyInput>();
 
             // TODO: Somehow distinguish between keyboard and gamepad!
-            rigidInput.PlayerAction = StandardPlayerAction.CreateStandardGamePadBinding(playerInfo.playerInputDevice);
+            rigidInput.PlayerAction = playerInfo.playerAction;
         }
     }
 
