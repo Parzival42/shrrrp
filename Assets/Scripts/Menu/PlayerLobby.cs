@@ -65,8 +65,7 @@ public class PlayerLobby : MonoBehaviour {
                     CreateAndSpawnPlayer(defaultGamepadAction.ActiveDevice, false);
                 }
             }
-
-            if(defaultKeyboardAction.Jump.WasPressed){
+            if (defaultKeyboardAction.Jump.WasPressed){
                 if(!keyboardRegistered){
                     CreateAndSpawnPlayer(defaultKeyboardAction.ActiveDevice, true);
                     keyboardRegistered = true;
@@ -113,9 +112,9 @@ public class PlayerLobby : MonoBehaviour {
 
         // Add standard input binding
         if(isKeyboard)
-            input.PlayerAction = StandardPlayerAction.CreateStandardKeyboardBinding(InputManager.ActiveDevice);
+            input.PlayerAction = StandardPlayerAction.CreateStandardKeyboardBinding(device);
         else
-            input.PlayerAction = StandardPlayerAction.CreateStandardGamePadBinding(InputManager.ActiveDevice);
+            input.PlayerAction = StandardPlayerAction.CreateStandardGamePadBinding(device);
 
         // Add new player to currentPlayers list
         currentPlayers.Add(spawnedPlayer);
