@@ -56,8 +56,10 @@ public class PlayerLobby : MonoBehaviour {
         if(!isSwitchingScene){
             if(IsTimeToStart())
                 StartCoroutine(SwitchScene(menuSelectionContainer.levelName));
-            if(IsTimeToGoBack())
+            if(IsTimeToGoBack()){
+                menuSelectionContainer.ResetContainer();
                 StartCoroutine(SwitchScene("LevelSelection"));
+            }
         }
 
 		UpdatePlayerDevices();
