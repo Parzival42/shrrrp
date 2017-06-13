@@ -18,10 +18,13 @@ public class PlayerLobby : MonoBehaviour {
     private PlayerButton[] playerButtons;
 
     [SerializeField]
+    private PlayerButton[] backButtons;
+
+    [SerializeField]
     private Shader transitionShader;
 
     [SerializeField]
-    private float transitionTimeout = 0.5f;
+    private float transitionTimeout = 0.2f;
 
     #region internal members
     private bool[] isPlayerTypeUsed;
@@ -30,7 +33,7 @@ public class PlayerLobby : MonoBehaviour {
     private StandardPlayerAction defaultGamepadAction;
     private StandardPlayerAction defaultKeyboardAction;
     private bool keyboardRegistered = false;
-    private bool isStarting = false;
+    private bool isSwitchingScene = false;
     #endregion
 
 	void Start () {
@@ -50,14 +53,18 @@ public class PlayerLobby : MonoBehaviour {
 	}
 	
 	void Update () {
-        if(IsTimeToStart() && !isStarting)
-            StartCoroutine(StartGame());
+        if(!isSwitchingScene){
+            if(IsTimeToStart())
+                StartCoroutine(SwitchScene(menuSelectionContainer.levelName));
+            if(IsTimeToGoBack())
+                StartCoroutine(SwitchScene("LevelSelection"));
+        }
+        IsTimeToGoBack();
 
 		UpdatePlayerDevices();
 	}
 
-	private void UpdatePlayerDevices()
-    {
+	private void UpdatePlayerDevices(){
         if(menuSelectionContainer.playerData.Count < 4){
             
             if(defaultGamepadAction.Jump.WasPressed){
@@ -137,6 +144,7 @@ public class PlayerLobby : MonoBehaviour {
 
                 // Destroy the PlayerAction and the player
                 GameObject player = currentPlayers[i];
+                currentPlayers.Remove(player);
                 player.GetComponent<RigidBodyInput>().PlayerAction.Destroy();
                 Destroy(player);
             }
@@ -152,16 +160,28 @@ public class PlayerLobby : MonoBehaviour {
             if(b.IsColliding)
                 count++;
         }
-        return (count == currentPlayers.Count) && count > 1;
+        return count == currentPlayers.Count && count > 1;
     }
 
-    private IEnumerator StartGame(){
-        isStarting = true;
+    /// <summary>
+    /// Returns true if there is only one player left and he enters back area.
+    /// </summary>
+    private bool IsTimeToGoBack(){
+        int count = 0;
+        foreach(PlayerButton b in backButtons){
+            if(b.IsColliding)
+                count++;
+        }
+        return count > 0 && currentPlayers.Count < 1;
+    }
+
+    private IEnumerator SwitchScene(string levelName){
+        isSwitchingScene = true;
         yield return new WaitForSeconds(transitionTimeout);
 
          FishEyeTransition fishEye = new FishEyeTransition()
         {
-            nextScene = menuSelectionContainer.levelName,
+            nextScene = levelName,
             duration = 0.2f,
             size = 0.0f,
             zoom = 10.0f,
@@ -169,12 +189,12 @@ public class PlayerLobby : MonoBehaviour {
             fishEyeShader = transitionShader
         };
 
-        LeanTween.reset();
         TransitionKit.instance.transitionWithDelegate(fishEye);
     }
 
     void OnDisable(){
         // Destroy the defaultActions and unregister event
+        LeanTween.reset();
         InputManager.OnDeviceDetached -= inputDevice => OnDeviceDetach(inputDevice);
         defaultGamepadAction.Destroy();
         defaultKeyboardAction.Destroy();

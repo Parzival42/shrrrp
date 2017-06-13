@@ -35,7 +35,7 @@ public class MenuSelectionContainer : MonoBehaviour
         levelName = "";
 
         foreach (PlayerInfo info in playerData)
-            info.playerAction = null;
+            info.playerAction.Destroy();
         playerData.Clear();
     }
     #endregion

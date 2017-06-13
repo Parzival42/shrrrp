@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class PlayerButton : MonoBehaviour
 {
+    [SerializeField]
+    private bool isVisible = true;
+
     [FancyHeader("Tween options", "Button tween options")]
     [SerializeField]
     private float yOffset = 0.2f;
@@ -25,8 +28,10 @@ public class PlayerButton : MonoBehaviour
     [FancyHeader("Debug Information")]
     [SerializeField]
     private bool isColliding = false;
+    private GameObject lastCollided = null;
 
     public bool IsColliding { get { return isColliding; } }
+    public GameObject LastCollided { get { return lastCollided; }}
 
     private float originalHeight;
 
@@ -37,24 +42,33 @@ public class PlayerButton : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         isColliding = true;
+        lastCollided = other.gameObject;
     }
 
     private void OnTriggerExit(Collider other)
     {
         isColliding = false;
-        LeanTween.moveY(gameObject, originalHeight, tweenTime).setEase(easeType);
-        LeanTween.value(lightIntensity, 0f, tweenTime).setEase(easeType)
-            .setOnUpdate((float value) => {
-                infoLight.intensity = value;
-            });
+        lastCollided = null;
+
+        if(isVisible){
+            LeanTween.moveY(gameObject, originalHeight, tweenTime).setEase(easeType);
+            LeanTween.value(lightIntensity, 0f, tweenTime).setEase(easeType)
+                .setOnUpdate((float value) => {
+                    infoLight.intensity = value;
+                });
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        LeanTween.moveY(gameObject, originalHeight - yOffset, tweenTime).setEase(easeType);
-        LeanTween.value(0f, lightIntensity, tweenTime).setEase(easeType)
-            .setOnUpdate((float value) => {
-                infoLight.intensity = value;
-            });
+        lastCollided = other.gameObject;
+
+        if(isVisible){
+            LeanTween.moveY(gameObject, originalHeight - yOffset, tweenTime).setEase(easeType);
+            LeanTween.value(0f, lightIntensity, tweenTime).setEase(easeType)
+                .setOnUpdate((float value) => {
+                    infoLight.intensity = value;
+                });
+        }
     }
 }

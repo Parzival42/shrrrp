@@ -57,11 +57,11 @@ public class BaseMenu : MonoBehaviour {
             fishEyeShader = transitionShader
         };
 
-		LeanTween.reset();
         TransitionKit.instance.transitionWithDelegate(fishEye);
     }
 
 	void OnDisable(){
+		LeanTween.reset();
 		InputModuleActionAdapter.OnCancel -= LoadPreviousLevel;
 	}
 

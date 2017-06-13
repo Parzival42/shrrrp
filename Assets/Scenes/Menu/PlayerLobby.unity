@@ -610,6 +610,40 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: a69298c9fc50ce64fb376b7450ad15a4, type: 3}
   m_PrefabInternal: {fileID: 252988636}
+--- !u!1 &252988638 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: a69298c9fc50ce64fb376b7450ad15a4, type: 3}
+  m_PrefabInternal: {fileID: 252988636}
+--- !u!65 &252988639
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 252988638}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 10.000002, z: 10}
+  m_Center: {x: 0, y: 0.0000009536743, z: 1.1641532e-10}
+--- !u!114 &252988640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 252988638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040e98b39d772214cad6bbcee9aa4a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isVisible: 0
+  yOffset: 0.2
+  tweenTime: 0.3
+  easeType: 18
+  infoLight: {fileID: 0}
+  lightIntensity: 1.36
+  isColliding: 0
 --- !u!1001 &257385900
 Prefab:
   m_ObjectHideFlags: 0
@@ -1708,6 +1742,40 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: a69298c9fc50ce64fb376b7450ad15a4, type: 3}
   m_PrefabInternal: {fileID: 813966167}
+--- !u!1 &813966169 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: a69298c9fc50ce64fb376b7450ad15a4, type: 3}
+  m_PrefabInternal: {fileID: 813966167}
+--- !u!65 &813966170
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 813966169}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.000004, y: 10.000002, z: 10}
+  m_Center: {x: 3.637979e-12, y: 0.0000009536743, z: 1.1641532e-10}
+--- !u!114 &813966171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 813966169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040e98b39d772214cad6bbcee9aa4a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isVisible: 0
+  yOffset: 0.2
+  tweenTime: 0.3
+  easeType: 18
+  infoLight: {fileID: 0}
+  lightIntensity: 1.36
+  isColliding: 0
 --- !u!1 &817981845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2046,6 +2114,11 @@ MonoBehaviour:
   - {fileID: 617582116}
   - {fileID: 927542294}
   - {fileID: 977309639}
+  backButtons:
+  - {fileID: 1554264343}
+  - {fileID: 252988640}
+  - {fileID: 2061333249}
+  - {fileID: 813966171}
   transitionShader: {fileID: 4800000, guid: 84ea0194fc9852045ab36a59ec810e91, type: 3}
   transitionTimeout: 0.2
 --- !u!4 &1025622730
@@ -2949,6 +3022,40 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: a69298c9fc50ce64fb376b7450ad15a4, type: 3}
   m_PrefabInternal: {fileID: 1554264339}
+--- !u!1 &1554264341 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: a69298c9fc50ce64fb376b7450ad15a4, type: 3}
+  m_PrefabInternal: {fileID: 1554264339}
+--- !u!65 &1554264342
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1554264341}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 30, y: 10.000003, z: 10}
+  m_Center: {x: 0, y: 0, z: 1.1641532e-10}
+--- !u!114 &1554264343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1554264341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040e98b39d772214cad6bbcee9aa4a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isVisible: 0
+  yOffset: 0.2
+  tweenTime: 0.3
+  easeType: 18
+  infoLight: {fileID: 0}
+  lightIntensity: 1.36
+  isColliding: 0
 --- !u!1001 &1595269200
 Prefab:
   m_ObjectHideFlags: 0
@@ -3664,3 +3771,37 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: a69298c9fc50ce64fb376b7450ad15a4, type: 3}
   m_PrefabInternal: {fileID: 2061333245}
+--- !u!1 &2061333247 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: a69298c9fc50ce64fb376b7450ad15a4, type: 3}
+  m_PrefabInternal: {fileID: 2061333245}
+--- !u!65 &2061333248
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2061333247}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 30, y: 10.000001, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2061333249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2061333247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040e98b39d772214cad6bbcee9aa4a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isVisible: 0
+  yOffset: 0.2
+  tweenTime: 0.3
+  easeType: 18
+  infoLight: {fileID: 0}
+  lightIntensity: 1.36
+  isColliding: 0
