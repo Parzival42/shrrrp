@@ -107,13 +107,14 @@ public class TerrainSliceCreator : SliceCreator
 			MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
 			convexMeshCollider.sharedMesh = simplifiedColliderMesh;
 			convexMeshCollider.convex = true;
+			convexMeshCollider.enabled = false;
 
 			parentRigidBody.drag = slicePhysicsProperties.drag;
 			parentRigidBody.angularDrag = slicePhysicsProperties.angularDrag;
 			parentRigidBody.constraints = slicePhysicsProperties.constraints;
 			parentRigidBody.AddForce(Vector3.ProjectOnPlane(forceDirection, Vector3.up).normalized*750, ForceMode.Force);
 		}
-	
+		g.AddComponent<ColliderActivator>();
 		newSlice.transform.parent = g.transform;
     }
 
