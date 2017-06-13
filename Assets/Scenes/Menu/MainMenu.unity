@@ -1084,6 +1084,11 @@ Prefab:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 536310361}
+    - target: {fileID: 114338710117482634, guid: d3bcd2a5c75e7184db943db753b49b82,
+        type: 2}
+      propertyPath: sceneSwitchDelayTime
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d3bcd2a5c75e7184db943db753b49b82, type: 2}
   m_IsPrefabParent: 0
