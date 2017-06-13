@@ -45,7 +45,6 @@ public class PlayerSpawner : MonoBehaviour
             GameObject spawnedPlayer = SpawnPointHelper.SpawnPlayer(menuSelectionContainer.playerPrefab, playerInfo.playerType);
             RigidBodyInput rigidInput = spawnedPlayer.GetComponent<RigidBodyInput>();
 
-            // TODO: Somehow distinguish between keyboard and gamepad!
             rigidInput.PlayerAction = playerInfo.playerAction;
         }
     }
