@@ -36,7 +36,7 @@ public class RigidBodyForceJump : MonoBehaviour
         bool hitGround = CheckGround(out hitInfo);
 
         if (hitGround)
-            ApplyForce(hitInfo); Debug.Log("Hit Ground");
+            ApplyForce(hitInfo);
     }
 
     private void ApplyForce(RaycastHit hitInfo)

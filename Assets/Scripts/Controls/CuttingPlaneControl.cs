@@ -95,7 +95,20 @@ public class CuttingPlaneControl : MonoBehaviour
 
     private void PositionPlayerDuringCut()
     {
-        LeanTween.moveY(inputHandler.gameObject, inputHandler.transform.position.y + cutEffectParams.playerHeightOffset, cutEffectParams.playerTime).setEase(cutEffectParams.playerEase);
+        float originalPosition = inputHandler.transform.position.y;
+        LeanTween.moveY(inputHandler.gameObject, inputHandler.transform.position.y + cutEffectParams.playerHeightOffset, cutEffectParams.playerTime).setEase(cutEffectParams.playerEase)
+            .setOnComplete(() => {
+                LeanTween.moveY(inputHandler.gameObject, originalPosition, cutEffectParams.playerTime)
+                .setEase(LeanTweenType.easeOutExpo)
+                .setOnComplete(() => {
+                    // Hack
+                    RigidBodyInputHandler handler = (RigidBodyInputHandler)inputHandler.InputController;
+                    if (handler != null)
+                        handler.PerformCutJump();
+
+                    SetInputHandlerMovemet(true);
+                });
+            });
     }
 
     private void HandleRotation()
@@ -162,7 +175,7 @@ public class CuttingPlaneControl : MonoBehaviour
     IEnumerator WaitForDestruction()
     {
         yield return new WaitForSeconds(waitForDestruction);
-        SetInputHandlerMovemet(true);
+        //SetInputHandlerMovemet(true);
 
         isoLine.enabled = false;
         isoLine.LineCount = originalLineCount;

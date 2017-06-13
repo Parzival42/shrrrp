@@ -141,6 +141,13 @@ public class RigidBodyInputHandler : InputHandler
         player.Rigid.AddForce(forceVector, ForceMode.VelocityChange);
     }
 
+    public void PerformCutJump()
+    {
+        PerformJumpForce(Vector3.up * player.JumpIntensity);
+        SetJumpState(true, false);
+        OnJumped();
+    }
+
     private void HandleAxisInput(float axis, Vector3 direction)
     {
         if (axis > MOVE_EPSILON)
