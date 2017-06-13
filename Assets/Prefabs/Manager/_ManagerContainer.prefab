@@ -307,8 +307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ad60b4c0ca6e846bcf0c53ba28094c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTypes: 0200000002000000
-  controllerTypes: 0100000001000000
+  playerTypes: 0200000001000000
+  controllerTypes: 0100000000000000
   playerPrefabs:
   - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}
   - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}
