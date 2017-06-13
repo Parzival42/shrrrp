@@ -21,6 +21,10 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 	}
 
 	public void Cut(Transform planeTransform, Mesh planeMesh){
+		Cut(planeTransform, planeMesh, 0.0f);
+	}
+
+	public void Cut(Transform planeTransform, Mesh planeMesh, float delay){
 		Collider[] intersectingColliders = Physics.OverlapBox(planeTransform.position, new Vector3(50, 0.0001f, 50), planeTransform.rotation, layerMask);
 
 		Plane cuttingPlane = new Plane();
@@ -48,8 +52,13 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 			}
 			
 			Task task;
-			this.StartCoroutineAsync(pct.CuttingCoroutine(cuttingPlane, new MeshContainer(go.GetComponent<MeshFilter>().mesh, true), sliceProperties), out task);
+			this.StartCoroutineAsync(pct.CuttingCoroutine(cuttingPlane, new MeshContainer(go.GetComponent<MeshFilter>().mesh, true), sliceProperties, delay), out task);
 			//pct.StartSplitInTwo(cuttingPlane, new MeshContainer( go.GetComponent<MeshFilter>().mesh, true), sliceProperties);
 		}
+	}
+
+	private IEnumerator WaitForExecution(float delay){
+		yield return new WaitForSeconds(delay);
+		
 	}
 }

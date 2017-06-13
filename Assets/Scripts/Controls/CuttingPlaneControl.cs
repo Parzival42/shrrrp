@@ -86,7 +86,7 @@ public class CuttingPlaneControl : MonoBehaviour
             PositionPlayerDuringCut();
             TimeUtil.TimescalePingPong(cutEffectParams.timeDestination, cutEffectParams.timeEffectDuration, cutEffectParams.timeEase);
             CameraUtil.FovPingPong(cam, cam.fieldOfView, cam.fieldOfView + cutEffectParams.fovAdd, cutEffectParams.fovTime, cutEffectParams.fovEase);
-            CuttingManagerLocator.GetInstance.Cut(transform, GetComponent<MeshFilter>().mesh);
+            CuttingManagerLocator.GetInstance.Cut(transform, GetComponent<MeshFilter>().mesh, 0.4f);
 
             inputHandler.InputController.OnPlayerCutMove();
             DestroyPlaneControl();

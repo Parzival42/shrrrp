@@ -407,7 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb99093b2daabb42a5959e42bb6d56a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMultiplier: 0.08
+  forceMultiplier: 0.5
   forceMode: 1
   debugDraw: 0
   layerMask:
@@ -589,6 +589,16 @@ Prefab:
     - target: {fileID: 4251817778649254, guid: 8706c05d61f20f34995d490aa0a66414, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114540823377652022, guid: 8706c05d61f20f34995d490aa0a66414,
+        type: 2}
+      propertyPath: minTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114540823377652022, guid: 8706c05d61f20f34995d490aa0a66414,
+        type: 2}
+      propertyPath: maxTime
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8706c05d61f20f34995d490aa0a66414, type: 2}

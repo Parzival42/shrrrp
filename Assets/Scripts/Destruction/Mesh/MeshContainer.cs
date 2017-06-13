@@ -87,7 +87,7 @@ public class MeshContainer {
 			mesh.SetIndices(indices[i].ToArray(), MeshTopology.Triangles, i);
 		}
 		mesh.SetNormals(normals);
-		mesh.SetUVs(0, uvs);
+		//mesh.SetUVs(0, uvs);
 		mesh.RecalculateBounds();
 		return mesh;
 	}

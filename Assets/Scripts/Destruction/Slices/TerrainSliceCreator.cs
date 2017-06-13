@@ -94,10 +94,7 @@ public class TerrainSliceCreator : SliceCreator
 		g.transform.rotation = reference.rotation;
 		g.transform.localScale =reference.localScale;
 
-        MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
-        convexMeshCollider.sharedMesh = simplifiedColliderMesh;
-        convexMeshCollider.convex = true;
-
+    
         Rigidbody parentRigidBody = g.AddComponent<Rigidbody>();
 		parentRigidBody.useGravity = false;
 	
@@ -105,12 +102,18 @@ public class TerrainSliceCreator : SliceCreator
         if (parentRigidBody.mass < 100)
         {
             newSlice.AddComponent<DissolveObjectWithParent>();
-        }
-		parentRigidBody.drag = slicePhysicsProperties.drag;
-		parentRigidBody.angularDrag = slicePhysicsProperties.angularDrag;
-		parentRigidBody.constraints = slicePhysicsProperties.constraints;
-		parentRigidBody.AddForce(forceDirection*slicePhysicsProperties.baseMass*10, ForceMode.Impulse);
+        }else{
+			parentRigidBody.mass = 2.5f;
+			MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
+			convexMeshCollider.sharedMesh = simplifiedColliderMesh;
+			convexMeshCollider.convex = true;
 
+			parentRigidBody.drag = slicePhysicsProperties.drag;
+			parentRigidBody.angularDrag = slicePhysicsProperties.angularDrag;
+			parentRigidBody.constraints = slicePhysicsProperties.constraints;
+			parentRigidBody.AddForce(Vector3.ProjectOnPlane(forceDirection, Vector3.up).normalized*750, ForceMode.Force);
+		}
+	
 		newSlice.transform.parent = g.transform;
     }
 

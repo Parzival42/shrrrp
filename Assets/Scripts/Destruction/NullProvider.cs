@@ -9,4 +9,9 @@ public class NullProvider : CuttingManager
     {
         Debug.Log("Null Provider Action");
     }
+
+    public void Cut(Transform planeTransform, Mesh planeMesh, float delay)
+    {
+        Cut(planeTransform, planeMesh);
+    }
 }

@@ -154,8 +154,10 @@ public class PlaneCutTest : MonoBehaviour
         }
     }
 
-    public IEnumerator CuttingCoroutine(Plane cuttingPlane, MeshContainer mesh, SlicePhysicsProperties slicePhysicsProperties)
+    public IEnumerator CuttingCoroutine(Plane cuttingPlane, MeshContainer mesh, SlicePhysicsProperties slicePhysicsProperties, float delay)
     {
+        yield return new WaitForSeconds(delay);
+
         yield return Ninja.JumpToUnity;
 
         localToWorld = transform.localToWorldMatrix;
@@ -341,8 +343,13 @@ public class PlaneCutTest : MonoBehaviour
                 Helper.FlipTriangles(capMeshes[i].Indices);
                 rightMesh = meshMerger.Merge(rightMesh, capMeshes[i]);
             }
-
-            rightSimplifiedColliderMesh = Helper.generateSimplifiedMesh(rightMesh, 64);
+            
+            if(rightMesh.Indices[0].Count>64){
+                rightSimplifiedColliderMesh = Helper.generateSimplifiedMesh(rightMesh, 64);
+            }else{
+                rightSimplifiedColliderMesh = rightMesh;
+            }
+           
         }
 
         if (leftMesh.Vertices.Count != 0)
@@ -355,7 +362,12 @@ public class PlaneCutTest : MonoBehaviour
                 leftMesh = meshMerger.Merge(leftMesh, capMeshes[i]);
             }
 
-            leftSimplifiedColliderMesh = Helper.generateSimplifiedMesh(leftMesh, 64);
+            if(leftMesh.Indices[0].Count>64){
+                leftSimplifiedColliderMesh = Helper.generateSimplifiedMesh(leftMesh, 64);
+            }else{
+                leftSimplifiedColliderMesh = leftMesh;
+            }
+           
         }
 
 
@@ -402,9 +414,6 @@ public class PlaneCutTest : MonoBehaviour
     {
         int above = 0;
         int below = 0;
-
-        List<int> leftVertices = new List<int>();
-        List<int> rightVertices = new List<int>();
 
         List<Vector3> vertices = mesh.Vertices;
 
