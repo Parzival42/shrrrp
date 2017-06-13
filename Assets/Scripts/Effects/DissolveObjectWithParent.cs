@@ -1,10 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class DissolveObjectWithParent : DissolveObject {
-
-		
+﻿public class DissolveObjectWithParent : DissolveObject {
     protected override void CleanUp()
     {
         base.CleanUp();

@@ -34,10 +34,6 @@ public class MenuLetterSliceCreator : SliceCreator {
 		renderer.material = Instantiate(GetComponent<MeshRenderer>().material);
 		filter.sharedMesh.RecalculateBounds();
 
-		MeshCollider collider = newSlice.AddComponent<MeshCollider>();
-		collider.material = slicePhysicsProperties.physicMaterial;
-		collider.convex = true;
-
 		Rigidbody rigidbody = newSlice.AddComponent<Rigidbody>();
 		
 		rigidbody.mass = 100;
@@ -46,9 +42,9 @@ public class MenuLetterSliceCreator : SliceCreator {
 		rigidbody.isKinematic = false;
 		rigidbody.useGravity = false;
 		rigidbody.AddForce(forceDirection*Random.Range(50,500), ForceMode.Impulse);
-		rigidbody.AddTorque(transform.right*Random.Range(-300,300), ForceMode.Impulse);
+		rigidbody.AddTorque(transform.right*Random.Range(-0.3f,0.3f), ForceMode.Impulse);
 
 		newSlice.transform.parent = original.parent;
-		newSlice.AddComponent<DissolveObjectWithDelay>();
+		newSlice.AddComponent<DissolveMenuObjectWithDelay>();
     }
 }

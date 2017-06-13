@@ -14,7 +14,10 @@ public class DissolveObject : MonoBehaviour {
 	}
 
 	protected void PrepareDissolve(float dissolveTime){
-		 dissolveMaterial = new Material(Resources.Load("DissolveMaterial", typeof(Material)) as Material);
+		PrepareDissolve(dissolveTime, "DissolveMaterial");
+	}
+	protected void PrepareDissolve(float dissolveTime, string material){
+		 dissolveMaterial = new Material(Resources.Load(material, typeof(Material)) as Material);
 
 		 rend = GetComponent<Renderer>();
 		 rend.material.EnableKeyword("_ALPHATEST_ON");
