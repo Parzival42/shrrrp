@@ -59,7 +59,6 @@ public class PlayerLobby : MonoBehaviour {
             if(IsTimeToGoBack())
                 StartCoroutine(SwitchScene("LevelSelection"));
         }
-        IsTimeToGoBack();
 
 		UpdatePlayerDevices();
 	}
@@ -172,7 +171,7 @@ public class PlayerLobby : MonoBehaviour {
             if(b.IsColliding)
                 count++;
         }
-        return count > 0 && currentPlayers.Count < 1;
+        return count > 0 && currentPlayers.Count < 2;
     }
 
     private IEnumerator SwitchScene(string levelName){
