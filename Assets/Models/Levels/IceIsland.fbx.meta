@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 330bc6ae0772e4be9b1d516b78c1da1c
-timeCreated: 1493739461
+guid: 76912f4f1f70841768fb065284707022
+timeCreated: 1497362837
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,8 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: IceIsland 1
-    4300002: IceIsland
+    4300000: IceIsland
   materials:
     importMaterials: 0
     materialName: 0
