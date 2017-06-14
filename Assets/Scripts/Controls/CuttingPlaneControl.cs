@@ -24,6 +24,16 @@ public class CuttingPlaneControl : MonoBehaviour
     [FancyHeader("Cut effect parameters")]
     [SerializeField]
     private CuttingEffectParameters cutEffectParams;
+
+    [FancyHeader("Cut effect sound")]
+    [SerializeField]
+    private AudioClip cutEffectSound;
+
+    [SerializeField]
+    private float cutEffectVolume = 1;
+
+    [SerializeField]
+    private float cutEffectPitch = 1;
     #endregion
 
     #region Internal variables
@@ -87,6 +97,7 @@ public class CuttingPlaneControl : MonoBehaviour
             TimeUtil.TimescalePingPong(cutEffectParams.timeDestination, cutEffectParams.timeEffectDuration, cutEffectParams.timeEase);
             CameraUtil.FovPingPong(cam, cam.fieldOfView, cam.fieldOfView + cutEffectParams.fovAdd, cutEffectParams.fovTime, cutEffectParams.fovEase);
             CuttingManagerLocator.GetInstance.Cut(transform, GetComponent<MeshFilter>().mesh, 0.4f);
+            SoundManager.SoundManagerInstance.Play(cutEffectSound, Vector3.zero, cutEffectVolume, cutEffectPitch, false, AudioGroup.Effects);
 
             inputHandler.InputController.OnPlayerCutMove();
             DestroyPlaneControl();

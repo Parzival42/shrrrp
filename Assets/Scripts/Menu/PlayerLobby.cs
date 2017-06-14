@@ -24,7 +24,10 @@ public class PlayerLobby : MonoBehaviour {
     private Shader transitionShader;
 
     [SerializeField]
-    private float transitionTimeout = 0.2f;
+    private float transitionTimeout = 1f;
+
+    [SerializeField]
+    private ParticleSystem deathParticles;
 
     #region internal members
     private bool[] isPlayerTypeUsed;
@@ -54,15 +57,15 @@ public class PlayerLobby : MonoBehaviour {
 	
 	void Update () {
         if(!isSwitchingScene){
+            
             if(IsTimeToStart())
                 StartCoroutine(SwitchScene(menuSelectionContainer.levelName));
             if(IsTimeToGoBack()){
-                StartCoroutine(SwitchScene("LevelSelection"));
-                menuSelectionContainer.ResetContainer();
+                DestroyEverything();
             }
-        }
 
-		UpdatePlayerDevices();
+		    UpdatePlayerDevices();
+        }
 	}
 
 	private void UpdatePlayerDevices(){
@@ -132,35 +135,14 @@ public class PlayerLobby : MonoBehaviour {
     }
 
     /// <summary>
-    /// When a device is detached, remove PlayerInfo from MenuSelectionContainer and
-    /// despawn/destroy the player connected to it.
+    /// When a device is detached, go back to LevelSelection.
     /// </summary>
     private void OnDeviceDetach(InputDevice device){
-        Debug.Log("current players before:" +  currentPlayers.Count);
-        Debug.Log("menu players before:" +  menuSelectionContainer.playerData.Count);
         for(int i = menuSelectionContainer.playerData.Count - 1; i > -1; i--){
             MenuSelectionContainer.PlayerInfo data = (MenuSelectionContainer.PlayerInfo) menuSelectionContainer.playerData[i];
             if(data.playerAction.Device.GUID.Equals(device.GUID)){
-
-                GameObject player = null;
-                 for(int j = currentPlayers.Count - 1; j > -1; j--){
-                    if(((GameObject)(currentPlayers[j])).GetComponent<RigidBodyInput>().PlayerAction.Device.GUID.Equals(device.GUID))
-                        player = (GameObject)(currentPlayers[j]);
-                }
-
-                if(player != null){
-                    // Reset PlayerType array and MenuSelectionContainer
-                    isPlayerTypeUsed[(int)data.playerType] = false;
-                    menuSelectionContainer.playerData.Remove(data);
-
-                    // Destroy the PlayerAction and the player
-                    currentPlayers.Remove(player);
-                    player.GetComponent<RigidBodyInput>().PlayerAction.Destroy();
-                    Destroy(player);
-
-                    Debug.Log("current players:" +  currentPlayers.Count);
-                    Debug.Log("menu players:" +  menuSelectionContainer.playerData.Count);
-                }
+                DestroyEverything();
+                return;
             }
         }
     }
@@ -178,7 +160,7 @@ public class PlayerLobby : MonoBehaviour {
     }
 
     /// <summary>
-    /// Returns true if there is only one player left and he enters back area.
+    /// Returns true if a player enters back area.
     /// </summary>
     private bool IsTimeToGoBack(){
         int count = 0;
@@ -186,7 +168,17 @@ public class PlayerLobby : MonoBehaviour {
             if(b.IsColliding)
                 count++;
         }
-        return count > 0 && currentPlayers.Count < 2;
+        return count > 0;
+    }
+
+    private void DestroyEverything(){
+        foreach(GameObject player in currentPlayers){
+            LeanTween.moveY(player, player.transform.position.y + 80f, 0.5f).setEaseInCubic();
+            if (deathParticles != null)
+                Instantiate(deathParticles, player.transform.position, deathParticles.transform.rotation);
+        }
+        menuSelectionContainer.ResetContainer();
+        StartCoroutine(SwitchScene("LevelSelection"));
     }
 
     private IEnumerator SwitchScene(string levelName){

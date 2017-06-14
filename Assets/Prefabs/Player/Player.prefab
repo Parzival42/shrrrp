@@ -759,7 +759,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1630457348639916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.18462, y: -6.428057e-17, z: -2.894939}
+  m_LocalPosition: {x: 1.1842446, y: 31.519531, z: -2.5317101}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4848714249802220}
@@ -1429,8 +1429,8 @@ MonoBehaviour:
   landedPitch: 1.4
   landedVolume: 0.2
   swordClip: {fileID: 8300000, guid: 54f4254f8b1886e4e8daa5a6fcc22014, type: 3}
-  swordPitch: 1.5
-  swordVolume: 0.25
+  swordPitch: 2
+  swordVolume: 0.5
   dashShakePlayer: 3
   dashTimePlayer: 0.1
   dashShakeWall: 1
@@ -1773,8 +1773,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.00054976344, y: -0.0011245608, z: 0.2966968}
-    m_Extent: {x: 0.07451619, y: 0.060148157, z: 0.089366116}
+    m_Center: {x: 0.00054976344, y: -0.0011245608, z: 0.2966962}
+    m_Extent: {x: 0.07451619, y: 0.060148157, z: 0.08936592}
   m_DirtyAABB: 0
 --- !u!137 &137439987489747716
 SkinnedMeshRenderer:
@@ -1817,8 +1817,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.02445826, y: 0.029816568, z: 0.1710147}
-    m_Extent: {x: 0.025008047, y: 0.020567864, z: 0.09876491}
+    m_Center: {x: -0.02445826, y: 0.029816568, z: 0.17101526}
+    m_Extent: {x: 0.025008047, y: 0.020567864, z: 0.09876514}
   m_DirtyAABB: 0
 --- !u!137 &137513401500145078
 SkinnedMeshRenderer:
@@ -1921,8 +1921,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.022186011, y: 0.031266212, z: 0.18595526}
-    m_Extent: {x: 0.021636639, y: 0.022077939, z: 0.07899218}
+    m_Center: {x: 0.022186011, y: 0.031266212, z: 0.18595552}
+    m_Extent: {x: 0.021636639, y: 0.022077939, z: 0.07899259}
   m_DirtyAABB: 0
 --- !u!137 &137919322813234362
 SkinnedMeshRenderer:

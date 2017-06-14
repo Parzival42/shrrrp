@@ -624,8 +624,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 10.000002, z: 10}
-  m_Center: {x: 0, y: 0.0000009536743, z: 1.1641532e-10}
+  m_Size: {x: 14.4, y: 10.000002, z: 10}
+  m_Center: {x: 0, y: 2.2, z: 5.19}
 --- !u!114 &252988640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1761,8 +1761,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10.000004, y: 10.000002, z: 10}
-  m_Center: {x: 3.637979e-12, y: 0.0000009536743, z: 1.1641532e-10}
+  m_Size: {x: 14.4, y: 10.000002, z: 10}
+  m_Center: {x: 3.637979e-12, y: 2.2, z: 5.19}
 --- !u!114 &813966171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2125,7 +2125,9 @@ MonoBehaviour:
   - {fileID: 2061333249}
   - {fileID: 813966171}
   transitionShader: {fileID: 4800000, guid: 84ea0194fc9852045ab36a59ec810e91, type: 3}
-  transitionTimeout: 0.2
+  transitionTimeout: 1
+  deathParticles: {fileID: 198652094387334740, guid: 9fa8992f3d6a0b240b74506a3b577add,
+    type: 2}
 --- !u!4 &1025622730
 Transform:
   m_ObjectHideFlags: 0
@@ -3042,7 +3044,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 30, y: 10.000003, z: 10}
-  m_Center: {x: 0, y: 0, z: 1.1641532e-10}
+  m_Center: {x: 0, y: 2.2, z: 5.19}
 --- !u!114 &1554264343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3791,7 +3793,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 30, y: 10.000001, z: 10}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 2.2, z: 5.19}
 --- !u!114 &2061333249
 MonoBehaviour:
   m_ObjectHideFlags: 0

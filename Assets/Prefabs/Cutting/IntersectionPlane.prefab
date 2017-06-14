@@ -98,3 +98,6 @@ MonoBehaviour:
   waitForDestruction: 1.1
   isoLineTweenTime: 0.9
   cutEffectParams: {fileID: 11400000, guid: 89d46600211d9ce4a8c43a8d3cd394da, type: 2}
+  cutEffectSound: {fileID: 8300000, guid: 1bd6c0bd2ed3f3b4e8b766821326cca4, type: 3}
+  cutEffectVolume: 1
+  cutEffectPitch: 1
