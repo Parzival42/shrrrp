@@ -391,6 +391,16 @@ Prefab:
       propertyPath: sceneLUT
       value: 
       objectReference: {fileID: 2800000, guid: 8461ee070bc3a34478f6942d568786d2, type: 3}
+    - target: {fileID: 82810679326929532, guid: 830c93a6014f94948b9af3038dc9e177,
+        type: 2}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: accf26d00de02a344a819e0c52706dbd, type: 3}
+    - target: {fileID: 82810679326929532, guid: 830c93a6014f94948b9af3038dc9e177,
+        type: 2}
+      propertyPath: m_Volume
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 830c93a6014f94948b9af3038dc9e177, type: 2}
   m_IsPrefabParent: 0
