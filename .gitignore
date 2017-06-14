@@ -28,3 +28,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+.idea/.idea.shrrrp/.idea/contentModel.xml
+.idea/.idea.shrrrp/.idea/modules.xml
+.idea/.idea.shrrrp/.idea/vcs.xml
+.idea/.idea.shrrrp/.idea/workspace.xml
+.idea/.idea.shrrrp/riderModule.iml
+.vscode/launch.json

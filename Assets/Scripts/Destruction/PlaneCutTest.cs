@@ -3,43 +3,26 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using CielaSpike;
+// ReSharper disable SuggestVarOrType_Elsewhere
 
 [RequireComponent(typeof(SliceCreator))]
 public class PlaneCutTest : MonoBehaviour
 {
 
-    // mesh (should be a plane) that determines the plane orientation
-    private GameObject referencePlane;
-
-    [SerializeField]
-    private bool cut;
-
     // indices need to be adjusted when the vertices are distributed to the left and right mesh
     private int[] vertexPosChange;
-
-    // mesh that is about to be cut
-    //Mesh M;    
 
     // triangles that intersect the plane
     private List<ConflictTriangle> conflictTriangles;
 
     private SliceCreator sliceCreator;
 
-
     private MeshMerger meshMerger;
-
 
     // leftover meshes 
     private MeshContainer leftMesh = new MeshContainer();
 
     private MeshContainer rightMesh = new MeshContainer();
-
-    // cut triangles are stored here
-    private MeshContainer splitMeshLeft = new MeshContainer();
-
-    private MeshContainer splitMeshRight = new MeshContainer();
-
-    private List<Vector3> polygonVertices = new List<Vector3>();
 
     private OutlinePreparator outlinePreparator;
 
@@ -53,7 +36,57 @@ public class PlaneCutTest : MonoBehaviour
     private MeshContainer leftSimplifiedColliderMesh;
     private MeshContainer rightSimplifiedColliderMesh;
 
-    private void AssignSplitTriangles(Matrix4x4 worldToLocalMatrix, ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor)
+    private readonly Dictionary<Vector3, int> leftCutPointIndices = new Dictionary<Vector3, int>();
+
+    private readonly Dictionary<Vector3, int> rightCutPointIndices = new Dictionary<Vector3, int>();
+
+    private int getCutPointIndex(Matrix4x4 worldToLocalMatrix, Vector3 vertex, MeshContainer mesh, Dictionary<Vector3, int> cutPointIndices)
+    {
+        if(!cutPointIndices.ContainsKey(vertex)){
+            mesh.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(vertex));
+            cutPointIndices.Add(vertex, mesh.Vertices.Count-1);
+            mesh.Normals.Add(new Vector3());
+        }
+
+        return cutPointIndices[vertex];
+
+    }
+    
+    private void AssignSplitTriangles(Matrix4x4 worldToLocalMatrix, ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor, Dictionary<Vector3,int> majorCutPointIndices, Dictionary<Vector3, int> minorCutPointIndices)
+    {
+        if (t.negative)
+        {
+            getCutPointIndex(worldToLocalMatrix, d, minor, minorCutPointIndices);
+            
+            minor.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, e, minor, minorCutPointIndices));
+            minor.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, d, minor, minorCutPointIndices));
+            minor.Indices[t.subMeshIndex].Add(t.indexA);
+
+            major.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, d, major, majorCutPointIndices));
+            major.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, e, major, majorCutPointIndices));
+            major.Indices[t.subMeshIndex].Add(t.indexC);
+
+            major.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, d, major, majorCutPointIndices));
+            major.Indices[t.subMeshIndex].Add(t.indexC);
+            major.Indices[t.subMeshIndex].Add(t.indexB);
+        }
+        else
+        {
+            minor.Indices[t.subMeshIndex].Add(t.indexA);
+            minor.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, d, minor, minorCutPointIndices));
+            minor.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, e, minor, minorCutPointIndices));
+
+            major.Indices[t.subMeshIndex].Add(t.indexC);
+            major.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, e, major, majorCutPointIndices));
+            major.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, d, major, majorCutPointIndices));
+
+            major.Indices[t.subMeshIndex].Add(t.indexB);
+            major.Indices[t.subMeshIndex].Add(t.indexC);
+            major.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, d, major, majorCutPointIndices));
+        }
+    }
+
+  /*  private void AssignSplitTriangles(Matrix4x4 worldToLocalMatrix, ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor, Dictionary<Vector3,int> majorCutPointIndices, Dictionary<Vector3, int> minorCutPointIndices)
     {
         minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(d));
         minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(e));
@@ -67,7 +100,6 @@ public class PlaneCutTest : MonoBehaviour
         major.Normals.Add(new Vector3());
         major.Normals.Add(new Vector3());
 
-        Debug.Log("vertex count minor: "+minor.Vertices.Count+" vs index:"+t.indexA);
 
         if (t.negative)
         {
@@ -82,7 +114,6 @@ public class PlaneCutTest : MonoBehaviour
             major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
             major.Indices[t.subMeshIndex].Add(t.indexC);
             major.Indices[t.subMeshIndex].Add(t.indexB);
-
         }
         else
         {
@@ -98,15 +129,15 @@ public class PlaneCutTest : MonoBehaviour
             major.Indices[t.subMeshIndex].Add(t.indexC);
             major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
         }
-    }
+    }*/
 
-    private void SplitTriangle(Plane p, ConflictTriangle t, MeshContainer left, MeshContainer right)
+    private void SplitTriangle(Plane p, ConflictTriangle t, MeshContainer left, MeshContainer right, Dictionary<Vector3,int> leftCutPointIndices, Dictionary<Vector3,int> rightCutPointIndices)
     {
         Ray ray1 = new Ray(t.a, t.b - t.a);
         Ray ray2 = new Ray(t.a, t.c - t.a);
 
-        Vector3 d = new Vector3();
-        Vector3 e = new Vector3();
+        Vector3 d;
+        Vector3 e;
 
         float rayDistance1;
         if (p.Raycast(ray1, out rayDistance1))
@@ -132,7 +163,7 @@ public class PlaneCutTest : MonoBehaviour
 
         if (leftMajor)
         {
-            AssignSplitTriangles(worldToLocal, t, d, e, right, left);
+            AssignSplitTriangles(worldToLocal, t, d, e, right, left, rightCutPointIndices, leftCutPointIndices);
 
             if (t.negative)
             {
@@ -142,11 +173,10 @@ public class PlaneCutTest : MonoBehaviour
             {
                 outlinePreparator.Add(e, d);
             }
-
         }
         else
         {
-            AssignSplitTriangles(worldToLocal, t, d, e, left, right);
+            AssignSplitTriangles(worldToLocal, t, d, e, left, right, leftCutPointIndices, rightCutPointIndices);
 
             if (t.negative)
             {
@@ -180,7 +210,6 @@ public class PlaneCutTest : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         CreateStuff(cuttingPlane, slicePhysicsProperties);
-
     }
 
 
@@ -197,7 +226,7 @@ public class PlaneCutTest : MonoBehaviour
         }
 
         // kill the original object or not
-        if (transform.parent != null && transform.parent.tag != "IndestructibleParent")
+        if (transform.parent != null && !transform.parent.CompareTag("IndestructibleParent"))
         {
             Destroy(transform.parent.gameObject);
         }
@@ -228,7 +257,8 @@ public class PlaneCutTest : MonoBehaviour
         //split the plane-intersecting triangles
         for (int i = 0; i < conflictTriangles.Count; i++)
         {
-            SplitTriangle(cuttingPlane, conflictTriangles[i], leftMesh, rightMesh);
+            SplitTriangle(cuttingPlane, conflictTriangles[i], leftMesh, rightMesh, leftCutPointIndices,
+                rightCutPointIndices);
         }
 
         //create ordered capMeshes polygon
@@ -283,15 +313,11 @@ public class PlaneCutTest : MonoBehaviour
          Quaternion q = Quaternion.AngleAxis(-rotationAngle*Mathf.Rad2Deg, rotationAxis);
          Quaternion qReverse = Quaternion.AngleAxis(rotationAngle*Mathf.Rad2Deg, rotationAxis);
 
-         //DebugExtension.DebugArrow(Vector3.zero, q*cuttingPlane.normal, Color.yellow, 20.0f);
-
-
          for(int i = 0; i < capMeshesOutlinePolygon.Count; i++){
              for(int j = 0; j<capMeshesOutlinePolygon[i].Count; j++){
                  capMeshesOutlinePolygon[i][j] = q*capMeshesOutlinePolygon[i][j];
             }
         }
-
         //--- end
 
 
@@ -364,9 +390,6 @@ public class PlaneCutTest : MonoBehaviour
 
     private void DetermineIndexPositions(Matrix4x4 localToWorldMatrix, MeshContainer mesh, Plane cuttingPlane)
     {
-        int left = 0;
-        int right = 0;
-
         List<Vector3> vertices = mesh.Vertices;
 
         for (int submesh = 0; submesh < mesh.Indices.Length; submesh++)
@@ -375,8 +398,8 @@ public class PlaneCutTest : MonoBehaviour
 
             for (int i = 0; i < subMeshIndices.Count; i += 3)
             {
-                left = 0;
-                right = 0;
+                var left = 0;
+                var right = 0;
 
                 bool a = false;
                 bool b = false;
@@ -441,14 +464,13 @@ public class PlaneCutTest : MonoBehaviour
                         conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]),
                            submesh, vertexPosChange[subMeshIndices[i + 2]], vertexPosChange[subMeshIndices[i]], vertexPosChange[subMeshIndices[i + 1]], c, a, b, false));
                     }
-                    else if (b == c)
+                    else
                     {
                         conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]),
-                           submesh, vertexPosChange[subMeshIndices[i]], vertexPosChange[subMeshIndices[i+1]], vertexPosChange[subMeshIndices[i+2]], a, b, c, false));
+                            submesh, vertexPosChange[subMeshIndices[i]], vertexPosChange[subMeshIndices[i+1]], vertexPosChange[subMeshIndices[i+2]], a, b, c, false));
                     }
                 }
             }
         }
     }
-
 }
