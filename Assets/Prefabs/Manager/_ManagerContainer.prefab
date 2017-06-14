@@ -329,8 +329,8 @@ MonoBehaviour:
   artifactPrefab: {fileID: 1057924307782140, guid: 28067912f5496b241b4ebac4d051fa22,
     type: 2}
   artifactSpawnOffset: {x: 0, y: 1, z: 0}
-  minTime: 4
-  maxTime: 10
+  minTime: 2.5
+  maxTime: 6
   sphereCastRadius: 2
   collisionLayer: 8
   randomXViewportRange: {x: 0, y: 1}

@@ -12,18 +12,20 @@ public class PlaneCutterSpawnTrigger : TriggerAction
     [SerializeField]
     private LeanTweenType easeType = LeanTweenType.easeInBack;
 
+    private bool alreadyTriggered = false;
+
     protected override void PerformOnTriggerAction(Collider other)
     {
-        if (planeCutter != null)
+        if (planeCutter != null && !alreadyTriggered)
         {
             RigidBodyInput playerInput = other.gameObject.GetComponent<RigidBodyInput>();
             if (playerInput != null)
             {
-                // TODO: Find better initial rotation?
                 GameObject prefab = Instantiate(planeCutter, playerInput.transform.position, Quaternion.identity);
                 CuttingPlaneControl cuttingPlane = prefab.GetComponent<CuttingPlaneControl>();
                 
                 cuttingPlane.Initialize(playerInput);
+                alreadyTriggered = true;
             }
             else
                 Debug.LogError("No RigidBodyInput found on collider object with the tag " + collisionTag, gameObject);
