@@ -16,22 +16,25 @@ public class PlaneCutterSpawnTrigger : TriggerAction
 
     protected override void PerformOnTriggerAction(Collider other)
     {
-        if (planeCutter != null && !alreadyTriggered)
+        if (!alreadyTriggered)
         {
-            RigidBodyInput playerInput = other.gameObject.GetComponent<RigidBodyInput>();
-            if (playerInput != null)
+            if (planeCutter != null)
             {
-                GameObject prefab = Instantiate(planeCutter, playerInput.transform.position, Quaternion.identity);
-                CuttingPlaneControl cuttingPlane = prefab.GetComponent<CuttingPlaneControl>();
-                
-                cuttingPlane.Initialize(playerInput);
-                alreadyTriggered = true;
+                RigidBodyInput playerInput = other.gameObject.GetComponent<RigidBodyInput>();
+                if (playerInput != null)
+                {
+                    GameObject prefab = Instantiate(planeCutter, playerInput.transform.position, Quaternion.identity);
+                    CuttingPlaneControl cuttingPlane = prefab.GetComponent<CuttingPlaneControl>();
+
+                    cuttingPlane.Initialize(playerInput);
+                    alreadyTriggered = true;
+                }
+                else
+                    Debug.LogError("No RigidBodyInput found on collider object with the tag " + collisionTag, gameObject);
             }
             else
-                Debug.LogError("No RigidBodyInput found on collider object with the tag " + collisionTag, gameObject);
+                Debug.LogError("No plane cutter prefab assigned!", gameObject);
         }
-        else
-            Debug.LogError("No plane cutter prefab assigned!", gameObject);
     }
 
     protected override void DestroyTrigger()
