@@ -55,43 +55,48 @@ public class PlaneCutTest : MonoBehaviour
 
     private void AssignSplitTriangles(Matrix4x4 worldToLocalMatrix, ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor)
     {
-        minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(t.a));
         minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(d));
         minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(e));
 
+        minor.Normals.Add(new Vector3());
+        minor.Normals.Add(new Vector3());
+
         major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(d));
         major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(e));
-        major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(t.c));
-        major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(t.b));
+
+        major.Normals.Add(new Vector3());
+        major.Normals.Add(new Vector3());
+
+        Debug.Log("vertex count minor: "+minor.Vertices.Count+" vs index:"+t.indexA);
 
         if (t.negative)
         {
-            minor.Indices[0].Add(minor.Vertices.Count - 1);
-            minor.Indices[0].Add(minor.Vertices.Count - 2);
-            minor.Indices[0].Add(minor.Vertices.Count - 3);
+            minor.Indices[t.subMeshIndex].Add(minor.Vertices.Count - 1);
+            minor.Indices[t.subMeshIndex].Add(minor.Vertices.Count - 2);
+            minor.Indices[t.subMeshIndex].Add(t.indexA);
 
-            major.Indices[0].Add(major.Vertices.Count - 4);
-            major.Indices[0].Add(major.Vertices.Count - 3);
-            major.Indices[0].Add(major.Vertices.Count - 2);
+            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
+            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 1);
+            major.Indices[t.subMeshIndex].Add(t.indexC);
 
-            major.Indices[0].Add(major.Vertices.Count - 4);
-            major.Indices[0].Add(major.Vertices.Count - 2);
-            major.Indices[0].Add(major.Vertices.Count - 1);
+            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
+            major.Indices[t.subMeshIndex].Add(t.indexC);
+            major.Indices[t.subMeshIndex].Add(t.indexB);
 
         }
         else
         {
-            minor.Indices[0].Add(minor.Vertices.Count - 3);
-            minor.Indices[0].Add(minor.Vertices.Count - 2);
-            minor.Indices[0].Add(minor.Vertices.Count - 1);
+            minor.Indices[t.subMeshIndex].Add(t.indexA);
+            minor.Indices[t.subMeshIndex].Add(minor.Vertices.Count - 2);
+            minor.Indices[t.subMeshIndex].Add(minor.Vertices.Count - 1);
 
-            major.Indices[0].Add(major.Vertices.Count - 2);
-            major.Indices[0].Add(major.Vertices.Count - 3);
-            major.Indices[0].Add(major.Vertices.Count - 4);
+            major.Indices[t.subMeshIndex].Add(t.indexC);
+            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 1);
+            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
 
-            major.Indices[0].Add(major.Vertices.Count - 1);
-            major.Indices[0].Add(major.Vertices.Count - 2);
-            major.Indices[0].Add(major.Vertices.Count - 4);
+            major.Indices[t.subMeshIndex].Add(t.indexB);
+            major.Indices[t.subMeshIndex].Add(t.indexC);
+            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
         }
     }
 
@@ -127,7 +132,7 @@ public class PlaneCutTest : MonoBehaviour
 
         if (leftMajor)
         {
-            AssignSplitTriangles(worldToLocal, t, d, e, left, right);
+            AssignSplitTriangles(worldToLocal, t, d, e, right, left);
 
             if (t.negative)
             {
@@ -141,7 +146,7 @@ public class PlaneCutTest : MonoBehaviour
         }
         else
         {
-            AssignSplitTriangles(worldToLocal, t, d, e, right, left);
+            AssignSplitTriangles(worldToLocal, t, d, e, left, right);
 
             if (t.negative)
             {
@@ -181,8 +186,6 @@ public class PlaneCutTest : MonoBehaviour
 
     public void CreateStuff(Plane cuttingPlane, SlicePhysicsProperties slicePhysicsProperties)
     {
-
-        //Helper.DrawPolygon(capMeshesOutlinePolygonCopy);
         if (rightMesh.Vertices.Count != 0)
         {
             sliceCreator.CreateSlice(transform, rightMesh, rightSimplifiedColliderMesh.GetMesh(), cuttingPlane.normal, slicePhysicsProperties);
@@ -193,9 +196,7 @@ public class PlaneCutTest : MonoBehaviour
             sliceCreator.CreateSlice(transform, leftMesh, leftSimplifiedColliderMesh.GetMesh(), -cuttingPlane.normal, slicePhysicsProperties);
         }
 
-        
-
-        // kill the original object
+        // kill the original object or not
         if (transform.parent != null && transform.parent.tag != "IndestructibleParent")
         {
             Destroy(transform.parent.gameObject);
@@ -208,12 +209,6 @@ public class PlaneCutTest : MonoBehaviour
     {
         vertexPosChange = new int[mesh.Vertices.Count];
         conflictTriangles = new List<ConflictTriangle>();
-
-
-
-
-     
-
 
         //determine whether the vertices belong to the left or right
         DetermineVertexPositions(localToWorld, mesh.Vertices, mesh.Normals, mesh.Uvs, cuttingPlane);
@@ -233,7 +228,7 @@ public class PlaneCutTest : MonoBehaviour
         //split the plane-intersecting triangles
         for (int i = 0; i < conflictTriangles.Count; i++)
         {
-            SplitTriangle(cuttingPlane, conflictTriangles[i], splitMeshLeft, splitMeshRight);
+            SplitTriangle(cuttingPlane, conflictTriangles[i], leftMesh, rightMesh);
         }
 
         //create ordered capMeshes polygon
@@ -247,11 +242,6 @@ public class PlaneCutTest : MonoBehaviour
             }
             Debug.Log("capMeshes polygon " + i + " vertexcount: " + capMeshesOutlinePolygon[capMeshesOutlinePolygon.Count - 1].Count);
         }
-        //Debug.Log(capMeshesOutlinePolygonCopy.Count);
-        //List<Vector3> capMeshesOutlinePolygon = outlinePreparator.PrepareOutlinePolygon();
-        //List<Vector3> capMeshesOutlinePolygon = outlinePreparator.PrepareOutlinePolygons()[0];
-
-
         //--- end
 
 
@@ -304,23 +294,17 @@ public class PlaneCutTest : MonoBehaviour
 
         //--- end
 
-        //--- polygon debug
-        //Helper.DrawPolygon(capMeshesOutlinePolygon);
-        //--- end
 
         //--- triangulation
-        //TriangulatorTest triangulator = new TriangulatorTest();
         capMeshes = new List<MeshContainer>();
         for (int i = 0; i < capMeshesOutlinePolygon.Count; i++)
         {
             capMeshes.Add(Triangulator.Triangulate(capMeshesOutlinePolygon[i], projectCoordA, projectCoordB));
 
         }
-
         //--- end
 
         //--- exact vertex projection
-
         for(int i = 0; i < capMeshes.Count; i++){
             for(int j = 0; j <capMeshes[i].Vertices.Count; j++){
                 capMeshes[i].Vertices[j] = qReverse * capMeshes[i].Vertices[j];
@@ -328,53 +312,34 @@ public class PlaneCutTest : MonoBehaviour
         }
         //--- end
 
+        
         for (int i = 0; i < capMeshes.Count; i++)
         {
             Helper.UnProjectVertices(worldToLocal, capMeshes[i]);
         }
 
-
         if (rightMesh.Vertices.Count != 0)
         {
-            ApplyIndexChange(rightMesh.Indices, vertexPosChange);
-            rightMesh = meshMerger.Merge(rightMesh, splitMeshLeft);
             for (int i = 0; i < capMeshes.Count; i++)
             {
                 Helper.FlipTriangles(capMeshes[i].Indices);
                 rightMesh = meshMerger.Merge(rightMesh, capMeshes[i]);
             }
             
-            if(rightMesh.Indices[0].Count>64){
-                rightSimplifiedColliderMesh = Helper.generateSimplifiedMesh(rightMesh, 64);
-            }else{
-                rightSimplifiedColliderMesh = rightMesh;
-            }
-           
+            rightSimplifiedColliderMesh = Helper.generateSimplifiedMesh(rightMesh, 64);
         }
 
         if (leftMesh.Vertices.Count != 0)
         {
-            ApplyIndexChange(leftMesh.Indices, vertexPosChange);
-            leftMesh = meshMerger.Merge(leftMesh, splitMeshRight);
             for (int i = 0; i < capMeshes.Count; i++)
             {
                 Helper.FlipTriangles(capMeshes[i].Indices);
                 leftMesh = meshMerger.Merge(leftMesh, capMeshes[i]);
             }
 
-            if(leftMesh.Indices[0].Count>64){
-                leftSimplifiedColliderMesh = Helper.generateSimplifiedMesh(leftMesh, 64);
-            }else{
-                leftSimplifiedColliderMesh = leftMesh;
-            }
-           
+            leftSimplifiedColliderMesh = Helper.generateSimplifiedMesh(leftMesh, 64);
         }
-
-
-
     }
-
-
 
     private void DetermineVertexPositions(Matrix4x4 localToWorldMatrix, List<Vector3> vertices, List<Vector3> normals, List<Vector2> uvs, Plane cuttingPlane)
     {
@@ -383,7 +348,6 @@ public class PlaneCutTest : MonoBehaviour
             if (cuttingPlane.GetSide(localToWorldMatrix.MultiplyPoint3x4(vertices[i])))
             {
                 rightMesh.Vertices.Add(vertices[i]);
-                //rightMesh.Uvs.Add(uvs[i]);
                 rightMesh.Normals.Add(normals[i]);
 
                 vertexPosChange[i] = rightMesh.Vertices.Count - 1;
@@ -391,7 +355,6 @@ public class PlaneCutTest : MonoBehaviour
             else
             {
                 leftMesh.Vertices.Add(vertices[i]);
-                //leftMesh.Uvs.Add(uvs[i]);
                 leftMesh.Normals.Add(normals[i]);
 
                 vertexPosChange[i] = leftMesh.Vertices.Count - 1;
@@ -399,21 +362,10 @@ public class PlaneCutTest : MonoBehaviour
         }
     }
 
-    private void ApplyIndexChange(List<int>[] indices, int[] lookUp)
-    {
-        for (int i = 0; i < indices.Length; i++)
-        {
-            for (int j = 0; j < indices[0].Count; j++)
-            {
-                indices[i][j] = lookUp[indices[i][j]];
-            }
-        }
-    }
-
     private void DetermineIndexPositions(Matrix4x4 localToWorldMatrix, MeshContainer mesh, Plane cuttingPlane)
     {
-        int above = 0;
-        int below = 0;
+        int left = 0;
+        int right = 0;
 
         List<Vector3> vertices = mesh.Vertices;
 
@@ -423,8 +375,8 @@ public class PlaneCutTest : MonoBehaviour
 
             for (int i = 0; i < subMeshIndices.Count; i += 3)
             {
-                above = 0;
-                below = 0;
+                left = 0;
+                right = 0;
 
                 bool a = false;
                 bool b = false;
@@ -433,48 +385,48 @@ public class PlaneCutTest : MonoBehaviour
                 if (cuttingPlane.GetSide(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]])))
                 {
                     a = true;
-                    below++;
+                    right++;
                 }
                 else
                 {
                     a = false;
-                    above++;
+                    left++;
                 }
 
                 if (cuttingPlane.GetSide(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]])))
                 {
                     b = true;
-                    below++;
+                    right++;
                 }
                 else
                 {
                     b = false;
-                    above++;
+                    left++;
                 }
                 if (cuttingPlane.GetSide(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]])))
                 {
                     c = true;
-                    below++;
+                    right++;
                 }
                 else
                 {
                     c = false;
-                    above++;
+                    left++;
                 }
 
-                if (above == 3 || below == 3)
+                if (left == 3 || right == 3)
                 {
-                    if (above == 3)
+                    if (left == 3)
                     {
-                        leftMesh.Indices[submesh].Add(subMeshIndices[i]);
-                        leftMesh.Indices[submesh].Add(subMeshIndices[i + 1]);
-                        leftMesh.Indices[submesh].Add(subMeshIndices[i + 2]);
+                        leftMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i]]);
+                        leftMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 1]]);
+                        leftMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 2]]);
                     }
                     else
                     {
-                        rightMesh.Indices[submesh].Add(subMeshIndices[i]);
-                        rightMesh.Indices[submesh].Add(subMeshIndices[i + 1]);
-                        rightMesh.Indices[submesh].Add(subMeshIndices[i + 2]);
+                        rightMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i]]);
+                        rightMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 1]]);
+                        rightMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 2]]);
                     }
                 }
                 else
@@ -482,17 +434,17 @@ public class PlaneCutTest : MonoBehaviour
                     if (a == c)
                     {
                         conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]),
-                            subMeshIndices[i + 1], subMeshIndices[i], subMeshIndices[i + 2], b, a, c, true));
+                           submesh, vertexPosChange[subMeshIndices[i + 1]], vertexPosChange[subMeshIndices[i]], vertexPosChange[subMeshIndices[i + 2]], b, a, c, true));
                     }
                     else if (a == b)
                     {
                         conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]),
-                            subMeshIndices[i + 2], subMeshIndices[i], subMeshIndices[i + 1], c, a, b, false));
+                           submesh, vertexPosChange[subMeshIndices[i + 2]], vertexPosChange[subMeshIndices[i]], vertexPosChange[subMeshIndices[i + 1]], c, a, b, false));
                     }
                     else if (b == c)
                     {
                         conflictTriangles.Add(new ConflictTriangle(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 1]]), localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]]),
-                            subMeshIndices[i], subMeshIndices[i+1], subMeshIndices[i+2], a, b, c, false));
+                           submesh, vertexPosChange[subMeshIndices[i]], vertexPosChange[subMeshIndices[i+1]], vertexPosChange[subMeshIndices[i+2]], a, b, c, false));
                     }
                 }
             }

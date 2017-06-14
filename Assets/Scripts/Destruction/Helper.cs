@@ -23,12 +23,6 @@ public static class Helper {
 	/**
 	 * calculates whether or not a vertex of the polygon is concave/reflex using the determinate
 	 */
-	// public static bool orientation(List<Vector3> p, int index){	
-	// 	prev = index == 0 ? p[p.Count-1] : p[index-1];
-	// 	current = p[index];
-	// 	next = index == p.Count-1 ? p[0] : p[index+1];
-	// 	return orientation(prev, current, next);			
-	// }
 
 	public static bool orientation(Vector3[] triangle, int projectCoordA, int projectCoordB){
 		return orientation(triangle[0], triangle[1], triangle[2], projectCoordA, projectCoordB);
@@ -180,6 +174,9 @@ public static class Helper {
 
     public static MeshContainer generateSimplifiedMesh(MeshContainer mesh, int triangleCount)
     {
+		if(mesh.Indices[0].Count<=64){
+			return mesh;
+		}
         MeshContainer simplifiedMesh = new MeshContainer();
 
         List<int> usedTriangles = new List<int>();
