@@ -50,7 +50,7 @@ public class BaseMenu : MonoBehaviour {
         FishEyeTransition fishEye = new FishEyeTransition()
         {
             nextScene = levelName,
-            duration = 0.2f,
+            duration = 0.5f,
             size = 0.0f,
             zoom = 10.0f,
             colorSeparation = 5.0f,
