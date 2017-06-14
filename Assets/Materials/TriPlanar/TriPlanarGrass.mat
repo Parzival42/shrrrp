@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: TriPlanarGrass
   m_Shader: {fileID: 4800000, guid: cc1b0f60eb4c244ffb41d05775fdc42c, type: 3}
-  m_ShaderKeywords: _METALLICGLOSSMAP _UVFREE_BOTTOM _UVFREE_LOCAL
+  m_ShaderKeywords: _METALLICGLOSSMAP _UVFREE_LOCAL
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_CustomRenderQueue: -1
@@ -26,7 +26,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BottomMainTex:
-        m_Texture: {fileID: 2800000, guid: 121e3d42ce8e0a245a152e8f86ac2508, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 0.3, y: 0.3}
         m_Offset: {x: 0, y: 0}
     - _BottomMetallicGlossMap:
@@ -55,8 +55,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 5b5c0defee229924e97d70c4b15b67b2, type: 3}
-        m_Scale: {x: 0.2, y: 0.2}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 0.13, y: 0.13}
+        m_Offset: {x: -1.01, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 2800000, guid: 600ed6de30d23b14b8fe2d198302540e, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -79,7 +79,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _TopMainTex:
         m_Texture: {fileID: 2800000, guid: 76061bf9be03de241a757977cd1ca3ac, type: 3}
-        m_Scale: {x: 0.35, y: 0.35}
+        m_Scale: {x: 0.25, y: 0.25}
         m_Offset: {x: 0, y: 0}
     - _TopMetallicGlossMap:
         m_Texture: {fileID: 2800000, guid: 8880e6e4085a93e4f92451de3945a2f8, type: 3}
@@ -90,7 +90,7 @@ Material:
     - _BottomEmissionScaleUI: 0
     - _BottomGlossiness: 0.5
     - _BottomMetallic: 0
-    - _BottomMultiplier: 1
+    - _BottomMultiplier: 0
     - _BottomUsingMetallicGlossMap: 1
     - _BumpScale: -1
     - _Cutoff: 0.5
