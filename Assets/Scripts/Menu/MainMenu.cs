@@ -10,6 +10,12 @@ public class MainMenu : BaseMenu {
 	[RangeAttribute(0.0f,4.0f)]
 	private float sceneSwitchDelayTime = 0.4f;
 
+    [SerializeField]
+    private GameObject pronounciationThingy;
+
+    [SerializeField]
+    private float pronounciationThingyTweenTime = 0.4f;
+
 	void Start () {
 		// Find the MenuSelectionContainer and reset it OR initialize it if not found
 		MenuSelectionContainer menuSelectionContainer = (MenuSelectionContainer)FindObjectOfType(typeof(MenuSelectionContainer));
@@ -33,9 +39,13 @@ public class MainMenu : BaseMenu {
 	/// <summary>
 	/// Loads the next scene and cuts the given mesh.
 	/// </summary>
-	public override void LoadNextLevel(string levelName){
+	public override void LoadNextLevel(string levelName) {
 		CuttingManagerLocator.GetInstance.Cut(cuttingPlane.transform, cuttingPlane.GetComponent<MeshFilter>().mesh);
-		StartCoroutine("DelayedLoadNextLevel", levelName);
+        if (pronounciationThingy != null) {
+            LeanTween.moveY(pronounciationThingy, pronounciationThingy.transform.position.y - 35f, pronounciationThingyTweenTime)
+                .setEase(LeanTweenType.easeInBack);
+        }
+		StartCoroutine(DelayedLoadNextLevel(levelName));
 	}
 
 	/// <summary>

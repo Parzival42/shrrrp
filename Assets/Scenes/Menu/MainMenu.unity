@@ -252,6 +252,10 @@ Transform:
   m_Father: {fileID: 1527879790}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &332703543 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 5261846b09e640f4fbc884d28ac310a1, type: 3}
+  m_PrefabInternal: {fileID: 344339392}
 --- !u!1001 &344339392
 Prefab:
   m_ObjectHideFlags: 0
@@ -1087,7 +1091,17 @@ Prefab:
     - target: {fileID: 114338710117482634, guid: d3bcd2a5c75e7184db943db753b49b82,
         type: 2}
       propertyPath: sceneSwitchDelayTime
-      value: 2.5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114338710117482634, guid: d3bcd2a5c75e7184db943db753b49b82,
+        type: 2}
+      propertyPath: pronounciationThingy
+      value: 
+      objectReference: {fileID: 332703543}
+    - target: {fileID: 114338710117482634, guid: d3bcd2a5c75e7184db943db753b49b82,
+        type: 2}
+      propertyPath: pronounciationThingyTweenTime
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d3bcd2a5c75e7184db943db753b49b82, type: 2}
