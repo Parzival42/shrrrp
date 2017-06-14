@@ -8,6 +8,8 @@ public class ConflictTriangle {
     public Vector3 b;
     public Vector3 c;
 
+    public int subMeshIndex;
+
     public int indexA;
     public int indexB;
     public int indexC;
@@ -18,10 +20,12 @@ public class ConflictTriangle {
 
     public bool negative;
 
-    public ConflictTriangle(Vector3 a, Vector3 b, Vector3 c, bool aLeft, bool bLeft, bool cLeft, bool negative){
+    public ConflictTriangle(Vector3 a, Vector3 b, Vector3 c, int subMeshIndex, bool aLeft, bool bLeft, bool cLeft, bool negative){
         this.a = a;
         this.b = b;
         this.c = c;
+
+        this.subMeshIndex = subMeshIndex;
 
         this.aLeft = aLeft;
         this.bLeft = bLeft;
@@ -30,7 +34,7 @@ public class ConflictTriangle {
         this.negative = negative;
     }
 
-    public ConflictTriangle(Vector3 a, Vector3 b, Vector3 c, int indexA, int indexB, int indexC, bool aLeft, bool bLeft, bool cLeft, bool negative):this(a, b, c, aLeft, bLeft, cLeft, negative)
+    public ConflictTriangle(Vector3 a, Vector3 b, Vector3 c, int subMeshIndex, int indexA, int indexB, int indexC, bool aLeft, bool bLeft, bool cLeft, bool negative):this(a, b, c, subMeshIndex, aLeft, bLeft, cLeft, negative)
     {
         this.indexA = indexA;
         this.indexB = indexB;

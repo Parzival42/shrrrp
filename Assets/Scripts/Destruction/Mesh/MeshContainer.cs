@@ -88,6 +88,7 @@ public class MeshContainer {
 		}
 		mesh.SetNormals(normals);
 		//mesh.SetUVs(0, uvs);
+		mesh.RecalculateNormals();
 		mesh.RecalculateBounds();
 		return mesh;
 	}
