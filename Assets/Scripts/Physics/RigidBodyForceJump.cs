@@ -53,6 +53,6 @@ public class RigidBodyForceJump : MonoBehaviour
             rigidBodyInput.transform.position + rigidBodyInput.GroundPivotOffset,
             Vector3.down);
 
-        return Physics.Raycast(ray, out hitInfo, rigidBodyInput.GroundedDistance, 1 << layerMask);
+        return Physics.Raycast(ray, out hitInfo, rigidBodyInput.GroundedDistance, layerMask.value);
     }
 }
