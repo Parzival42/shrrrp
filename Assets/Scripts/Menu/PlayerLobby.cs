@@ -28,7 +28,7 @@ public class PlayerLobby : MonoBehaviour {
 
     #region internal members
     private bool[] isPlayerTypeUsed;
-    private List<GameObject> currentPlayers;
+    private ArrayList currentPlayers;
 	private MenuSelectionContainer menuSelectionContainer;
     private StandardPlayerAction defaultGamepadAction;
     private StandardPlayerAction defaultKeyboardAction;
@@ -45,7 +45,7 @@ public class PlayerLobby : MonoBehaviour {
 		menuSelectionContainer.playerPrefab = playerPrefab;
 
         isPlayerTypeUsed = new bool[playerTypes.Length];
-        currentPlayers = new List<GameObject>();
+        currentPlayers = new ArrayList();
         defaultGamepadAction = StandardPlayerAction.CreateStandardGamePadBinding();
         defaultKeyboardAction = StandardPlayerAction.CreateStandardKeyboardBinding();
 
@@ -57,8 +57,8 @@ public class PlayerLobby : MonoBehaviour {
             if(IsTimeToStart())
                 StartCoroutine(SwitchScene(menuSelectionContainer.levelName));
             if(IsTimeToGoBack()){
-                menuSelectionContainer.ResetContainer();
                 StartCoroutine(SwitchScene("LevelSelection"));
+                menuSelectionContainer.ResetContainer();
             }
         }
 
@@ -87,8 +87,8 @@ public class PlayerLobby : MonoBehaviour {
     /// </summary>
     private bool IsDeviceRegistered(StandardPlayerAction action){
         bool deviceRegistered = false;
-        foreach(MenuSelectionContainer.PlayerInfo data in menuSelectionContainer.playerData.AsEnumerable().Reverse()){
-            if(data.playerAction.Device.GUID.Equals(action.ActiveDevice.GUID)){
+         for(int i = menuSelectionContainer.playerData.Count - 1; i > -1; i--){
+            if(((MenuSelectionContainer.PlayerInfo)(menuSelectionContainer.playerData[i])).playerAction.Device.GUID.Equals(action.ActiveDevice.GUID)){
                 deviceRegistered = true;
                 break;
             }
@@ -136,18 +136,31 @@ public class PlayerLobby : MonoBehaviour {
     /// despawn/destroy the player connected to it.
     /// </summary>
     private void OnDeviceDetach(InputDevice device){
+        Debug.Log("current players before:" +  currentPlayers.Count);
+        Debug.Log("menu players before:" +  menuSelectionContainer.playerData.Count);
         for(int i = menuSelectionContainer.playerData.Count - 1; i > -1; i--){
-            MenuSelectionContainer.PlayerInfo data = menuSelectionContainer.playerData[i];
+            MenuSelectionContainer.PlayerInfo data = (MenuSelectionContainer.PlayerInfo) menuSelectionContainer.playerData[i];
             if(data.playerAction.Device.GUID.Equals(device.GUID)){
-                // Reset PlayerType array and MenuSelectionContainer
-                isPlayerTypeUsed[i] = false;
-                menuSelectionContainer.playerData.Remove(data);
 
-                // Destroy the PlayerAction and the player
-                GameObject player = currentPlayers[i];
-                currentPlayers.Remove(player);
-                player.GetComponent<RigidBodyInput>().PlayerAction.Destroy();
-                Destroy(player);
+                GameObject player = null;
+                 for(int j = currentPlayers.Count - 1; j > -1; j--){
+                    if(((GameObject)(currentPlayers[j])).GetComponent<RigidBodyInput>().PlayerAction.Device.GUID.Equals(device.GUID))
+                        player = (GameObject)(currentPlayers[j]);
+                }
+
+                if(player != null){
+                    // Reset PlayerType array and MenuSelectionContainer
+                    isPlayerTypeUsed[(int)data.playerType] = false;
+                    menuSelectionContainer.playerData.Remove(data);
+
+                    // Destroy the PlayerAction and the player
+                    currentPlayers.Remove(player);
+                    player.GetComponent<RigidBodyInput>().PlayerAction.Destroy();
+                    Destroy(player);
+
+                    Debug.Log("current players:" +  currentPlayers.Count);
+                    Debug.Log("menu players:" +  menuSelectionContainer.playerData.Count);
+                }
             }
         }
     }

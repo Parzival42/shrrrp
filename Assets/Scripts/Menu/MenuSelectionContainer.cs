@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using InControl;
 
@@ -18,7 +18,7 @@ public class MenuSelectionContainer : MonoBehaviour
 
     public GameObject playerPrefab;
 
-    public List<PlayerInfo> playerData = new List<PlayerInfo>();
+    public ArrayList playerData = new ArrayList();
     #endregion
 
     #region Methods
@@ -51,6 +51,19 @@ public class MenuSelectionContainer : MonoBehaviour
             this.playerAction = playerAction;
             this.playerType = playerType;
         }
+
+        public override bool Equals(object obj){
+            if(obj.GetType() == typeof(PlayerInfo)){
+                PlayerInfo other = (PlayerInfo)obj;
+                return this.playerType == other.playerType && this.playerAction.Device.GUID.Equals(other.playerAction.Device.GUID);
+            }
+            return false;
+        }
+
+        public override int GetHashCode(){
+            return this.playerAction.Device.GUID.GetHashCode() + 421 * (int)this.playerType;
+        }
+
     }
     #endregion
 }
