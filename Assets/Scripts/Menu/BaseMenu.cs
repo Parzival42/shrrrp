@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 using Prime31.TransitionKit;
 
 public class BaseMenu : MonoBehaviour {

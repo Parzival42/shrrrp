@@ -839,6 +839,7 @@ GameObject:
   - component: {fileID: 376844925}
   - component: {fileID: 376844924}
   - component: {fileID: 376844927}
+  - component: {fileID: 376844928}
   m_Layer: 5
   m_Name: RandomMap
   m_TagString: Untagged
@@ -965,6 +966,22 @@ MonoBehaviour:
   easeTypeDeselect: 21
   tweenDuration: 0.2
   scaleFactor: 1.4
+--- !u!114 &376844928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 376844922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 362c8f84599e3664999780bcd82c3003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomizedMaps:
+  - MeatMap
+  - IceMap
+  - GrassMap
+  - SandMap
 --- !u!1 &389403741
 GameObject:
   m_ObjectHideFlags: 0

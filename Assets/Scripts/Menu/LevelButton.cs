@@ -30,7 +30,8 @@ public class LevelButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     public void OnSelect(BaseEventData eventData)
     {
 		// Fill level name in MenuSelectionContainer
-		menuSelectionContainer.levelName = gameObject.name;
+	    string mapName = name.Equals("RandomMap") ? GetComponent<MapRandomizer>().GetRandomMap() : name;
+		menuSelectionContainer.levelName = mapName;
 		
         LeanTween.scale(sphere, initScale * scaleFactor, tweenDuration).setEase(easeTypeSelect);
     }

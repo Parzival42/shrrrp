@@ -23,8 +23,7 @@ public class MainMenu : BaseMenu {
 		if(menuSelectionContainer != null){
 			menuSelectionContainer.ResetContainer();
 		} else {
-			GameObject containerObject = new GameObject();
-			containerObject.name = "MenuSelectionContainer";
+			GameObject containerObject = new GameObject {name = "MenuSelectionContainer"};
 			containerObject.AddComponent(typeof(MenuSelectionContainer));
 		}
 	}
