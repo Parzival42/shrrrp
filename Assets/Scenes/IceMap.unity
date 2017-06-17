@@ -312,7 +312,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 10
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &624585707
 Transform:
@@ -321,7 +321,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 624585705}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -4.35, z: 3.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -338,13 +338,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb99093b2daabb42a5959e42bb6d56a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMultiplier: 0.08
-  forceMode: 1
+  forceMultiplier: 40
+  forceMode: 0
   debugDraw: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 2048
-  uniformForce: 0
+  uniformForce: 1
   randomizeForce: 1
   noiseTurbulence: 60
 --- !u!1001 &771800087
@@ -449,11 +449,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4094711559520914, guid: 378617fe2cba80744a6860bfbbca068a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -12
+      value: -18
       objectReference: {fileID: 0}
     - target: {fileID: 4094711559520914, guid: 378617fe2cba80744a6860bfbbca068a, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 44.4
+      value: 37.4
       objectReference: {fileID: 0}
     - target: {fileID: 4094711559520914, guid: 378617fe2cba80744a6860bfbbca068a, type: 2}
       propertyPath: m_LocalRotation.x
@@ -474,6 +474,16 @@ Prefab:
     - target: {fileID: 4094711559520914, guid: 378617fe2cba80744a6860bfbbca068a, type: 2}
       propertyPath: m_RootOrder
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114435336473910292, guid: 378617fe2cba80744a6860bfbbca068a,
+        type: 2}
+      propertyPath: spawnPlane.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 114435336473910292, guid: 378617fe2cba80744a6860bfbbca068a,
+        type: 2}
+      propertyPath: spawnPlane.y
+      value: 130
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 378617fe2cba80744a6860bfbbca068a, type: 2}
@@ -614,6 +624,16 @@ Prefab:
     - target: {fileID: 4251817778649254, guid: 8706c05d61f20f34995d490aa0a66414, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114540823377652022, guid: 8706c05d61f20f34995d490aa0a66414,
+        type: 2}
+      propertyPath: minTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114540823377652022, guid: 8706c05d61f20f34995d490aa0a66414,
+        type: 2}
+      propertyPath: maxTime
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8706c05d61f20f34995d490aa0a66414, type: 2}

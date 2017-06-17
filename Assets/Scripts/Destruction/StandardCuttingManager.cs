@@ -10,6 +10,9 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 	private bool isMenu;
 
 	[SerializeField]
+	private bool suddenDeath;
+
+	[SerializeField]
 	private LayerMask layerMask;
 	[SerializeField]
 	private SlicePhysicsProperties sliceProperties;
@@ -51,8 +54,9 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 				pct = go.AddComponent<PlaneCutTest>();				
 			}
 			
+			
 			Task task;
-			this.StartCoroutineAsync(pct.CuttingCoroutine(cuttingPlane, new MeshContainer(go.GetComponent<MeshFilter>().mesh, true), sliceProperties, delay), out task);
+			this.StartCoroutineAsync(pct.CuttingCoroutine(cuttingPlane, new MeshContainer(go.GetComponent<MeshFilter>().mesh, true), sliceProperties, suddenDeath, delay), out task);
 			//pct.StartSplitInTwo(cuttingPlane, new MeshContainer( go.GetComponent<MeshFilter>().mesh, true), sliceProperties);
 		}
 	}

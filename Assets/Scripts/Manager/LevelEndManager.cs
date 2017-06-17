@@ -36,7 +36,7 @@ public class LevelEndManager : MonoBehaviour
         else
         {
             playerManager.OnAllPlayersDied += HandleLevelEnd;
-            playerManager.OnOnePlayerLeft += (Player player) => { HandleLevelEnd(); };
+            //playerManager.OnOnePlayerLeft += (Player player) => { HandleLevelEnd(); };
         }
     }
 

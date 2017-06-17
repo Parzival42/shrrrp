@@ -3,10 +3,7 @@ using UnityEngine;
 
 public class TerrainSliceCreator : SliceCreator
 {
-    private static int color = 0;
-    private static int change = 2;
-
-    public override void CreateSlice(Transform original, MeshContainer slice, Mesh simplifiedColliderMesh, Vector3 forceDirection, SlicePhysicsProperties slicePhysicsProperties)
+    public override void CreateSlice(Transform original, MeshContainer slice, Mesh simplifiedColliderMesh, Vector3 forceDirection, SlicePhysicsProperties slicePhysicsProperties, bool dissolve)
     {
         GameObject newSlice = new GameObject(original.gameObject.name+" - slice");
 		Transform reference = original.parent;
@@ -30,40 +27,6 @@ public class TerrainSliceCreator : SliceCreator
 		}
 
 		mesh.SetNormals(slice.Normals);
-
-        if (color != 0)
-        {
-            List<Color> vertexColors = new List<Color>();
-            for (int i = 0; i < mesh.vertexCount; i++)
-            {
-                if (color == 1)
-                {
-                    vertexColors.Add(Color.red);
-                }
-                else
-                {
-                    vertexColors.Add(Color.blue);
-                }
-            }
-            change--;
-
-            if (color == 1 && change==0)
-            {
-                color = 2;
-                change = 2;
-            }
-
-            if(color==2 && change==0)
-            {
-                color = 1;
-                change = 2;
-            }
-
-
-            mesh.SetColors(vertexColors);
-        }
-      
-//		mesh.SetUVs(0, slice.Uvs);		
 		mesh.RecalculateNormals();		
 		
 		MeshRenderer renderer = newSlice.AddComponent<MeshRenderer>();
@@ -79,8 +42,6 @@ public class TerrainSliceCreator : SliceCreator
 		collider.material = slicePhysicsProperties.physicMaterial;
 	
 		Rigidbody rigidbody = newSlice.AddComponent<Rigidbody>();
-		rigidbody.mass = 1000;
-		rigidbody.useGravity = false;
 		rigidbody.isKinematic = true;
 
 		newSlice.AddComponent<TerrainSliceCreator>();
@@ -97,30 +58,24 @@ public class TerrainSliceCreator : SliceCreator
     
         Rigidbody parentRigidBody = g.AddComponent<Rigidbody>();
 		parentRigidBody.useGravity = false;
-	
-		parentRigidBody.mass = AssignMass(renderer, slicePhysicsProperties.baseMass);
-        if (parentRigidBody.mass < 100)
-        {
-            newSlice.AddComponent<DissolveObjectWithParent>();
-        }else{
-			parentRigidBody.mass = 2.5f;
-			MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
-			convexMeshCollider.sharedMesh = simplifiedColliderMesh;
-			convexMeshCollider.convex = true;
-			convexMeshCollider.enabled = false;
 
-			parentRigidBody.drag = slicePhysicsProperties.drag;
-			parentRigidBody.angularDrag = slicePhysicsProperties.angularDrag;
-			parentRigidBody.constraints = slicePhysicsProperties.constraints;
-			parentRigidBody.AddForce(Vector3.ProjectOnPlane(forceDirection, Vector3.up).normalized*750, ForceMode.Force);
-		}
+	    if (CalculateMass(parentRigidBody, renderer, newSlice.transform.localScale, slicePhysicsProperties) && !dissolve)
+	    {
+		    parentRigidBody.drag = slicePhysicsProperties.drag;
+		    parentRigidBody.angularDrag = slicePhysicsProperties.angularDrag;
+		    parentRigidBody.AddForce(Vector3.ProjectOnPlane(forceDirection, Vector3.up).normalized*slicePhysicsProperties.cuttingForce, ForceMode.Impulse);
+	        
+		    MeshCollider convexMeshCollider = g.AddComponent<MeshCollider>();
+		    convexMeshCollider.sharedMesh = simplifiedColliderMesh;
+		    convexMeshCollider.convex = true;
+		    convexMeshCollider.enabled = false;
+	    }
+	    else
+	    {
+		    newSlice.AddComponent<DissolveObjectWithParent>();
+	    }
+	  
 		g.AddComponent<ColliderActivator>();
 		newSlice.transform.parent = g.transform;
-    }
-
-    private float AssignMass(Renderer renderer, float modifier)
-    {
-	    Vector3 size = renderer.bounds.size;
-	    return size.x * size.y * size.z * modifier;
     }
 }
