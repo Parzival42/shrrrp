@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18cb03a9c8c281d458069544442df5e4, type: 3}
+  m_Name: GrasSliceProperties
+  m_EditorClassIdentifier: 
+  referenceVolume: 100
+  baseMass: 8
+  drag: 0.1
+  angularDrag: 0.05
+  physicMaterial: {fileID: 13400000, guid: acbe61d0b5a865c48b4477fd4ae7f5c5, type: 2}
+  volumeThresholds:
+  - 2
+  massThresholds:
+  - 3
+  useThresholds: 1
+  cuttingForce: 10
+  minVolume: 0.1

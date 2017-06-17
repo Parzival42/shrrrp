@@ -363,7 +363,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 624585705}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -380,8 +380,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb99093b2daabb42a5959e42bb6d56a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMultiplier: 0.08
-  forceMode: 1
+  forceMultiplier: 30
+  forceMode: 0
   debugDraw: 0
   layerMask:
     serializedVersion: 2
@@ -445,6 +445,53 @@ Prefab:
       objectReference: {fileID: 8300000, guid: 09c2cf6991afb044c8cda1a4f7f1ed01, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 830c93a6014f94948b9af3038dc9e177, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &788779869
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4826601398501356, guid: 926af81510b646043914290e25bb491a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826601398501356, guid: 926af81510b646043914290e25bb491a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -4.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826601398501356, guid: 926af81510b646043914290e25bb491a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826601398501356, guid: 926af81510b646043914290e25bb491a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826601398501356, guid: 926af81510b646043914290e25bb491a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826601398501356, guid: 926af81510b646043914290e25bb491a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826601398501356, guid: 926af81510b646043914290e25bb491a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826601398501356, guid: 926af81510b646043914290e25bb491a, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114242992760372872, guid: 926af81510b646043914290e25bb491a,
+        type: 2}
+      propertyPath: forceMultiplier
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 926af81510b646043914290e25bb491a, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &817981845
 GameObject:
@@ -573,6 +620,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114058909363139662, guid: 8706c05d61f20f34995d490aa0a66414,
+        type: 2}
+      propertyPath: sliceProperties
+      value: 
+      objectReference: {fileID: 11400000, guid: e993990857fec18488056ed10ea389e1,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8706c05d61f20f34995d490aa0a66414, type: 2}
   m_IsPrefabParent: 0
