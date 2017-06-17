@@ -1577,11 +1577,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29694d95543373f44902354a8448634e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushAwayForce: 0.1
-  forceMode: 2
+  pushAwayForce: 15
+  forceMode: 1
   layerMask:
     serializedVersion: 2
-    m_Bits: 2304
+    m_Bits: 256
 --- !u!120 &120472502679458668
 LineRenderer:
   m_ObjectHideFlags: 1

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using CielaSpike;
+using Random = UnityEngine.Random;
+
 // ReSharper disable SuggestVarOrType_Elsewhere
 
 [RequireComponent(typeof(SliceCreator))]
@@ -49,15 +51,12 @@ public class PlaneCutTest : MonoBehaviour
         }
 
         return cutPointIndices[vertex];
-
     }
     
     private void AssignSplitTriangles(Matrix4x4 worldToLocalMatrix, ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor, Dictionary<Vector3,int> majorCutPointIndices, Dictionary<Vector3, int> minorCutPointIndices)
     {
         if (t.negative)
         {
-            getCutPointIndex(worldToLocalMatrix, d, minor, minorCutPointIndices);
-            
             minor.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, e, minor, minorCutPointIndices));
             minor.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, d, minor, minorCutPointIndices));
             minor.Indices[t.subMeshIndex].Add(t.indexA);
@@ -85,51 +84,6 @@ public class PlaneCutTest : MonoBehaviour
             major.Indices[t.subMeshIndex].Add(getCutPointIndex(worldToLocalMatrix, d, major, majorCutPointIndices));
         }
     }
-
-  /*  private void AssignSplitTriangles(Matrix4x4 worldToLocalMatrix, ConflictTriangle t, Vector3 d, Vector3 e, MeshContainer major, MeshContainer minor, Dictionary<Vector3,int> majorCutPointIndices, Dictionary<Vector3, int> minorCutPointIndices)
-    {
-        minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(d));
-        minor.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(e));
-
-        minor.Normals.Add(new Vector3());
-        minor.Normals.Add(new Vector3());
-
-        major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(d));
-        major.Vertices.Add(worldToLocalMatrix.MultiplyPoint3x4(e));
-
-        major.Normals.Add(new Vector3());
-        major.Normals.Add(new Vector3());
-
-
-        if (t.negative)
-        {
-            minor.Indices[t.subMeshIndex].Add(minor.Vertices.Count - 1);
-            minor.Indices[t.subMeshIndex].Add(minor.Vertices.Count - 2);
-            minor.Indices[t.subMeshIndex].Add(t.indexA);
-
-            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
-            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 1);
-            major.Indices[t.subMeshIndex].Add(t.indexC);
-
-            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
-            major.Indices[t.subMeshIndex].Add(t.indexC);
-            major.Indices[t.subMeshIndex].Add(t.indexB);
-        }
-        else
-        {
-            minor.Indices[t.subMeshIndex].Add(t.indexA);
-            minor.Indices[t.subMeshIndex].Add(minor.Vertices.Count - 2);
-            minor.Indices[t.subMeshIndex].Add(minor.Vertices.Count - 1);
-
-            major.Indices[t.subMeshIndex].Add(t.indexC);
-            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 1);
-            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
-
-            major.Indices[t.subMeshIndex].Add(t.indexB);
-            major.Indices[t.subMeshIndex].Add(t.indexC);
-            major.Indices[t.subMeshIndex].Add(major.Vertices.Count - 2);
-        }
-    }*/
 
     private void SplitTriangle(Plane p, ConflictTriangle t, MeshContainer left, MeshContainer right, Dictionary<Vector3,int> leftCutPointIndices, Dictionary<Vector3,int> rightCutPointIndices)
     {
@@ -189,7 +143,7 @@ public class PlaneCutTest : MonoBehaviour
         }
     }
 
-    public IEnumerator CuttingCoroutine(Plane cuttingPlane, MeshContainer mesh, SlicePhysicsProperties slicePhysicsProperties, float delay)
+    public IEnumerator CuttingCoroutine(Plane cuttingPlane, MeshContainer mesh, SlicePhysicsProperties slicePhysicsProperties, bool suddenDeath, float delay)
     {
         yield return new WaitForSeconds(delay);
 
@@ -209,20 +163,35 @@ public class PlaneCutTest : MonoBehaviour
 
         yield return new WaitForFixedUpdate();
 
-        CreateStuff(cuttingPlane, slicePhysicsProperties);
+        CreateStuff(cuttingPlane, slicePhysicsProperties, suddenDeath);
     }
 
 
-    public void CreateStuff(Plane cuttingPlane, SlicePhysicsProperties slicePhysicsProperties)
+    public void CreateStuff(Plane cuttingPlane, SlicePhysicsProperties slicePhysicsProperties, bool suddenDeath)
     {
+        bool rightDissolve = false;
+        bool leftDissolve = false;
+
+        if (suddenDeath)
+        {
+            if (Random.Range(0.0f, 1.0f) < 0.5f)
+            {
+                rightDissolve = true;
+            }
+            else
+            {
+                leftDissolve = true;
+            }
+        }
+        
         if (rightMesh.Vertices.Count != 0)
         {
-            sliceCreator.CreateSlice(transform, rightMesh, rightSimplifiedColliderMesh.GetMesh(), cuttingPlane.normal, slicePhysicsProperties);
+            sliceCreator.CreateSlice(transform, rightMesh, rightSimplifiedColliderMesh.GetMesh(), cuttingPlane.normal, slicePhysicsProperties, rightDissolve);
         }
 
         if (leftMesh.Vertices.Count != 0)
         {
-            sliceCreator.CreateSlice(transform, leftMesh, leftSimplifiedColliderMesh.GetMesh(), -cuttingPlane.normal, slicePhysicsProperties);
+            sliceCreator.CreateSlice(transform, leftMesh, leftSimplifiedColliderMesh.GetMesh(), -cuttingPlane.normal, slicePhysicsProperties, leftDissolve);
         }
 
         // kill the original object or not
@@ -276,7 +245,7 @@ public class PlaneCutTest : MonoBehaviour
 
 
         //--- approximate vertex projection (check which plane the polygon vertices should be projected on)
-        float minDistance = Vector3.SqrMagnitude(Vector3.ProjectOnPlane(cuttingPlane.normal, Vector3.forward));
+        //float minDistance = Vector3.SqrMagnitude(Vector3.ProjectOnPlane(cuttingPlane.normal, Vector3.forward));
         int projectCoordA = 0;
         int projectCoordB = 1;
 
@@ -412,7 +381,6 @@ public class PlaneCutTest : MonoBehaviour
                 }
                 else
                 {
-                    a = false;
                     left++;
                 }
 
@@ -423,7 +391,6 @@ public class PlaneCutTest : MonoBehaviour
                 }
                 else
                 {
-                    b = false;
                     left++;
                 }
                 if (cuttingPlane.GetSide(localToWorldMatrix.MultiplyPoint3x4(vertices[subMeshIndices[i + 2]])))
@@ -433,7 +400,6 @@ public class PlaneCutTest : MonoBehaviour
                 }
                 else
                 {
-                    c = false;
                     left++;
                 }
 

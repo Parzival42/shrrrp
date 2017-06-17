@@ -54,4 +54,17 @@ public class PlayerSpawner : MonoBehaviour
         MenuSelectionContainer container = FindObjectOfType<MenuSelectionContainer>();
         return container;
     }
+
+    public void SpawnPlayer(PlayerType playerType)
+    {
+        if (menuSelectionContainer != null)
+        {
+            MenuSelectionContainer.PlayerInfo playerInfo = (MenuSelectionContainer.PlayerInfo) menuSelectionContainer.playerData[(int) playerType];
+            GameObject spawnedPlayer = SpawnPointHelper.SpawnPlayer(menuSelectionContainer.playerPrefab, playerType);
+            RigidBodyInput rigidInput = spawnedPlayer.GetComponent<RigidBodyInput>();
+        
+            rigidInput.PlayerAction = playerInfo.playerAction;
+        }
+       
+    }
 }

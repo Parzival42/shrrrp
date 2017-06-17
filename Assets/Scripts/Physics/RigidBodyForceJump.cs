@@ -8,27 +8,26 @@
 public class RigidBodyForceJump : MonoBehaviour
 {
     #region Inspector variables
-    [FancyHeader("Force settings")]
-    [SerializeField]
-    private float pushAwayForce = 10f;
 
-    [SerializeField]
-    private ForceMode forceMode = ForceMode.VelocityChange;
+    [FancyHeader("Force settings")] [SerializeField] private float pushAwayForce = 10f;
 
-    [FancyHeader("Collision settings")]
-    [SerializeField]
-    private LayerMask layerMask;
+    [SerializeField] private ForceMode forceMode = ForceMode.VelocityChange;
+
+    [FancyHeader("Collision settings")] [SerializeField] private LayerMask layerMask;
+
     #endregion
 
     #region Internal Members
+
     private RigidBodyInput rigidBodyInput;
+
     #endregion
 
-    private void Start ()
+    private void Start()
     {
         rigidBodyInput = GetComponent<RigidBodyInput>();
         rigidBodyInput.InputController.OnJump += HandleJump;
-	}
+    }
 
     private void HandleJump()
     {
@@ -41,10 +40,13 @@ public class RigidBodyForceJump : MonoBehaviour
 
     private void ApplyForce(RaycastHit hitInfo)
     {
-        Rigidbody rigid = hitInfo.transform.gameObject.GetComponent<Rigidbody>();
-
-        if (rigid != null)
-            rigid.AddForceAtPosition(Vector3.down * pushAwayForce, hitInfo.point, forceMode);
+        Rigidbody rigid = hitInfo.transform.parent.GetComponent<Rigidbody>();
+        Collider coll = hitInfo.transform.gameObject.GetComponent<Collider>();
+        if (rigid != null && coll != null)
+        {
+            Debug.Log("jump force!");
+            rigid.AddForceAtPosition(Vector3.down * pushAwayForce, coll.ClosestPoint(hitInfo.point), forceMode);
+        }
     }
 
     private bool CheckGround(out RaycastHit hitInfo)
@@ -52,7 +54,7 @@ public class RigidBodyForceJump : MonoBehaviour
         Ray ray = new Ray(
             rigidBodyInput.transform.position + rigidBodyInput.GroundPivotOffset,
             Vector3.down);
-
+        
         return Physics.Raycast(ray, out hitInfo, rigidBodyInput.GroundedDistance, layerMask.value);
     }
 }

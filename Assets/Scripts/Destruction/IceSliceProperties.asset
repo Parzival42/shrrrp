@@ -11,8 +11,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18cb03a9c8c281d458069544442df5e4, type: 3}
   m_Name: IceSliceProperties
   m_EditorClassIdentifier: 
-  baseMass: 4
-  drag: 15
-  angularDrag: 5
-  constraints: 112
+  referenceVolume: 1000
+  baseMass: 200
+  drag: 2.3
+  angularDrag: 0.5
   physicMaterial: {fileID: 13400000, guid: 3608122b41850cc4dac5d16e93e518f3, type: 2}
+  volumeThresholds:
+  - 0.8
+  - 0.35
+  - 0.045
+  massThresholds:
+  - 150
+  - 100
+  - 50
+  useThresholds: 1
+  cuttingForce: 120
+  minVolume: 0.1
