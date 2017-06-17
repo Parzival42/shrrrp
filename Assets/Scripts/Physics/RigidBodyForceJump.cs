@@ -44,7 +44,6 @@ public class RigidBodyForceJump : MonoBehaviour
         Collider coll = hitInfo.transform.gameObject.GetComponent<Collider>();
         if (rigid != null && coll != null)
         {
-            Debug.Log("jump force!");
             rigid.AddForceAtPosition(Vector3.down * pushAwayForce, coll.ClosestPoint(hitInfo.point), forceMode);
         }
     }

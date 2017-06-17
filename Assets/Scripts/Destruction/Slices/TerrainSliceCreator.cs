@@ -72,6 +72,7 @@ public class TerrainSliceCreator : SliceCreator
 	    }
 	    else
 	    {
+		    parentRigidBody.isKinematic = true;
 		    newSlice.AddComponent<DissolveObjectWithParent>();
 	    }
 	  
