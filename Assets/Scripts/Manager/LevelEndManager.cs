@@ -44,6 +44,15 @@ public class LevelEndManager : MonoBehaviour
     {
         if (!alreadyCalled)
         {
+            AudioSource musicAudioSource = Camera.main.gameObject.GetComponent<AudioSource>();
+            if (musicAudioSource != null)
+            {
+                LeanTween.value(musicAudioSource.volume, 0f, sceneChangeDelay)
+                    .setOnUpdate((float value) =>
+                    {
+                        musicAudioSource.volume = value;
+                    });
+            }
             StartCoroutine(StartNextLevel());
             alreadyCalled = true;
         }
