@@ -196,6 +196,17 @@ MonoBehaviour:
           m_StringArgument: PlayerLobby
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 12406656}
+        m_MethodName: Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &12406654
@@ -246,6 +257,12 @@ MonoBehaviour:
   easeTypeDeselect: 21
   tweenDuration: 0.2
   scaleFactor: 1.4
+  selectClip: {fileID: 8300000, guid: d393a998534e91f44afed8b67dbb5b0a, type: 3}
+  selectVolume: 0.8
+  selectPitch: 1.3
+  clickClip: {fileID: 8300000, guid: a7f241e6251e62e45ae81bbdab27aae3, type: 3}
+  clickVolume: 1
+  clickPitch: 1.8
 --- !u!1 &68792438
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,6 +755,17 @@ MonoBehaviour:
           m_StringArgument: PlayerLobby
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 367047381}
+        m_MethodName: Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &367047379
@@ -788,6 +816,12 @@ MonoBehaviour:
   easeTypeDeselect: 21
   tweenDuration: 0.2
   scaleFactor: 1.4
+  selectClip: {fileID: 8300000, guid: d393a998534e91f44afed8b67dbb5b0a, type: 3}
+  selectVolume: 0.8
+  selectPitch: 1.3
+  clickClip: {fileID: 8300000, guid: a7f241e6251e62e45ae81bbdab27aae3, type: 3}
+  clickVolume: 1
+  clickPitch: 1.8
 --- !u!1 &376844922
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,6 +911,17 @@ MonoBehaviour:
           m_StringArgument: PlayerLobby
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 376844927}
+        m_MethodName: Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &376844925
@@ -927,6 +972,12 @@ MonoBehaviour:
   easeTypeDeselect: 21
   tweenDuration: 0.2
   scaleFactor: 1.4
+  selectClip: {fileID: 8300000, guid: d393a998534e91f44afed8b67dbb5b0a, type: 3}
+  selectVolume: 0.8
+  selectPitch: 1.3
+  clickClip: {fileID: 8300000, guid: a7f241e6251e62e45ae81bbdab27aae3, type: 3}
+  clickVolume: 1
+  clickPitch: 1.8
 --- !u!114 &376844928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1210,6 +1261,17 @@ MonoBehaviour:
           m_StringArgument: PlayerLobby
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 505767775}
+        m_MethodName: Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &505767773
@@ -1260,6 +1322,12 @@ MonoBehaviour:
   easeTypeDeselect: 21
   tweenDuration: 0.2
   scaleFactor: 1.4
+  selectClip: {fileID: 8300000, guid: d393a998534e91f44afed8b67dbb5b0a, type: 3}
+  selectVolume: 0.8
+  selectPitch: 1.3
+  clickClip: {fileID: 8300000, guid: a7f241e6251e62e45ae81bbdab27aae3, type: 3}
+  clickVolume: 1
+  clickPitch: 1.8
 --- !u!1001 &536310360
 Prefab:
   m_ObjectHideFlags: 0
@@ -1892,6 +1960,17 @@ MonoBehaviour:
           m_StringArgument: PlayerLobby
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 936192057}
+        m_MethodName: Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &936192055
@@ -1942,6 +2021,12 @@ MonoBehaviour:
   easeTypeDeselect: 21
   tweenDuration: 0.2
   scaleFactor: 1.4
+  selectClip: {fileID: 8300000, guid: d393a998534e91f44afed8b67dbb5b0a, type: 3}
+  selectVolume: 0.8
+  selectPitch: 1.3
+  clickClip: {fileID: 8300000, guid: a7f241e6251e62e45ae81bbdab27aae3, type: 3}
+  clickVolume: 1
+  clickPitch: 1.8
 --- !u!1 &963082222
 GameObject:
   m_ObjectHideFlags: 0

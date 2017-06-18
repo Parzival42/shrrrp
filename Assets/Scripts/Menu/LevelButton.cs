@@ -16,6 +16,24 @@ public class LevelButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
 	[SerializeField]
 	private float scaleFactor = 1.2f;
+	
+	[SerializeField]
+	private AudioClip selectClip;
+	
+	[SerializeField]
+	private float selectVolume = 1f;
+	
+	[SerializeField]
+	private float selectPitch = 1f;
+	
+	[SerializeField]
+	private AudioClip clickClip;
+	
+	[SerializeField]
+	private float clickVolume = 1f;
+	
+	[SerializeField]
+	private float clickPitch = 1f;
 
 	private Vector3 initScale;
 	private GameObject sphere;
@@ -34,10 +52,17 @@ public class LevelButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 		menuSelectionContainer.levelName = mapName;
 		
         LeanTween.scale(sphere, initScale * scaleFactor, tweenDuration).setEase(easeTypeSelect);
+
+	    SoundManager.SoundManagerInstance.Play(selectClip, Vector3.zero, selectVolume, selectPitch, AudioGroup.Menu);
     }
 
 	public void OnDeselect(BaseEventData data)
     {
         LeanTween.scale(sphere, initScale, tweenDuration).setEase(easeTypeDeselect);
     }
+
+	public void Clicked()
+	{
+		SoundManager.SoundManagerInstance.Play(clickClip, Vector3.zero, clickVolume, clickPitch, AudioGroup.Menu);
+	}
 }
