@@ -45,7 +45,7 @@ public class MainMenu : BaseMenu {
 	public override void LoadNextLevel(string levelName) {
 		CuttingManagerLocator.GetInstance.Cut(cuttingPlane.transform, cuttingPlane.GetComponent<MeshFilter>().mesh);
         if (pronounciationThingy != null) {
-            LeanTween.moveY(pronounciationThingy, pronounciationThingy.transform.position.y - 35f, pronounciationThingyTweenTime)
+            LeanTween.moveY(pronounciationThingy, pronounciationThingy.transform.position.y - 55f, pronounciationThingyTweenTime)
                 .setEase(LeanTweenType.easeInBack);
         }
 		if (notPlayed)
