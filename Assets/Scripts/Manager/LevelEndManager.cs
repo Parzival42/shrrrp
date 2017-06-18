@@ -44,7 +44,7 @@ public class LevelEndManager : MonoBehaviour
     {
         if (!alreadyCalled)
         {
-            AudioSource musicAudioSource = Camera.main.gameObject.GetComponent<AudioSource>();
+            AudioSource musicAudioSource = CameraUtil.GetMainCamera().gameObject.GetComponent<AudioSource>();
             if (musicAudioSource != null)
             {
                 LeanTween.value(musicAudioSource.volume, 0f, sceneChangeDelay)

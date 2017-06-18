@@ -18,6 +18,7 @@ public class MainMenu : BaseMenu {
 	
 	[SerializeField]
 	private AudioClip startClip;
+	private bool notPlayed = true;
 
 	void Start () {
 		// Find the MenuSelectionContainer and reset it OR initialize it if not found
@@ -47,7 +48,11 @@ public class MainMenu : BaseMenu {
             LeanTween.moveY(pronounciationThingy, pronounciationThingy.transform.position.y - 35f, pronounciationThingyTweenTime)
                 .setEase(LeanTweenType.easeInBack);
         }
-		DontDestroyOnLoad(SoundManager.SoundManagerInstance.Play(startClip, Vector3.zero, 1, 1, AudioGroup.Menu));
+		if (notPlayed)
+		{
+			DontDestroyOnLoad(SoundManager.SoundManagerInstance.Play(startClip, Vector3.zero, 1, 1, AudioGroup.Menu));
+			notPlayed = false;
+		}
 		StartCoroutine(DelayedLoadNextLevel(levelName));
 	}
 
