@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CuttingPlaneControl : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class CuttingPlaneControl : MonoBehaviour
 
     [SerializeField]
     private float waitForDestruction = 0.8f;
+
+    [SerializeField]
+    private float activationTime = 3f;
 
     [FancyHeader("Tween settings")]
     [SerializeField]
@@ -47,6 +51,12 @@ public class CuttingPlaneControl : MonoBehaviour
     private Vector3 translation = Vector3.zero;
     private float originalLineCount;
     private float originalLineAlpha;
+
+    private static readonly string PLAYER_CANVAS_TAG = "MenuEnvironment";
+    private static readonly string PLAYER_CUT_TEXT_TAG = "TextInsert";
+    private static readonly string DECIMAL_FORMAT = "F2";
+    private Text playerCutText;
+    private float currentCutTime = 0f;
     #endregion
 
     private void Start()
@@ -67,8 +77,26 @@ public class CuttingPlaneControl : MonoBehaviour
         {
             HandleControls();
             HandleIsoLineParameters();
+            HandleCutTime();
         }
 	}
+
+    private void HandleCutTime()
+    {
+        if (!isUsed && currentCutTime >= activationTime)
+        {
+            isUsed = true;
+            currentCutTime = activationTime;
+            SetInputHandlerMovemet(true);
+            DestroyPlaneControl();
+        }
+
+        if (!isUsed)
+        {
+            playerCutText.text = currentCutTime.ToString(DECIMAL_FORMAT);
+            currentCutTime += Time.deltaTime;
+        }
+    }
 
     private void InitializeIsoLine()
     {
@@ -78,6 +106,7 @@ public class CuttingPlaneControl : MonoBehaviour
         isoLine.OriginPosition = transform.position;
         originalLineAlpha = isoLine.LineColor.a;
         originalLineCount = isoLine.LineCount;
+
         LeanTween.value(gameObject, 0f, originalLineCount, isoLineTweenTime).setEase(LeanTweenType.easeOutBack)
             .setOnUpdate((float value) => {
                 isoLine.LineCount = value;
@@ -155,6 +184,17 @@ public class CuttingPlaneControl : MonoBehaviour
         input.Rigid.velocity = Vector3.zero;
         input.Rigid.constraints = RigidbodyConstraints.FreezeAll;
 
+        Canvas playerCanvas = input.gameObject.FindComponentInChildWithTag<Canvas>(PLAYER_CANVAS_TAG);
+        if (playerCanvas != null)
+        {
+            playerCutText = playerCanvas.gameObject.FindComponentInChildWithTag<Text>(PLAYER_CUT_TEXT_TAG);
+            LeanTween.value(0f, 1f, 0.1f).setEase(LeanTweenType.easeInCirc)
+                .setOnUpdate((float value) => {
+                    SetCutTimeAlpha(value);
+                });
+        }
+
+
         SetInputHandlerMovemet(false);
         isInitialized = true;
     }
@@ -175,6 +215,12 @@ public class CuttingPlaneControl : MonoBehaviour
              .setOnUpdate((float value) => {
                 isoLine.LineColor = new Color(isoLine.LineColor.r, isoLine.LineColor.g, isoLine.LineColor.b, value);
              });
+
+        // Cut text
+        LeanTween.value(1f, 0f, 0.1f).setEase(LeanTweenType.easeInCirc)
+                .setOnUpdate((float value) => {
+                    SetCutTimeAlpha(value);
+                }).setDelay(0.6f);
 
         inputHandler.Rigid.constraints = RigidbodyConstraints.None;
         inputHandler.Rigid.constraints = RigidbodyConstraints.FreezeRotation;
@@ -198,5 +244,10 @@ public class CuttingPlaneControl : MonoBehaviour
     private void SetInputHandlerMovemet(bool movementAllowed)
     {
         inputHandler.AllowMovement = movementAllowed;
+    }
+
+    private void SetCutTimeAlpha(float alpha)
+    {
+        playerCutText.color = new Color(playerCutText.color.r, playerCutText.color.g, playerCutText.color.b, alpha);
     }
 }

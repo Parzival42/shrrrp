@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceMultiplier: 0.1
   forceMode: 1
-  debugDraw: 1
+  debugDraw: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 2048

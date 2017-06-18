@@ -9,11 +9,13 @@ public class RigidBodyForceJump : MonoBehaviour
 {
     #region Inspector variables
 
-    [FancyHeader("Force settings")] [SerializeField] private float pushAwayForce = 10f;
+    [FancyHeader("Force settings")]
+    [SerializeField] private float pushAwayForce = 10f;
 
     [SerializeField] private ForceMode forceMode = ForceMode.VelocityChange;
 
-    [FancyHeader("Collision settings")] [SerializeField] private LayerMask layerMask;
+    [FancyHeader("Collision settings")]
+    [SerializeField] private LayerMask layerMask;
 
     #endregion
 
@@ -40,11 +42,14 @@ public class RigidBodyForceJump : MonoBehaviour
 
     private void ApplyForce(RaycastHit hitInfo)
     {
-        Rigidbody rigid = hitInfo.transform.parent.GetComponent<Rigidbody>();
-        Collider coll = hitInfo.transform.gameObject.GetComponent<Collider>();
-        if (rigid != null && coll != null)
+        if (hitInfo.transform != null && hitInfo.transform.parent != null)
         {
-            rigid.AddForceAtPosition(Vector3.down * pushAwayForce, coll.ClosestPoint(hitInfo.point), forceMode);
+            Rigidbody rigid = hitInfo.transform.parent.GetComponent<Rigidbody>();
+            Collider coll = hitInfo.transform.gameObject.GetComponent<Collider>();
+            if (rigid != null && coll != null)
+            {
+                rigid.AddForceAtPosition(Vector3.down * pushAwayForce, coll.ClosestPoint(hitInfo.point), forceMode);
+            }
         }
     }
 
