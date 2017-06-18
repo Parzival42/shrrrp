@@ -183,6 +183,7 @@ public class PlayerLobby : MonoBehaviour {
 
     private IEnumerator SwitchScene(string levelName){
         isSwitchingScene = true;
+        
         yield return new WaitForSeconds(transitionTimeout);
 
          FishEyeTransition fishEye = new FishEyeTransition()
@@ -194,6 +195,15 @@ public class PlayerLobby : MonoBehaviour {
             colorSeparation = 5.0f,
             fishEyeShader = transitionShader
         };
+        
+        GameObject music = GameObject.FindGameObjectWithTag("MenuMusic");
+        if (music != null)
+        {
+            //LeanTween.value(music.GetComponent<AudioSource>().volume, 0, 0.2f + transitionTimeout)
+            //.setOnComplete(() => {
+            Destroy(music);
+            //});
+        }
 
         TransitionKit.instance.transitionWithDelegate(fishEye);
     }

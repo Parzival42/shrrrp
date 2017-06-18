@@ -1110,6 +1110,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1245035289722752, guid: 41601cddcb1b1eb4aabd9e20bfcf5da2,
         type: 2}
+    - target: {fileID: 114338710117482634, guid: d3bcd2a5c75e7184db943db753b49b82,
+        type: 2}
+      propertyPath: startClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7fbaf09aa30d0e34fa13efb2a101f8c0, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d3bcd2a5c75e7184db943db753b49b82, type: 2}
   m_IsPrefabParent: 0

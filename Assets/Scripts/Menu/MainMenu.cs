@@ -15,6 +15,9 @@ public class MainMenu : BaseMenu {
 
     [SerializeField]
     private float pronounciationThingyTweenTime = 0.4f;
+	
+	[SerializeField]
+	private AudioClip startClip;
 
 	void Start () {
 		// Find the MenuSelectionContainer and reset it OR initialize it if not found
@@ -44,6 +47,7 @@ public class MainMenu : BaseMenu {
             LeanTween.moveY(pronounciationThingy, pronounciationThingy.transform.position.y - 35f, pronounciationThingyTweenTime)
                 .setEase(LeanTweenType.easeInBack);
         }
+		SoundManager.SoundManagerInstance.Play(startClip, Vector3.zero, 1, 1, AudioGroup.Menu);
 		StartCoroutine(DelayedLoadNextLevel(levelName));
 	}
 
