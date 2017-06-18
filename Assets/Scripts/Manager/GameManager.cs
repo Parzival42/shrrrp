@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+public delegate void GameEnd();
+
 /// <summary>
 /// Processes events like player death, win situations etc.
 /// Manages the general flow of the current game session.
@@ -11,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     #region Internal variables
     private PlayerManager playerManager;
+    public event GameEnd OnGameEnded;
     #endregion
 
     private void Start ()
@@ -37,6 +40,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void HandleAllPlayersDied()
     {
+        FireOnGameEnded();
         Debug.Log("Well, this shouldn't really happen (in game), but all players died :O. If you are in the editor everything is ok ;).");
     }
 
@@ -45,6 +49,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void HandleOnePlayerLeft(Player player)
     {
+        FireOnGameEnded();
+
         // Deactivate controls and disable physics!
         RigidBodyInput input = player.GetComponent<RigidBodyInput>();
         input.Rigid.constraints = RigidbodyConstraints.FreezeAll;
@@ -56,5 +62,11 @@ public class GameManager : MonoBehaviour
     private void HandlePlayerDeath(Player player)
     {
         // TODO: Maybe show some fancy text or play sound etc...
+    }
+
+    protected void FireOnGameEnded()
+    {
+        if (OnGameEnded != null)
+            OnGameEnded();
     }
 }

@@ -57,11 +57,15 @@ public class CuttingPlaneControl : MonoBehaviour
     private static readonly string DECIMAL_FORMAT = "F2";
     private Text playerCutText;
     private float currentCutTime = 0f;
+
+    GameManager gameManager;
     #endregion
 
     private void Start()
     {
         cam = CameraUtil.GetMainCamera();
+        gameManager = FindObjectOfType<GameManager>();
+        gameManager.OnGameEnded += DestroyPlaneDueToGameEnd;
 
         // Plane tween
         Vector3 originalScale = transform.localScale;
@@ -204,6 +208,25 @@ public class CuttingPlaneControl : MonoBehaviour
     /// </summary>
     private void DestroyPlaneControl()
     {
+        PerformDestructionTweens();
+
+        inputHandler.Rigid.constraints = RigidbodyConstraints.None;
+        inputHandler.Rigid.constraints = RigidbodyConstraints.FreezeRotation;
+
+        inputHandler.Rigid.useGravity = true;
+        inputHandler.StartCoroutine(WaitForDestruction());
+    }
+
+    private void DestroyPlaneDueToGameEnd()
+    {
+        Debug.Log("Destroy Game End");
+        isUsed = true;
+        PerformDestructionTweens();
+        inputHandler.StartCoroutine(WaitForDestruction());
+    }
+
+    private void PerformDestructionTweens()
+    {
         float time = waitForDestruction * 0.5f;
         LeanTween.scale(gameObject, Vector3.zero, time).setEase(LeanTweenType.easeInBack);
         LeanTween.value(gameObject, isoLine.LineCount, 20f, time).setEase(LeanTweenType.easeInBack)
@@ -213,7 +236,7 @@ public class CuttingPlaneControl : MonoBehaviour
 
         LeanTween.value(gameObject, originalLineAlpha, 0f, time).setEase(LeanTweenType.easeInBack)
              .setOnUpdate((float value) => {
-                isoLine.LineColor = new Color(isoLine.LineColor.r, isoLine.LineColor.g, isoLine.LineColor.b, value);
+                 isoLine.LineColor = new Color(isoLine.LineColor.r, isoLine.LineColor.g, isoLine.LineColor.b, value);
              });
 
         // Cut text
@@ -221,12 +244,6 @@ public class CuttingPlaneControl : MonoBehaviour
                 .setOnUpdate((float value) => {
                     SetCutTimeAlpha(value);
                 }).setDelay(0.6f);
-
-        inputHandler.Rigid.constraints = RigidbodyConstraints.None;
-        inputHandler.Rigid.constraints = RigidbodyConstraints.FreezeRotation;
-
-        inputHandler.Rigid.useGravity = true;
-        inputHandler.StartCoroutine(WaitForDestruction());
     }
 
     IEnumerator WaitForDestruction()
@@ -238,7 +255,8 @@ public class CuttingPlaneControl : MonoBehaviour
         isoLine.LineCount = originalLineCount;
         isoLine.LineColor = new Color(isoLine.LineColor.r, isoLine.LineColor.g, isoLine.LineColor.b, originalLineAlpha);
 
-        Destroy(gameObject);
+        if(gameObject != null)
+            Destroy(gameObject);
     }
 
     private void SetInputHandlerMovemet(bool movementAllowed)
@@ -249,5 +267,10 @@ public class CuttingPlaneControl : MonoBehaviour
     private void SetCutTimeAlpha(float alpha)
     {
         playerCutText.color = new Color(playerCutText.color.r, playerCutText.color.g, playerCutText.color.b, alpha);
+    }
+
+    private void OnDestroy()
+    {
+        gameManager.OnGameEnded -= DestroyPlaneDueToGameEnd;
     }
 }
