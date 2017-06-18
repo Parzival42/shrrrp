@@ -161,7 +161,6 @@ public class CuttingPlaneControl : MonoBehaviour
         float yRotation = -inputHandler.PlayerAction.Move.Y * rotationSpeed;
 
         rotationWorld.Set(0f, xRotation, 0f);
-
         rotationLocal.Set(0f, 0f, yRotation);
 
         transform.Rotate(rotationWorld * Time.deltaTime, Space.World);
@@ -198,7 +197,6 @@ public class CuttingPlaneControl : MonoBehaviour
                 });
         }
 
-
         SetInputHandlerMovemet(false);
         isInitialized = true;
     }
@@ -219,7 +217,6 @@ public class CuttingPlaneControl : MonoBehaviour
 
     private void DestroyPlaneDueToGameEnd()
     {
-        Debug.Log("Destroy Game End");
         isUsed = true;
         PerformDestructionTweens();
         inputHandler.StartCoroutine(WaitForDestruction());
@@ -246,10 +243,9 @@ public class CuttingPlaneControl : MonoBehaviour
                 }).setDelay(0.6f);
     }
 
-    IEnumerator WaitForDestruction()
+    private IEnumerator WaitForDestruction()
     {
         yield return new WaitForSeconds(waitForDestruction);
-        //SetInputHandlerMovemet(true);
 
         isoLine.enabled = false;
         isoLine.LineCount = originalLineCount;
