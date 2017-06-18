@@ -12,18 +12,27 @@ public class BaseMenu : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject menuEnvironment;
-	private GameObject environment;
+	
+	[SerializeField]
+	private GameObject menuMusic;
 
 	void OnEnable(){
 		// register Cancel event at Input module
 		InputModuleActionAdapter.OnCancel += LoadPreviousLevel;
 
 		// Clouds should stay when loading next scene but only instantiate once
-		environment = GameObject.FindGameObjectWithTag("MenuEnvironment");
-		if(environment == null){
+		GameObject environment = GameObject.FindGameObjectWithTag("MenuEnvironment");
+		if (environment == null)
+		{
 			environment = Instantiate(menuEnvironment, Vector3.zero, Quaternion.identity);
 			DontDestroyOnLoad(environment);
 		}
+
+		// Same with music but this persists longer than the menu scripts
+		GameObject music = GameObject.FindGameObjectWithTag("MenuMusic");
+		if (music != null) return;
+		music = Instantiate(menuMusic, Vector3.zero, Quaternion.identity);
+		DontDestroyOnLoad(music);
 	}
 
 	/// <summary>

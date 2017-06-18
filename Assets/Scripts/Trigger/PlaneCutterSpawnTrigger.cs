@@ -39,6 +39,8 @@ public class PlaneCutterSpawnTrigger : TriggerAction
 
     protected override void DestroyTrigger()
     {
+        GetComponent<AudioSource>().Play();
+        
         LeanTween.scale(gameObject, Vector3.zero, tweenTime).setEase(easeType)
             .setOnComplete(() => {
                 base.DestroyTrigger();

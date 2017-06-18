@@ -1104,6 +1104,12 @@ Prefab:
       propertyPath: pronounciationThingyTweenTime
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114338710117482634, guid: d3bcd2a5c75e7184db943db753b49b82,
+        type: 2}
+      propertyPath: menuMusic
+      value: 
+      objectReference: {fileID: 1245035289722752, guid: 41601cddcb1b1eb4aabd9e20bfcf5da2,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d3bcd2a5c75e7184db943db753b49b82, type: 2}
   m_IsPrefabParent: 0

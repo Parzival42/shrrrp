@@ -2547,6 +2547,7 @@ MonoBehaviour:
   previousLevel: MainMenu
   menuEnvironment: {fileID: 1644261970205200, guid: 351519bd073df1b4c91abedc0c44bc4e,
     type: 2}
+  menuMusic: {fileID: 1245035289722752, guid: 41601cddcb1b1eb4aabd9e20bfcf5da2, type: 2}
 --- !u!224 &1434465473 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224077220426979604, guid: d3bcd2a5c75e7184db943db753b49b82,

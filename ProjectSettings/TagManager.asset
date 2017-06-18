@@ -11,6 +11,7 @@ TagManager:
   - IndestructibleParent
   - MenuEnvironment
   - TextInsert
+  - MenuMusic
   layers:
   - Default
   - TransparentFX
