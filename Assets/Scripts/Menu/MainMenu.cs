@@ -47,7 +47,7 @@ public class MainMenu : BaseMenu {
             LeanTween.moveY(pronounciationThingy, pronounciationThingy.transform.position.y - 35f, pronounciationThingyTweenTime)
                 .setEase(LeanTweenType.easeInBack);
         }
-		SoundManager.SoundManagerInstance.Play(startClip, Vector3.zero, 1, 1, AudioGroup.Menu);
+		DontDestroyOnLoad(SoundManager.SoundManagerInstance.Play(startClip, Vector3.zero, 1, 1, AudioGroup.Menu));
 		StartCoroutine(DelayedLoadNextLevel(levelName));
 	}
 

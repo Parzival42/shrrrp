@@ -69,6 +69,6 @@ public class LevelButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
 	public void Clicked()
 	{
-		SoundManager.SoundManagerInstance.Play(clickClip, Vector3.zero, clickVolume, clickPitch, AudioGroup.Menu);
+		DontDestroyOnLoad(SoundManager.SoundManagerInstance.Play(clickClip, Vector3.zero, clickVolume, clickPitch, AudioGroup.Menu));
 	}
 }
