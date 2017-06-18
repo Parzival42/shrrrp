@@ -57,10 +57,28 @@ public class PlayerLobby : MonoBehaviour {
 	
 	void Update () {
         if(!isSwitchingScene){
-            
-            if(IsTimeToStart())
+
+            if (IsTimeToStart())
+            {
+                GameObject music = GameObject.FindGameObjectWithTag("MenuMusic");
+                if (music != null)
+                {
+                    AudioSource musicAudioSource = music.GetComponent<AudioSource>();
+                    LeanTween.value(musicAudioSource.volume, 0f, transitionTimeout)
+                        .setOnUpdate((float value)=>
+                        {
+                            musicAudioSource.volume = value;
+                        })
+                        .setOnComplete(() =>
+                        {
+                            Destroy(music);
+                        });
+                }
                 StartCoroutine(SwitchScene(menuSelectionContainer.levelName));
-            if(IsTimeToGoBack()){
+            }
+            
+            if(IsTimeToGoBack())
+            {
                 DestroyEverything();
             }
 
@@ -196,15 +214,6 @@ public class PlayerLobby : MonoBehaviour {
             fishEyeShader = transitionShader
         };
         
-        GameObject music = GameObject.FindGameObjectWithTag("MenuMusic");
-        if (music != null)
-        {
-            //LeanTween.value(music.GetComponent<AudioSource>().volume, 0, 0.2f + transitionTimeout)
-            //.setOnComplete(() => {
-            Destroy(music);
-            //});
-        }
-
         TransitionKit.instance.transitionWithDelegate(fishEye);
     }
 
