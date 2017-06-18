@@ -24,6 +24,15 @@ public class PlayerButton : MonoBehaviour
 
     [SerializeField]
     private float lightIntensity = 1.36f;
+    
+    [SerializeField]
+    private AudioClip selectClip;
+	
+    [SerializeField]
+    private float selectVolume = 0.8f;
+	
+    [SerializeField]
+    private float selectPitch = 1.3f;
 
     [FancyHeader("Debug Information")]
     [SerializeField]
@@ -62,6 +71,9 @@ public class PlayerButton : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         lastCollided = other.gameObject;
+        
+        if(selectClip != null)
+            SoundManager.SoundManagerInstance.Play(selectClip, Vector3.zero, selectVolume, selectPitch, AudioGroup.Menu);
 
         if(isVisible){
             LeanTween.moveY(gameObject, originalHeight - yOffset, tweenTime).setEase(easeType);
