@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class OutlinePreparator{
 
-	private List<VertexNeighbourInfo> neighbourData = new List<VertexNeighbourInfo>();
+	private readonly List<VertexNeighbourInfo> neighbourData = new List<VertexNeighbourInfo>();
   
 	public void Add(Vector3 a, Vector3 b){
 		neighbourData.Add(new VertexNeighbourInfo(a,b));
@@ -47,13 +47,13 @@ public class OutlinePreparator{
 
     public List<List<Vector3>> PrepareOutlinePolygons()
     {
-        Debug.Log("neighbour info: "+neighbourData.Count);
+        //Debug.Log("neighbour info: "+neighbourData.Count);
         List<List<Vector3>> orderedPolygon = new List<List<Vector3>>();
         int currentList = -1;
 
         while (neighbourData.Count > 2)
         {
-            Debug.Log("test");
+            //Debug.Log("test");
             VertexNeighbourInfo origin = neighbourData[0];
             orderedPolygon.Add(new List<Vector3>());
             currentList++;

@@ -38,7 +38,7 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 
 		for(int i = 0; i < intersectingColliders.Length; i++){	
 			GameObject go = intersectingColliders[i].gameObject;
-			if(go.tag != "CuttingPlane"){
+			if(!go.CompareTag("CuttingPlane")){
 				continue;
 			}
 
@@ -49,7 +49,6 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 				}else{
 					go.AddComponent<MenuLetterSliceCreator>();
 				}
-				//go.AddComponent<TriangulatorTest>();
 				go.AddComponent<FlatMeshMerger>();
 				pct = go.AddComponent<PlaneCutTest>();				
 			}
@@ -57,12 +56,6 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 			
 			Task task;
 			this.StartCoroutineAsync(pct.CuttingCoroutine(cuttingPlane, new MeshContainer(go.GetComponent<MeshFilter>().mesh, true), sliceProperties, suddenDeath, delay), out task);
-			//pct.StartSplitInTwo(cuttingPlane, new MeshContainer( go.GetComponent<MeshFilter>().mesh, true), sliceProperties);
 		}
-	}
-
-	private IEnumerator WaitForExecution(float delay){
-		yield return new WaitForSeconds(delay);
-		
 	}
 }

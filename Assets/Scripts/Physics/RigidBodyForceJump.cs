@@ -45,10 +45,11 @@ public class RigidBodyForceJump : MonoBehaviour
         if (hitInfo.transform != null && hitInfo.transform.parent != null)
         {
             Rigidbody rigid = hitInfo.transform.parent.GetComponent<Rigidbody>();
-            Collider coll = hitInfo.transform.gameObject.GetComponent<Collider>();
-            if (rigid != null && coll != null)
+            Collider coll = hitInfo.transform.GetComponent<Collider>();
+            Collider parentColl =  hitInfo.transform.parent.GetComponent<Collider>();
+            if (rigid != null && coll != null && parentColl != null)
             {
-                rigid.AddForceAtPosition(Vector3.down * pushAwayForce, coll.ClosestPoint(hitInfo.point), forceMode);
+                rigid.AddForceAtPosition(Vector3.down * pushAwayForce, parentColl.ClosestPoint(hitInfo.point), forceMode);
             }
         }
     }

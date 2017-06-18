@@ -23,16 +23,6 @@ public class StaticSliceCreator : SliceCreator
 		}
 
 		mesh.SetNormals(slice.Normals);
-		mesh.SetUVs(0, slice.Uvs);
-		// if(slice.Uvs!=null && slice.Uvs.Count>0){
-		// 	mesh.SetUVs(0, slice.Uvs);
-		// }else{
-		// 	List<Vector2> uvs = new List<Vector2>();
-		// 	for(int i = 0; i < slice.Vertices.Count; i++){
-		// 		uvs[i] = new Vector2();
-		// 	}
-		// 	mesh.SetUVs(0,uvs );
-		// }
 		mesh.RecalculateNormals();
 
 		

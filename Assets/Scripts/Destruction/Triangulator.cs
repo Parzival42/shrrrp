@@ -19,7 +19,7 @@ public class Triangulator
 		int numberOfUsablePoints = usePoints.Count;
 		
         if (numberOfPoints < 3){
-			Debug.Log("new triangulator triangles: "+mesh.Indices[0].Count);
+			//Debug.Log("new triangulator triangles: "+mesh.Indices[0].Count);
             return mesh;
 		}
 		
@@ -93,7 +93,7 @@ public class Triangulator
 		mesh.Indices[0].Add(usePoints[2]);
 		//mesh.Indices[0].Reverse();
 			
-		Debug.Log("new triangulator triangles: "+mesh.Indices[0].Count);
+		//Debug.Log("new triangulator triangles: "+mesh.Indices[0].Count);
 		
 		return mesh;
 	}

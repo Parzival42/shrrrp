@@ -42,6 +42,8 @@ public class PlaneCutTest : MonoBehaviour
 
     private readonly Dictionary<Vector3, int> rightCutPointIndices = new Dictionary<Vector3, int>();
 
+    private Vector3 cuttingPlaneNormal;
+
     private int getCutPointIndex(Matrix4x4 worldToLocalMatrix, Vector3 vertex, MeshContainer mesh, Dictionary<Vector3, int> cutPointIndices)
     {
         if(!cutPointIndices.ContainsKey(vertex)){
@@ -113,7 +115,7 @@ public class PlaneCutTest : MonoBehaviour
             return;
         }
 
-        bool leftMajor = (t.aLeft && t.bLeft) || (t.aLeft && t.cLeft) || (t.bLeft && t.cLeft) ? true : false;
+        bool leftMajor = (t.aLeft && t.bLeft) || (t.aLeft && t.cLeft) || (t.bLeft && t.cLeft);
 
         if (leftMajor)
         {
@@ -155,6 +157,13 @@ public class PlaneCutTest : MonoBehaviour
         sliceCreator = GetComponent<SliceCreator>();
         meshMerger = GetComponent<MeshMerger>();
 
+        if (sliceCreator == null || meshMerger == null)
+        {
+            Debug.LogError("slice creator or mesh merger is null");
+            yield break;
+        }
+
+        cuttingPlaneNormal = cuttingPlane.normal;
         yield return Ninja.JumpBack;
 
         StartSplitInTwo(cuttingPlane, mesh, slicePhysicsProperties);
@@ -191,7 +200,7 @@ public class PlaneCutTest : MonoBehaviour
 
         if (leftMesh.Vertices.Count != 0)
         {
-            sliceCreator.CreateSlice(transform, leftMesh, leftSimplifiedColliderMesh.GetMesh(), -cuttingPlane.normal, slicePhysicsProperties, leftDissolve);
+            sliceCreator.CreateSlice(transform, leftMesh, leftSimplifiedColliderMesh.GetMesh(), -cuttingPlaneNormal, slicePhysicsProperties, leftDissolve);
         }
 
         // kill the original object or not
@@ -239,7 +248,7 @@ public class PlaneCutTest : MonoBehaviour
             for(int j = 0; j <capMeshesOutlinePolygonCopy[i].Count; j++){
                 capMeshesOutlinePolygonCopy[i].Add(new Vector3(capMeshesOutlinePolygon[i][j].x, capMeshesOutlinePolygon[i][j].y, capMeshesOutlinePolygon[i][j].z));
             }
-            Debug.Log("capMeshes polygon " + i + " vertexcount: " + capMeshesOutlinePolygon[capMeshesOutlinePolygon.Count - 1].Count);
+            //Debug.Log("capMeshes polygon " + i + " vertexcount: " + capMeshesOutlinePolygon[capMeshesOutlinePolygon.Count - 1].Count);
         }
         //--- end
 
@@ -277,7 +286,7 @@ public class PlaneCutTest : MonoBehaviour
         //DebugExtension.DebugArrow(Vector3.zero, rotationAxis, Color.red, 20.0f);
 
         float rotationAngle = Mathf.Acos(Vector3.Dot(Vector3.forward, cuttingPlane.normal));
-        Debug.Log("rotation angle is: "+(rotationAngle*Mathf.Rad2Deg));
+        //Debug.Log("rotation angle is: "+(rotationAngle*Mathf.Rad2Deg));
 
          Quaternion q = Quaternion.AngleAxis(-rotationAngle*Mathf.Rad2Deg, rotationAxis);
          Quaternion qReverse = Quaternion.AngleAxis(rotationAngle*Mathf.Rad2Deg, rotationAxis);
