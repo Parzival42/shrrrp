@@ -12,6 +12,7 @@ TagManager:
   - MenuEnvironment
   - TextInsert
   - MenuMusic
+  - AfterDeathSpawn
   layers:
   - Default
   - TransparentFX

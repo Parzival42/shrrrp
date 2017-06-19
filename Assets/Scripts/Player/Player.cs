@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
-
+public class Player : MonoBehaviour
+{
 	#region Internal Members
 	PlayerType playerType;
 	#endregion
 
 	#region Properties
-    public PlayerType PlayerType {
+    public PlayerType PlayerType
+    {
 		get { return playerType; }
 		set { playerType = value; }
 	}
-	#endregion
 
-	#region Public Fields
+    public int PlayerLives { get { return playerLives; } set { playerLives = value; } }
+    #endregion
+
+    #region Public Fields
+    [FancyHeader("Player settings")]
+    [SerializeField]
+    private int playerLives = 3;
+
 	[SerializeField]
  	[FancyHeader("Material Objects", "Assign materials based on PlayerType")]
 	private PlayerMaterialObject[] playerMaterials;

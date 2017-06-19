@@ -110,6 +110,8 @@ MonoBehaviour:
   destroyAfterTriggering: 0
   deathParticles: {fileID: 198652094387334740, guid: 9fa8992f3d6a0b240b74506a3b577add,
     type: 2}
+  respawnCylinder: {fileID: 1456470458091758, guid: a9bd20ca1f288484ba0f0787fd52081b,
+    type: 2}
 --- !u!114 &114868299252527488
 MonoBehaviour:
   m_ObjectHideFlags: 1
