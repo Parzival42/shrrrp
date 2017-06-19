@@ -66,6 +66,7 @@ public class CuttingPlaneControl : MonoBehaviour
         cam = CameraUtil.GetMainCamera();
         gameManager = FindObjectOfType<GameManager>();
         gameManager.OnGameEnded += DestroyPlaneDueToGameEnd;
+        currentCutTime = activationTime;
 
         // Plane tween
         Vector3 originalScale = transform.localScale;
@@ -87,10 +88,11 @@ public class CuttingPlaneControl : MonoBehaviour
 
     private void HandleCutTime()
     {
-        if (!isUsed && currentCutTime >= activationTime)
+        if (!isUsed && currentCutTime <= 0f)
         {
             isUsed = true;
-            currentCutTime = activationTime;
+            currentCutTime = 0f;
+            playerCutText.text = currentCutTime.ToString(DECIMAL_FORMAT);
             SetInputHandlerMovemet(true);
             DestroyPlaneControl();
         }
@@ -98,7 +100,7 @@ public class CuttingPlaneControl : MonoBehaviour
         if (!isUsed)
         {
             playerCutText.text = currentCutTime.ToString(DECIMAL_FORMAT);
-            currentCutTime += Time.deltaTime;
+            currentCutTime -= Time.deltaTime;
         }
     }
 
