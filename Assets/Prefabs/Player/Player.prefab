@@ -1524,6 +1524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d969740c9a6c9284d83fcfca2777cba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerLives: 3
   playerMaterials:
   - {fileID: 11400000, guid: 9eef9ed1740d2e448a83c4bef066f296, type: 2}
   - {fileID: 11400000, guid: 7783de6f6f024304287fcb00a6096b10, type: 2}
@@ -1559,7 +1560,7 @@ MonoBehaviour:
   dashForce: 3
   dashTime: 0.35
   dashCoolDownTime: 0.7
-  dashGroundCheckDistance: 0.5
+  dashGroundCheckDistance: 0.7
   dashCollisionForwardOffset: 0.55
   dashCheckRadius: 0.8
   dashGroundCheckRadius: 0.2
@@ -1735,11 +1736,11 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1630457348639916}
-  m_Material: {fileID: 13400000, guid: acbe61d0b5a865c48b4477fd4ae7f5c5, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.35
-  m_Height: 2.14
+  m_Radius: 0.5
+  m_Height: 2.3
   m_Direction: 1
   m_Center: {x: 0, y: 1.08, z: 0}
 --- !u!136 &136209222180549658

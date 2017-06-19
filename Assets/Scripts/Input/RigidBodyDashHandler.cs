@@ -88,6 +88,11 @@ public class RigidBodyDashHandler : DashHandler
     private void AddForce(Vector3 forceVector)
     {
         player.Rigid.velocity = Vector3.zero;
+
+        if (CheckDashCollision())
+        {
+            return;
+        }
         
         dashTween = LeanTween.value(player.gameObject, player.transform.position, player.transform.position + forceVector, player.DashTime)
             .setOnUpdate((Vector3 value) => {
@@ -108,15 +113,22 @@ public class RigidBodyDashHandler : DashHandler
         int layerMaskPlayer = 1 << player.gameObject.layer;
         int layerMaskGround = 1 << player.GroundedLayer;
 
-        Collider[] playerCollider = Physics.OverlapSphere(GetPlayerCenter(), player.DashCheckRadius, layerMaskPlayer);
+        Collider[] playerColliders = Physics.OverlapSphere(GetPlayerCenter(), player.DashCheckRadius, layerMaskPlayer);
         Collider[] groundCollider = Physics.OverlapSphere(GetPlayerCenter(), player.DashGroundCheckRadius, layerMaskGround);
-
+        
+        Ray ray = new Ray(playerCollider.bounds.center,Vector3.forward);
+        RaycastHit raycastHit;
+        if (Physics.Raycast(ray, out raycastHit, 1.0f, layerMaskGround))
+        {
+            return true;
+        }
+       
 #if UNITY_EDITOR
         DebugExtension.DebugWireSphere(GetPlayerCenter(), Color.red, player.DashCheckRadius);
         DebugExtension.DebugWireSphere(GetPlayerCenter(), Color.green, player.DashGroundCheckRadius);
 
 #endif
-        return IsValidCollision(playerCollider) || IsValidCollision(groundCollider);
+        return IsValidCollision(playerColliders) || IsValidCollision(groundCollider);
     }
 
     /// <summary>
