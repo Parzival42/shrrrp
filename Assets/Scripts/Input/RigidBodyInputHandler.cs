@@ -7,6 +7,8 @@ public class RigidBodyInputHandler : InputHandler
     private static string HORIZONTAL_AXIS = "Horizontal";
     private static string VERTICAL_AXIS = "Vertical";
     private static string JUMP_AXIS = "Jump";
+    private static Vector3 FORWARD_RAYCAST_HEIGHT = new Vector3(0, 0.5f, 0);
+    private static float FORWARD_RAYCAST_LENGTH = 0.6f;
     #endregion
 
     #region Internal members
@@ -90,7 +92,7 @@ public class RigidBodyInputHandler : InputHandler
         HandleAxisInput(HorizontalInputValue, rightVector);
 
         // Vertical Axis
-        HandleAxisInput(VerticalInputValue, forwardVector);
+        HandleAxisInput(CorrectVerticalInputValue(VerticalInputValue), forwardVector);
 
         // Handle jumping
         HandleJumpInput();
@@ -98,6 +100,19 @@ public class RigidBodyInputHandler : InputHandler
         // Apply movement and rotation
         ApplyMovement(movementVector);
         ApplyRotation(HorizontalInputValue, VerticalInputValue);
+    }
+
+    private float CorrectVerticalInputValue(float VerticalInputValue)
+    {
+        Ray ray = new Ray(player.transform.position + FORWARD_RAYCAST_HEIGHT, Vector3.forward);
+        RaycastHit hitInfo;
+        if(Physics.Raycast(ray, out hitInfo, FORWARD_RAYCAST_LENGTH, 1 << player.GroundedLayer, QueryTriggerInteraction.UseGlobal))
+        {
+            Debug.DrawRay(ray.origin, ray.direction * FORWARD_RAYCAST_LENGTH, Color.green);
+            return VerticalInputValue > 0 ? 0.0f : VerticalInputValue;
+        }
+
+        return VerticalInputValue;
     }
 
     private void HandleJumpInput()

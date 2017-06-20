@@ -27,6 +27,7 @@ public class PlaneCutterSpawnTrigger : TriggerAction
                     CuttingPlaneControl cuttingPlane = prefab.GetComponent<CuttingPlaneControl>();
 
                     cuttingPlane.Initialize(playerInput);
+                   
                     alreadyTriggered = true;
                 }
                 else
