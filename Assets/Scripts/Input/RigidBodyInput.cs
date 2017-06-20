@@ -117,7 +117,7 @@ public class RigidBodyInput : MonoBehaviour
         StartSpawnTween();
     }
 
-    private void StartSpawnTween()
+    public void StartSpawnTween()
     {
         // Scale tween
         transform.localScale = Vector3.zero;

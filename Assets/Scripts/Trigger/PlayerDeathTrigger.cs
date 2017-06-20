@@ -9,6 +9,9 @@ public class PlayerDeathTrigger : TriggerAction
 
     [FancyHeader("Respawn settings")]
     [SerializeField]
+    private float respawnWaitTime = 1.5f;
+
+    [SerializeField]
     private GameObject respawnCylinder;
     #endregion
 
@@ -36,16 +39,40 @@ public class PlayerDeathTrigger : TriggerAction
         Player player = other.gameObject.GetComponent<Player>();
         if (player != null)
         {
-            // TODO: Determine if player 'really' dies or if he should be respawned.
-            //       - Real death -> Fire PlayerDied event!
-            //       - Otherwise, decrement one life and respawn player with a fancy tween
-            //       - Spawn the player on a spawn platform with cool cylinder stuff (like in Super Smash Bros.)
-            playerManager.PlayerDied(player);
+            if (player.KillPlayer())
+            {
+                playerManager.PlayerDied(player);
+            }
+            else
+            {
+                Vector3 respawnPosition = SpawnPointHelper.GetRespawnPosition(player.PlayerType);
+                RigidBodyInput playerInput = player.GetComponent<RigidBodyInput>();
+
+                PerformRespawnTween(playerInput, respawnPosition);
+                // - Otherwise, decrement one life and respawn player with a fancy tween
+                // - Spawn the player on a spawn platform with cool cylinder stuff (like in Super Smash Bros.)
+            }
             PerformPlayerDeathEffects(player);
         }
         else
             Debug.LogError("No player script attached on player!", gameObject);
 
+    }
+
+    private void PerformRespawnTween(RigidBodyInput playerInput, Vector3 respawnPosition)
+    {
+        LeanTween.delayedCall(respawnWaitTime, () => {
+            GameObject spawnCylinder = Instantiate(respawnCylinder, respawnPosition, respawnCylinder.transform.rotation);
+            Vector3 spawnCylinderScale = spawnCylinder.transform.localScale;
+            spawnCylinder.transform.localScale = Vector3.zero;
+
+            LeanTween.scale(spawnCylinder, spawnCylinderScale, 0.4f).setEase(LeanTweenType.easeOutBack)
+                .setOnComplete(() => {
+                    playerInput.Rigid.velocity = Vector3.zero;
+                    playerInput.transform.position = respawnPosition;
+                    playerInput.StartSpawnTween();
+                });
+        });
     }
 
     private void PerformPlayerDeathEffects(Player player)

@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 		set { playerType = value; }
 	}
 
-    public int PlayerLives { get { return playerLives; } set { playerLives = value; } }
+    public int PlayerLives { get { return playerLives; }}
     #endregion
 
     #region Public Fields
@@ -46,6 +46,19 @@ public class Player : MonoBehaviour
     private void SetPlayerName()
     {
         gameObject.name = PlayerType.ToString();
+    }
+
+    /// <summary>
+    /// Decreases a player life and returns true if the 
+    /// player is really dead (No lives left).
+    /// Returns false if the player has lives left.
+    /// </summary>
+    public bool KillPlayer()
+    {
+        playerLives--;
+        if (playerLives <= 0)
+            return true;
+        return false;
     }
 
     private void ChoosePlayerMaterial()

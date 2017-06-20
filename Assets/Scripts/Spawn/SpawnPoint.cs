@@ -25,11 +25,14 @@ public class SpawnPoint : MonoBehaviour
 
         foreach (SpawnPoint p in spawnPoints)
         {
-            // Ignore self
-            if (!p.gameObject.Equals(gameObject))
+            if (p.gameObject.tag == gameObject.tag)
             {
-                if (Player == p.Player)
-                    Debug.LogError("Spawnpoints with same player type detected!", gameObject);
+                // Ignore self
+                if (!p.gameObject.Equals(gameObject))
+                {
+                    if (Player == p.Player)
+                        Debug.LogError("Spawnpoints with same player type detected!", gameObject);
+                }
             }
         }
     }

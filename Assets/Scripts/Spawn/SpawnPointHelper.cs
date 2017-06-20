@@ -32,7 +32,7 @@ public class SpawnPointHelper
     /// </summary>
     /// <param name="player">Player gameobject which should be respawned.</param>
     /// <param name="playerType">Type of the player.</param>
-    public static Vector3 GetRespawnPosition(GameObject player, PlayerType playerType)
+    public static Vector3 GetRespawnPosition(PlayerType playerType)
     {
         GameObject[] spawns = GameObject.FindGameObjectsWithTag(RESPAWN_SPAWN_TAG);
         foreach (GameObject s in spawns)
