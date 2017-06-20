@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class RigidBodyInput : MonoBehaviour
@@ -73,10 +74,16 @@ public class RigidBodyInput : MonoBehaviour
     #endregion
 
     #region Internal Members
+    private static readonly string PLAYER_CANVAS_TAG = "MenuEnvironment";
+    private static readonly string PLAYER_LIFE_TEXT_TAG = "HealthText";
     private StandardPlayerAction playerAction;
     private Rigidbody rigid;
     private InputHandler inputHandler = null;
     private DashHandler dashHandler = null;
+
+    private Canvas playerCanvas;
+    private Text playerLifeText;
+    private Player playerComponent;
     #endregion
 
     #region Properties
@@ -110,15 +117,28 @@ public class RigidBodyInput : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         inputHandler = new RigidBodyInputHandler(this);
         dashHandler = new RigidBodyDashHandler(this);
+        playerComponent = GetComponent<Player>();
     }
 
     private void Start()
     {
+        playerCanvas = gameObject.FindComponentInChildWithTag<Canvas>(PLAYER_CANVAS_TAG);
+        playerLifeText = playerCanvas.gameObject.FindComponentInChildWithTag<Text>(PLAYER_LIFE_TEXT_TAG);
         StartSpawnTween();
     }
 
     public void StartSpawnTween()
     {
+        playerLifeText.text = playerComponent.PlayerLives.ToString();
+        // Life tween
+        LeanTween.value(0f, 1f, 0.5f).setEase(LeanTweenType.easeInOutSine)
+            .setOnUpdate(SetPlayerLifeTextAlpha)
+            .setOnComplete(() => {
+                LeanTween.value(1f, 0f, 0.5f).setEase(LeanTweenType.easeInOutSine)
+                .setOnUpdate(SetPlayerLifeTextAlpha)
+                .setDelay(1.5f);
+            });
+
         // Scale tween
         transform.localScale = Vector3.zero;
         LeanTween.scale(gameObject, Vector3.one, 0.5f).setEase(LeanTweenType.easeOutBack);
@@ -142,5 +162,10 @@ public class RigidBodyInput : MonoBehaviour
             playerAction.Destroy();
             playerAction = newPlayerAction;
         }
+    }
+
+    private void SetPlayerLifeTextAlpha(float alpha)
+    {
+        playerLifeText.color = new Color(playerLifeText.color.r, playerLifeText.color.g, playerLifeText.color.b, alpha);
     }
 }

@@ -49,8 +49,6 @@ public class PlayerDeathTrigger : TriggerAction
                 RigidBodyInput playerInput = player.GetComponent<RigidBodyInput>();
 
                 PerformRespawnTween(playerInput, respawnPosition);
-                // - Otherwise, decrement one life and respawn player with a fancy tween
-                // - Spawn the player on a spawn platform with cool cylinder stuff (like in Super Smash Bros.)
             }
             PerformPlayerDeathEffects(player);
         }
