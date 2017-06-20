@@ -13,6 +13,7 @@ TagManager:
   - TextInsert
   - MenuMusic
   - AfterDeathSpawn
+  - HealthText
   layers:
   - Default
   - TransparentFX
