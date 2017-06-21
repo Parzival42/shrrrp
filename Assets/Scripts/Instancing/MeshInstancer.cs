@@ -63,6 +63,12 @@ public class MeshInstancer : MonoBehaviour
     private int currentObject = 0;
     private Vector2 halfSize = Vector2.zero;
     #endregion
+    
+    public Vector2 Translation
+    {
+        get { return translation; }
+        set { translation = value; }
+    }
 
     private void Start ()
     {

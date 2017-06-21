@@ -55,7 +55,6 @@ namespace UnityEngine.PostProcessing.Utilities
         void Update()
         {
             if (_target == null) return;
-
             // Retrieve the current value.
             var d1 = _controller.depthOfField.focusDistance;
 
@@ -63,7 +62,7 @@ namespace UnityEngine.PostProcessing.Utilities
             var d2 = Vector3.Dot(_target.position - transform.position, transform.forward);
 
             // Damped-spring interpolation.
-            var dt = Time.deltaTime;
+            var dt = Time.unscaledDeltaTime;
             var n1 = _velocity - (d1 - d2) * speed * speed * dt;
             var n2 = 1 + speed * dt;
             _velocity = n1 / (n2 * n2);

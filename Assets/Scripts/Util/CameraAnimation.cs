@@ -2,68 +2,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PostProcessing;
+using UnityEngine.PostProcessing.Utilities;
+using UnityEngine.SceneManagement;
 
 public class CameraAnimation : MonoBehaviour {
 
-	GameObject cube;
-	public Transform center;
-	public Vector3 axis = Vector3.up;
-	public Vector3 desiredPosition;
-	public float radius = 2.0f;
-	public float radiusSpeed = 0.5f;
-	public float rotationSpeed = 80.0f;
-	public PlayerManager playerManager;
-	public GameManager gameManager;
+	private GameManager gameManager;
 
 	private Animator playerAnimator;
+	
+	private Vector3 desiredCameraPosition;
+	
+	private Transform targetTransform;
 
-	public bool use = false;
+	private PostProcessingController postProcessingController;
 
-	[SerializeField] private CuttingEffectParameters cuttingEffectParameters;
+	[SerializeField] private Vector3 cameraOffset;
+	
+	[SerializeField] private LeanTweenType translationEaseType;
 
-	[SerializeField] private LeanTweenType easeType;
+	[SerializeField] private LeanTweenType fovEaseType;
+
+
+	[SerializeField] private float timeScaleDuration;
+
+
+	[SerializeField] private float translationDuration;
+
+	[SerializeField] private float minTargetDistance;
+
+	[SerializeField] private float xRotation;
+
+	[SerializeField] private float zoomAperture;
  
 	void Start ()
 	{
 
-		playerManager = FindObjectOfType<PlayerManager>();
 		gameManager = FindObjectOfType<GameManager>();
+		postProcessingController = GetComponent<PostProcessingController>();
 
-		if (!playerManager || !gameManager)
+		if (!gameManager || !postProcessingController)
 		{
-			Debug.LogError("Player or Game Manager is null!");
+			Debug.LogError("Game Manager or PostProcessingBehaviour is null!");
 		}
 
 		gameManager.OnGameEnded += OnGameEnd;
-		center = Camera.main.transform;
-		transform.position = (transform.position - center.position).normalized * radius + center.position;
-		radius = 10.0f;
 		
 		OnGameEnd();
 		
 	}
 	
-	public AnimationClip GetAnimationClip(string name) {
-		if (!playerAnimator) return null; // no animator
- 
-		foreach (AnimationClip clip in playerAnimator.runtimeAnimatorController.animationClips) {
-			if (clip.name == name) {
-				return clip;
-			}
-		}
-		return null; // no clip by that name
-	}
-     
-	void Update () {
-		if (use)
-		{
-			transform.RotateAround (center.position, axis, rotationSpeed * Time.unscaledDeltaTime);
-			desiredPosition = (transform.position - center.position).normalized * radius + center.position;
-			transform.position = Vector3.MoveTowards(transform.position, desiredPosition, Time.unscaledDeltaTime * radiusSpeed);
-		}
-		
-	}
-
 	void OnGameEnd()
 	{
 		StartCoroutine(WaitForAnimationStart());
@@ -73,54 +62,101 @@ public class CameraAnimation : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(1.5f);
 		
-		Debug.Log("camera animation started");
 		GameObject winner = FindObjectOfType<Player>().gameObject;
 		
 		if (winner != null)
 		{
-			
-			PlayCameraAnimation();
-			
-			/*RigidBodyInput input = winner.GetComponent<RigidBodyInput>();
-			RigidBodyInputHandler inputHandler = (RigidBodyInputHandler) input.InputController;
-			inputHandler.PerformCutJump();*/
-			
-			playerAnimator = winner.GetComponent<Animator>();
-			if (playerAnimator)
-			{
-				playerAnimator.SetTrigger("Cut");
-				playerAnimator.speed = 1.0f;
-			
-			}
-			PlayCutAnimation();
-			//center = Camera.main.transform;
-			center = winner.transform;
-			transform.position = (transform.position - center.position).normalized * radius + center.position;
-			radius = 5.0f;
-			use = true;
-			
-			TimeFreeze();
+			PrepareForAnimation(winner);
+			StartAnimation();
+			DestroyTheWholeUniverseTwice();
 		}
 	}
-	
-	private void TimeFreeze()
-	{
-		float originalTime = Time.timeScale;
-		LeanTween.value(originalTime, 0.0f, 0.5f).setEase(easeType)
-			.setOnUpdate((float value) =>
-			{
-				Time.timeScale = value;
 
-			}).setUseEstimatedTime(true).setOnComplete(()=> { playerAnimator.StopPlayback();});
+	private void DestroyTheWholeUniverseTwice()
+	{
+		List<GameObject> rootObjects = new List<GameObject>();
+		Scene scene = SceneManager.GetActiveScene();
+		scene.GetRootGameObjects( rootObjects );
+  
+		for (int i = 0; i < rootObjects.Count; ++i)
+		{
+			GameObject gameObject = rootObjects[ i ];
+			if(gameObject.hideFlags == HideFlags.None && gameObject.layer ==LayerMask.NameToLayer("Ground"))
+			{
+				gameObject.AddComponent<DissolveObject>();	
+			}
+		}
 	}
 
-	private void PlayCutAnimation()
+	private void PrepareForAnimation(GameObject winner)
+	{
+		playerAnimator = winner.GetComponent<Animator>();
+		
+		targetTransform = winner.transform;
+		desiredCameraPosition = targetTransform.position - new Vector3(0, 0, minTargetDistance) + cameraOffset;
+
+		Rigidbody rigidbody = winner.GetComponent<Rigidbody>();
+		rigidbody.useGravity = false;
+
+		RigidBodyInput input = winner.GetComponent<RigidBodyInput>();
+		input.AllowMovement = false;
+		input.enabled = false;
+
+		LeanTween.reset();
+		LeanTween.rotateY(winner, -90, translationDuration).setUseEstimatedTime(true);
+
+		ParticleSystem particleSystem = winner.GetComponentInChildren<ParticleSystem>();
+	
+		particleSystem.Emit(1);
+	}
+
+	private void StartAnimation()
 	{
 		
-	}
+		LeanTween.move(gameObject, desiredCameraPosition, translationDuration).setEase(translationEaseType).setUseEstimatedTime(true);
+		LeanTween.rotateX(gameObject, xRotation, translationDuration).setEase(translationEaseType).setUseEstimatedTime(true);
+		LeanTween.value(gameObject, Time.timeScale, 0.0f, timeScaleDuration).setEase(LeanTweenType.linear).setOnUpdate(
+			(float value) =>
+			{
+				Time.timeScale = value;
+			}).setOnComplete(() => { Time.timeScale = 0.0f; });
+		
+		playerAnimator.Play("EndCut");
 
-	private void PlayCameraAnimation()
-	{
-		//throw new System.NotImplementedException();
+
+		LeanTween.value(gameObject, postProcessingController.depthOfField.aperture, zoomAperture, translationDuration)
+			.setOnUpdate(
+				(float value) =>
+				{
+					postProcessingController.depthOfField.aperture = value;
+				}).setUseEstimatedTime(true);
+		
+		
+		FocusPuller focusPuller = gameObject.AddComponent<FocusPuller>();
+		focusPuller.target = targetTransform;
+
+
+		MeshInstancer meshInstancer = FindObjectOfType<MeshInstancer>();
+		meshInstancer.Translation = Vector2.zero;
+		
+		ColorOverlay overlay = GetComponent<ColorOverlay>();
+		overlay.enabled = true;
+		LeanTween.value(gameObject, 0f, 0.9f, 0.24f)
+			.setEase(LeanTweenType.easeInOutCirc)
+			.setDelay(translationDuration)
+			.setOnUpdate((float value) => {
+				overlay.OverlayStrength = value;
+			})
+			.setLoopClamp()
+			.setLoopPingPong(1)
+			.setUseEstimatedTime(true)
+			.setOnComplete(() => {
+				overlay.enabled = false;
+			});
+
 	}
+	
+		
+	
+
 }
