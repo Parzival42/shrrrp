@@ -47,8 +47,14 @@ public class ArtifactTracker : MonoBehaviour
     {
         playerManager = FindObjectOfType<PlayerManager>();
         cam = CameraUtil.GetMainCamera();
-        StartCoroutine(StartRaycast());
+        StartCoroutine(WaitForLevelStartDelay());
 	}
+
+    protected IEnumerator WaitForLevelStartDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(StartRaycast());
+    }
 
     protected IEnumerator StartRaycast()
     {
