@@ -27,6 +27,15 @@ public class EndAnimationManager : MonoBehaviour
 
     [SerializeField]
     private float playerCutAnimationDelay = 2f;
+    
+    [SerializeField]
+    private AudioClip playerWin;
+    
+    [SerializeField]
+    private float playerWinVolume = 1;
+    
+    [SerializeField]
+    private float playerWinPitch = 1;
 
     [FancyHeader("Dissolve", "Dissolve specific settings")]
     [SerializeField]
@@ -74,6 +83,8 @@ public class EndAnimationManager : MonoBehaviour
         {
             InitializeAnimationParameters(winnerPlayer);
             StartAnimation(winnerPlayer);
+            SoundManager.SoundManagerInstance.Play(playerWin, Vector3.zero, playerWinVolume, playerWinPitch,
+                AudioGroup.Character);
         }
         else
             Debug.Log("There is <b>no winner</b>, which is strange! :D (Are you <b>in the editor</b>? Then it's okay ;) )");

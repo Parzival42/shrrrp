@@ -53,4 +53,10 @@ public class IngameSoundManager : MonoBehaviour {
 	private void HandleAllPlayerDead()
 	{
 	}
+
+	public void HandlePlayerRespawn()
+	{
+		SoundManager.SoundManagerInstance.Play(playerDeath, Vector3.zero, playerDeathVolume, playerDeathPitch,
+			AudioGroup.Character);
+	}
 }

@@ -49,6 +49,10 @@ public class PlayerDeathTrigger : TriggerAction
                 RigidBodyInput playerInput = player.GetComponent<RigidBodyInput>();
 
                 PerformRespawnTween(playerInput, respawnPosition);
+
+                IngameSoundManager soundManager = FindObjectOfType<IngameSoundManager>();
+                if (soundManager != null)
+                    soundManager.HandlePlayerRespawn();
             }
             PerformPlayerDeathEffects(player);
         }
