@@ -70,8 +70,13 @@ public class EndAnimationManager : MonoBehaviour
     private void PerformGameEndAnimation()
     {
         Player winnerPlayer = GetWinner();
-        InitializeAnimationParameters(winnerPlayer);
-        StartAnimation(winnerPlayer);
+        if (winnerPlayer != null)
+        {
+            InitializeAnimationParameters(winnerPlayer);
+            StartAnimation(winnerPlayer);
+        }
+        else
+            Debug.Log("There is <b>no winner</b>, which is strange! :D (Are you <b>in the editor</b>? Then it's okay ;) )");
     }
 
     private void InitializeAnimationParameters(Player winner)
