@@ -43,8 +43,7 @@ public class LevelEndManager : MonoBehaviour
 
     private void HandleSkipInput()
     {
-        // This is not workig for the keyboard :(
-        if (currentSkipTime > allowSkipTime && !skipped && InputManager.ActiveDevice.AnyButtonWasPressed)
+        if (currentSkipTime > allowSkipTime && !skipped && Input.anyKeyDown)
         {
             skipped = true;
             PerformSceneChange();
