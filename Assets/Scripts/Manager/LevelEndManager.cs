@@ -1,7 +1,7 @@
 ﻿using Prime31.TransitionKit;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using InControl;
 
 public class LevelEndManager : MonoBehaviour
 {
@@ -15,17 +15,42 @@ public class LevelEndManager : MonoBehaviour
 
     [SerializeField]
     private Shader transitionShader;
+
+    [SerializeField]
+    [Tooltip("After this time the players can skip with any button.")]
+    private float allowSkipTime = 3f;
     #endregion
 
     #region Internal variables
     private PlayerManager playerManager;
     private bool alreadyCalled = false;
+    private float currentSkipTime = 0f;
+    private bool skipped = false;
+
+    private bool gameEnded = false;
     #endregion
 
     private void Start ()
     {
         InitializePlayerManager();
 	}
+
+    private void Update()
+    {
+        if (gameEnded)
+            HandleSkipInput();
+    }
+
+    private void HandleSkipInput()
+    {
+        // This is not workig for the keyboard :(
+        if (currentSkipTime > allowSkipTime && !skipped && InputManager.ActiveDevice.AnyButtonWasPressed)
+        {
+            skipped = true;
+            PerformSceneChange();
+        }
+        currentSkipTime += Time.deltaTime;
+    }
 
     private void InitializePlayerManager()
     {
@@ -42,6 +67,7 @@ public class LevelEndManager : MonoBehaviour
 
     private void HandleLevelEnd()
     {
+        gameEnded = true;
         if (!alreadyCalled)
         {
             AudioSource musicAudioSource = CameraUtil.GetMainCamera().gameObject.GetComponent<AudioSource>();
