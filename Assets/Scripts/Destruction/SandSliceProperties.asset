@@ -15,7 +15,7 @@ MonoBehaviour:
   baseMass: 300
   drag: 0.5
   angularDrag: 3
-  physicMaterial: {fileID: 13400000, guid: 3608122b41850cc4dac5d16e93e518f3, type: 2}
+  physicMaterial: {fileID: 13400000, guid: acbe61d0b5a865c48b4477fd4ae7f5c5, type: 2}
   volumeThresholds:
   - 0.6
   - 0.3
