@@ -6,17 +6,17 @@ public class DissolveObject : MonoBehaviour {
 
 	public float dissolveTime = 1.0f;
 	public LeanTweenType dissolveTweenType = LeanTweenType.easeOutSine;
-	Material dissolveMaterial;
+	protected Material dissolveMaterial;
 	Renderer rend;
 
-	void Start () {
+	protected virtual void Start () {
 		PrepareDissolve(dissolveTime);
 	}
 
 	protected void PrepareDissolve(float dissolveTime){
 		PrepareDissolve(dissolveTime, "DissolveMaterial");
 	}
-	protected void PrepareDissolve(float dissolveTime, string material){
+	protected virtual void PrepareDissolve(float dissolveTime, string material){
 		 dissolveMaterial = new Material(Resources.Load(material, typeof(Material)) as Material);
 
 		 rend = GetComponent<Renderer>();

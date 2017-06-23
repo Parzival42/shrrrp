@@ -356,7 +356,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
-  sliceProperties: {fileID: 11400000, guid: a3a564fcc5a37e544aa54bbc7ad054b4, type: 2}
+  sliceProperties: {fileID: 11400000, guid: 213569d3a6b36a64f809a86e2522d2ef, type: 2}
 --- !u!114 &114271861003118794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -390,8 +390,8 @@ MonoBehaviour:
   artifactPrefab: {fileID: 1057924307782140, guid: 28067912f5496b241b4ebac4d051fa22,
     type: 2}
   artifactSpawnOffset: {x: 0, y: 1, z: 0}
-  minTime: 1
-  maxTime: 2
+  minTime: 0
+  maxTime: 0.5
   sphereCastRadius: 2
   collisionLayer: 8
   randomXViewportRange: {x: 0, y: 1}
@@ -471,6 +471,10 @@ MonoBehaviour:
   cameraPositionOffset: {x: -1.5, y: 1.3, z: -2.4}
   playerLookAtTarget: {x: -3.1, y: 0.8, z: -2}
   playerCutAnimationDelay: 2
+  maxDissolveTime: 6
+  minDissolveTime: 5
+  maxDissolveScale: 4
+  minDissolveScale: 3
 --- !u!114 &114942524496235472
 MonoBehaviour:
   m_ObjectHideFlags: 1
