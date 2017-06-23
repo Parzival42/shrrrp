@@ -29,6 +29,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private float endTweenTime = 0.2f;
 
+    [SerializeField]
+    private float endTweenDelay = 5f;
+
     [FancyHeader("Tween settings")]
     [SerializeField]
     private float tweenTime = 0.2f;
@@ -105,7 +108,7 @@ public class UIManager : MonoBehaviour
     {
         if (showIngameUI)
         {
-            DoPlayerWinTextInsert();
+            LeanTween.delayedCall(endTweenDelay, DoPlayerWinTextInsert);
         }
     }
 
@@ -120,7 +123,7 @@ public class UIManager : MonoBehaviour
     {
         if (showIngameUI)
         {
-            DoPlayerWinTextInsert();
+            LeanTween.delayedCall(endTweenDelay, DoPlayerWinTextInsert);
         }
     }
 
@@ -132,7 +135,9 @@ public class UIManager : MonoBehaviour
         textInsert.text = insertEnd;
         SetTextInsertAlpha(1f);
         textInsert.rectTransform.localScale = new Vector2(endScale, endScale);
-
+        textInsert.fontSize = 120;
+        textInsert.color = Color.black;
+        textInsert.rectTransform.anchoredPosition = new Vector2(-359f, textInsert.rectTransform.anchoredPosition.y);
         textInsertTween = LeanTween.scale(textInsert.rectTransform, Vector2.one, endTweenTime).setEase(LeanTweenType.easeOutBack);
     }
 

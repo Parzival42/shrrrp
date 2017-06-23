@@ -155,9 +155,10 @@ MonoBehaviour:
   showIngameUI: 1
   insertStart: Cut!
   startFadeOut: 0.8
-  insertEnd: Cut into pieces!
+  insertEnd: You won!
   endScale: 5
   endTweenTime: 0.2
+  endTweenDelay: 2.8
   tweenTime: 0.6
   easeType: 21
 --- !u!114 &114447802058714238

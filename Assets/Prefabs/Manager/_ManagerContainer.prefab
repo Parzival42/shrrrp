@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5514c17e550ea04d90ff8711896e5da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneChangeDelay: 3
+  sceneChangeDelay: 15
   transitionShader: {fileID: 4800000, guid: 84ea0194fc9852045ab36a59ec810e91, type: 3}
 --- !u!114 &114832971423127086
 MonoBehaviour:
