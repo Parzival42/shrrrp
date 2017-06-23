@@ -11,6 +11,22 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1528569294136910}
   m_IsPrefabParent: 1
+--- !u!1 &1046677092852176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4307969454464352}
+  - component: {fileID: 114923819629731716}
+  m_Layer: 0
+  m_Name: _EndAnimation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1065383596717998
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +232,7 @@ Transform:
   - {fileID: 4179778387475164}
   - {fileID: 4316227761082250}
   - {fileID: 4236620007294328}
+  - {fileID: 4307969454464352}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -244,6 +261,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4251817778649254}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4307969454464352
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1046677092852176}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4251817778649254}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4316227761082250
 Transform:
@@ -326,7 +356,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
-  sliceProperties: {fileID: 11400000, guid: 2fe35024b35b6564cb61dfb53fe52038, type: 2}
+  sliceProperties: {fileID: 11400000, guid: a3a564fcc5a37e544aa54bbc7ad054b4, type: 2}
 --- !u!114 &114271861003118794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -338,8 +368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ad60b4c0ca6e846bcf0c53ba28094c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTypes: 0200000001000000
-  controllerTypes: 0100000000000000
+  playerTypes: 02000000
+  controllerTypes: 01000000
   playerPrefabs:
   - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}
   - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}
@@ -360,8 +390,8 @@ MonoBehaviour:
   artifactPrefab: {fileID: 1057924307782140, guid: 28067912f5496b241b4ebac4d051fa22,
     type: 2}
   artifactSpawnOffset: {x: 0, y: 1, z: 0}
-  minTime: 0
-  maxTime: 1
+  minTime: 1
+  maxTime: 2
   sphereCastRadius: 2
   collisionLayer: 8
   randomXViewportRange: {x: 0, y: 1}
@@ -424,6 +454,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sendEvents: 1
+--- !u!114 &114923819629731716
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1046677092852176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614ade73f46f95141bf3ed414b820417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTweenTime: 2.7
+  cameraEase: 28
+  cameraTargetRotation: {x: 0, y: 0, z: 0}
+  cameraPositionOffset: {x: -1.5, y: 1.3, z: -2.4}
+  playerLookAtTarget: {x: -3.1, y: 0.8, z: -2}
+  playerCutAnimationDelay: 2
 --- !u!114 &114942524496235472
 MonoBehaviour:
   m_ObjectHideFlags: 1

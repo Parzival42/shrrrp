@@ -115,11 +115,11 @@ public class CameraAnimation : MonoBehaviour {
 		
 		LeanTween.move(gameObject, desiredCameraPosition, translationDuration).setEase(translationEaseType).setUseEstimatedTime(true);
 		LeanTween.rotateX(gameObject, xRotation, translationDuration).setEase(translationEaseType).setUseEstimatedTime(true);
-		LeanTween.value(gameObject, Time.timeScale, 0.0f, timeScaleDuration).setEase(LeanTweenType.linear).setOnUpdate(
-			(float value) =>
-			{
-				Time.timeScale = value;
-			}).setOnComplete(() => { Time.timeScale = 0.0f; });
+		//LeanTween.value(gameObject, Time.timeScale, 0.0f, timeScaleDuration).setEase(LeanTweenType.linear).setOnUpdate(
+		//	(float value) =>
+		//	{
+		//		Time.timeScale = value;
+		//	}).setOnComplete(() => { Time.timeScale = 0.0f; });
 		
 		playerAnimator.Play("EndCut");
 
@@ -153,10 +153,5 @@ public class CameraAnimation : MonoBehaviour {
 			.setOnComplete(() => {
 				overlay.enabled = false;
 			});
-
 	}
-	
-		
-	
-
 }
