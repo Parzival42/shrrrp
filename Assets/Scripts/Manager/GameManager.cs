@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
     {
         FireOnGameEnded();
 
+        player.gameObject.SetActive(true);
+
         // Deactivate controls and disable physics!
         RigidBodyInput input = player.GetComponent<RigidBodyInput>();
         input.Rigid.constraints = RigidbodyConstraints.FreezeAll;

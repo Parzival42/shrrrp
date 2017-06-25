@@ -17,7 +17,9 @@ public class PlayerDeathTrigger : TriggerAction
 
     #region Internal variables
     private PlayerManager playerManager;
+    private GameManager gameManager;
     private Camera cam;
+    private bool gameEnded = false;
     #endregion
 
     protected override void Start()
@@ -25,6 +27,11 @@ public class PlayerDeathTrigger : TriggerAction
         base.Start();
         cam = CameraUtil.GetMainCamera();
         CheckForPlayerManager();
+
+        gameManager = FindObjectOfType<GameManager>();
+        gameManager.OnGameEnded += () => {
+            gameEnded = true;
+        };
     }
 
     private void CheckForPlayerManager()
@@ -36,29 +43,31 @@ public class PlayerDeathTrigger : TriggerAction
 
     protected override void PerformOnTriggerAction(Collider other)
     {
-        Player player = other.gameObject.GetComponent<Player>();
-        if (player != null)
+        if (!gameEnded)
         {
-            if (player.KillPlayer())
+            Player player = other.gameObject.GetComponent<Player>();
+            if (player != null)
             {
-                playerManager.PlayerDied(player);
+                if (player.KillPlayer())
+                {
+                    playerManager.PlayerDied(player);
+                }
+                else
+                {
+                    Vector3 respawnPosition = SpawnPointHelper.GetRespawnPosition(player.PlayerType);
+                    RigidBodyInput playerInput = player.GetComponent<RigidBodyInput>();
+
+                    PerformRespawnTween(playerInput, respawnPosition);
+
+                    IngameSoundManager soundManager = FindObjectOfType<IngameSoundManager>();
+                    if (soundManager != null)
+                        soundManager.HandlePlayerRespawn();
+                }
+                PerformPlayerDeathEffects(player);
             }
             else
-            {
-                Vector3 respawnPosition = SpawnPointHelper.GetRespawnPosition(player.PlayerType);
-                RigidBodyInput playerInput = player.GetComponent<RigidBodyInput>();
-
-                PerformRespawnTween(playerInput, respawnPosition);
-
-                IngameSoundManager soundManager = FindObjectOfType<IngameSoundManager>();
-                if (soundManager != null)
-                    soundManager.HandlePlayerRespawn();
-            }
-            PerformPlayerDeathEffects(player);
+                Debug.LogError("No player script attached on player!", gameObject);
         }
-        else
-            Debug.LogError("No player script attached on player!", gameObject);
-
     }
 
     private void PerformRespawnTween(RigidBodyInput playerInput, Vector3 respawnPosition)
