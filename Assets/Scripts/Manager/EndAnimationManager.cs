@@ -78,7 +78,8 @@ public class EndAnimationManager : MonoBehaviour
     //[ContextMenu("Start Animation")]
     private void PerformGameEndAnimation(Player winner)
     {
-        Player winnerPlayer = GetWinner();
+        //Player winnerPlayer = GetWinner();
+        Player winnerPlayer = winner;
         if (winnerPlayer != null)
         {
             InitializeAnimationParameters(winnerPlayer);
@@ -92,6 +93,7 @@ public class EndAnimationManager : MonoBehaviour
 
     private void InitializeAnimationParameters(Player winner)
     {
+        winner.gameObject.SetActive(true);
         playerAnimator = winner.GetComponent<Animator>();
         playerInput = winner.GetComponent<RigidBodyInput>();
         playerSwordParticle = winner.GetComponentInChildren<ParticleSystem>();
