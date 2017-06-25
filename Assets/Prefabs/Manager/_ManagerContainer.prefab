@@ -356,7 +356,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
-  sliceProperties: {fileID: 11400000, guid: 2fe35024b35b6564cb61dfb53fe52038, type: 2}
+  sliceProperties: {fileID: 11400000, guid: a3a564fcc5a37e544aa54bbc7ad054b4, type: 2}
 --- !u!114 &114271861003118794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -368,8 +368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ad60b4c0ca6e846bcf0c53ba28094c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTypes: 0100000002000000
-  controllerTypes: 0100000000000000
+  playerTypes: 01000000
+  controllerTypes: 01000000
   playerPrefabs:
   - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}
   - {fileID: 1630457348639916, guid: a98efb4c1e66b214ca09cf765bd0bb3a, type: 2}
@@ -390,8 +390,8 @@ MonoBehaviour:
   artifactPrefab: {fileID: 1057924307782140, guid: 28067912f5496b241b4ebac4d051fa22,
     type: 2}
   artifactSpawnOffset: {x: 0, y: 1, z: 0}
-  minTime: 0
-  maxTime: 0.5
+  minTime: 1.8
+  maxTime: 3.6
   sphereCastRadius: 2
   collisionLayer: 8
   randomXViewportRange: {x: 0, y: 1}

@@ -72,11 +72,11 @@ public class EndAnimationManager : MonoBehaviour
 
         // Start animation based on game end event
         GameManager gameManager = FindObjectOfType<GameManager>();
-        gameManager.OnGameEnded += PerformGameEndAnimation;
+        gameManager.OnGameEndedPlayer += PerformGameEndAnimation;
 	}
 
-    [ContextMenu("Start Animation")]
-    private void PerformGameEndAnimation()
+    //[ContextMenu("Start Animation")]
+    private void PerformGameEndAnimation(Player winner)
     {
         Player winnerPlayer = GetWinner();
         if (winnerPlayer != null)

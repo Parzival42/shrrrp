@@ -12,7 +12,21 @@ public class PlaneCutterSpawnTrigger : TriggerAction
     [SerializeField]
     private LeanTweenType easeType = LeanTweenType.easeInBack;
 
+    [SerializeField]
+    private float despawnTime = 5f;
+
     private bool alreadyTriggered = false;
+    private float currentDespawnTime = 0f;
+
+    private void Update()
+    {
+        if (!alreadyTriggered && currentDespawnTime >= despawnTime)
+        {
+            alreadyTriggered = true;
+            DestroyTrigger();
+        }
+        currentDespawnTime += Time.deltaTime;
+    }
 
     protected override void PerformOnTriggerAction(Collider other)
     {

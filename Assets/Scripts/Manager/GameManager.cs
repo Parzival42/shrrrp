@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 public delegate void GameEnd();
+public delegate void GameEndPlayer(Player player);
 
 /// <summary>
 /// Processes events like player death, win situations etc.
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     #region Internal variables
     private PlayerManager playerManager;
     public event GameEnd OnGameEnded;
+    public event GameEndPlayer OnGameEndedPlayer;
     #endregion
 
     private void Start ()
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour
     private void HandleOnePlayerLeft(Player player)
     {
         FireOnGameEnded();
+        FireOnGameEndedPlayer(player);
 
         player.gameObject.SetActive(true);
 
@@ -70,5 +73,11 @@ public class GameManager : MonoBehaviour
     {
         if (OnGameEnded != null)
             OnGameEnded();
+    }
+
+    protected void FireOnGameEndedPlayer(Player player)
+    {
+        if (OnGameEndedPlayer != null)
+            OnGameEndedPlayer(player);
     }
 }
