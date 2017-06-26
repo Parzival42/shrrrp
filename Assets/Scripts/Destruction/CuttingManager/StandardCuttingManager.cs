@@ -42,7 +42,7 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 				continue;
 			}
 
-			PlaneCutTest pct = go.GetComponent<PlaneCutTest>();
+			CuttingLogic pct = go.GetComponent<CuttingLogic>();
 			if(pct==null){
 				if(!isMenu){
 					go.AddComponent<TerrainSliceCreator>();
@@ -50,7 +50,7 @@ public class StandardCuttingManager : MonoBehaviour, CuttingManager {
 					go.AddComponent<MenuLetterSliceCreator>();
 				}
 				go.AddComponent<FlatMeshMerger>();
-				pct = go.AddComponent<PlaneCutTest>();				
+				pct = go.AddComponent<CuttingLogic>();				
 			}
 			
 			

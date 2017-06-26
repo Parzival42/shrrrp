@@ -44,7 +44,7 @@ public class TerrainSliceCreator : SliceCreator
 		rigidbody.isKinematic = true;
 
 		newSlice.AddComponent<TerrainSliceCreator>();
-		newSlice.AddComponent<PlaneCutTest>();
+		newSlice.AddComponent<CuttingLogic>();
 		newSlice.AddComponent<FlatMeshMerger>();
 
 		GameObject g = new GameObject(original.gameObject.name+" - slice");

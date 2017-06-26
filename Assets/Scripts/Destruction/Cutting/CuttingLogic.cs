@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 // ReSharper disable SuggestVarOrType_Elsewhere
 
 [RequireComponent(typeof(SliceCreator))]
-public class PlaneCutTest : MonoBehaviour
+public class CuttingLogic : MonoBehaviour
 {
 
     // indices need to be adjusted when the vertices are distributed to the left and right mesh
