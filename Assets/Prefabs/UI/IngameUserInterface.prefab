@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222409530121979320}
   - component: {fileID: 114996908003505666}
   - component: {fileID: 114218237617503422}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Player3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 222264164564714946}
   - component: {fileID: 114831952919725360}
   - component: {fileID: 114481120296148738}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Player1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 223985244345733174}
   - component: {fileID: 114071216800388830}
   - component: {fileID: 114857807711217184}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PlayerLifeCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 222082831490014302}
   - component: {fileID: 114554966329259356}
   - component: {fileID: 114327853654034314}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Player4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 223496788752652424}
   - component: {fileID: 114447802058714238}
   - component: {fileID: 114082792017063060}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: MainCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 224468860828913970}
   - component: {fileID: 222418081766568060}
   - component: {fileID: 114502714201695996}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Insert
   m_TagString: TextInsert
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 222293137495367840}
   - component: {fileID: 114382843654919206}
   - component: {fileID: 114313345794576152}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Player2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.44705883, g: 0.7882353, b: 0.8, a: 1}
+  m_Color: {r: 0.18268813, g: 0.7808445, b: 0.8014706, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -315,8 +315,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ae1ad4b8d6689d6418a24236527ea1ed, type: 3}
-    m_FontSize: 150
+    m_Font: {fileID: 12800000, guid: 994febfb4a1a42d4989a56414dfb3270, type: 3}
+    m_FontSize: 88
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -327,7 +327,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: '...'
 --- !u!114 &114394223800127708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -439,8 +439,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ae1ad4b8d6689d6418a24236527ea1ed, type: 3}
-    m_FontSize: 150
+    m_Font: {fileID: 12800000, guid: 994febfb4a1a42d4989a56414dfb3270, type: 3}
+    m_FontSize: 88
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -451,7 +451,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: '...'
 --- !u!114 &114593652795326444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -487,7 +487,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 994febfb4a1a42d4989a56414dfb3270, type: 3}
-    m_FontSize: 150
+    m_FontSize: 88
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -535,8 +535,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ae1ad4b8d6689d6418a24236527ea1ed, type: 3}
-    m_FontSize: 150
+    m_Font: {fileID: 12800000, guid: 994febfb4a1a42d4989a56414dfb3270, type: 3}
+    m_FontSize: 88
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -547,7 +547,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: '...'
 --- !u!222 &222082831490014302
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -633,8 +633,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 870, y: -430}
-  m_SizeDelta: {x: 115, y: 230}
+  m_AnchoredPosition: {x: 845, y: -480}
+  m_SizeDelta: {x: 360, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224095864052513330
 RectTransform:
@@ -685,15 +685,15 @@ RectTransform:
   m_GameObject: {fileID: 1445269571491452}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224317811958669410}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -854.5, y: 504.6}
-  m_SizeDelta: {x: 359.4, y: 230}
+  m_AnchoredPosition: {x: -845, y: 500}
+  m_SizeDelta: {x: 360, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224468860828913970
 RectTransform:
@@ -728,8 +728,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 870, y: 430}
-  m_SizeDelta: {x: 115, y: 230}
+  m_AnchoredPosition: {x: 845, y: 500}
+  m_SizeDelta: {x: 360, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224696294842542452
 RectTransform:
@@ -746,6 +746,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -870, y: -430}
-  m_SizeDelta: {x: 115, y: 230}
+  m_AnchoredPosition: {x: -845, y: -480}
+  m_SizeDelta: {x: 360, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}

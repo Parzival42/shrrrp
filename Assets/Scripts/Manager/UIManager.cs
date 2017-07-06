@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -137,7 +138,7 @@ public class UIManager : MonoBehaviour
     private void HandlePlayerRespawn(Player player)
     {
         int playerType = (int) player.PlayerType;
-        playerLifeTexts[playerType].text = player.PlayerLives.ToString();
+        playerLifeTexts[playerType].text = GetPlayerLifeText(player);
         TweenPlayerLifeChange(playerLifeTexts[playerType]);
     }
 
@@ -218,7 +219,7 @@ public class UIManager : MonoBehaviour
 
     private void SetPlayerLifeText(Text text, Player player)
     {
-        text.text = player.PlayerLives.ToString();
+        text.text = GetPlayerLifeText(player);
     }
 
     private void TweenPlayerLifeChange(Text text)
@@ -231,5 +232,14 @@ public class UIManager : MonoBehaviour
             .setEase(LeanTweenType.easeInOutQuad)
             .setLoopClamp()
             .setLoopPingPong(1);
+    }
+
+    private string GetPlayerLifeText(Player player)
+    {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < player.PlayerLives; i++)
+            str.Append(".");
+
+        return str.ToString();
     }
 }
