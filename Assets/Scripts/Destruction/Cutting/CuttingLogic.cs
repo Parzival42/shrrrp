@@ -195,7 +195,7 @@ public class CuttingLogic : MonoBehaviour
         
         if (rightMesh.Vertices.Count != 0)
         {
-            sliceCreator.CreateSlice(transform, rightMesh, rightSimplifiedColliderMesh.GetMesh(), cuttingPlane.normal, slicePhysicsProperties, rightDissolve);
+            sliceCreator.CreateSlice(transform, rightMesh, rightSimplifiedColliderMesh.GetMesh(), cuttingPlaneNormal, slicePhysicsProperties, rightDissolve);
         }
 
         if (leftMesh.Vertices.Count != 0)
@@ -412,20 +412,17 @@ public class CuttingLogic : MonoBehaviour
                     left++;
                 }
 
-                if (left == 3 || right == 3)
+                if (left == 3)
                 {
-                    if (left == 3)
-                    {
-                        leftMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i]]);
-                        leftMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 1]]);
-                        leftMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 2]]);
-                    }
-                    else
-                    {
-                        rightMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i]]);
-                        rightMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 1]]);
-                        rightMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 2]]);
-                    }
+                    leftMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i]]);
+                    leftMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 1]]);
+                    leftMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 2]]);
+                }
+                else if(right == 3)
+                {
+                    rightMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i]]);
+                    rightMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 1]]);
+                    rightMesh.Indices[submesh].Add(vertexPosChange[subMeshIndices[i + 2]]);
                 }
                 else
                 {

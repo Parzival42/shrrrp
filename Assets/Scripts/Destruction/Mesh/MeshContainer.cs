@@ -82,14 +82,17 @@ public class MeshContainer {
 
 	public Mesh GetMesh(){
 		Mesh mesh = new Mesh();
-		mesh.SetVertices(vertices);
-		for(int i = 0; i < indices.Length; i++){
-			mesh.SetIndices(indices[i].ToArray(), MeshTopology.Triangles, i);
+		if (vertices.Count != 0)
+		{
+			mesh.SetVertices(vertices);
+			for(int i = 0; i < indices.Length; i++){
+				mesh.SetIndices(indices[i].ToArray(), MeshTopology.Triangles, i);
+			}
+			mesh.SetNormals(normals);
+			//mesh.SetUVs(0, uvs);
+			mesh.RecalculateNormals();
+			mesh.RecalculateBounds();
 		}
-		mesh.SetNormals(normals);
-		//mesh.SetUVs(0, uvs);
-		mesh.RecalculateNormals();
-		mesh.RecalculateBounds();
 		return mesh;
 	}
 	#endregion

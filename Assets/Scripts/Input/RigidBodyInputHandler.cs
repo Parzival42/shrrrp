@@ -7,7 +7,7 @@ public class RigidBodyInputHandler : InputHandler
     private static string HORIZONTAL_AXIS = "Horizontal";
     private static string VERTICAL_AXIS = "Vertical";
     private static string JUMP_AXIS = "Jump";
-    private static Vector3 FORWARD_RAYCAST_HEIGHT = new Vector3(0, 0.5f, 0);
+    private static Vector3 FORWARD_RAYCAST_HEIGHT = new Vector3(0, 0.25f, 0);
     private static float FORWARD_RAYCAST_LENGTH = 0.6f;
     #endregion
 
@@ -92,27 +92,28 @@ public class RigidBodyInputHandler : InputHandler
         HandleAxisInput(HorizontalInputValue, rightVector);
 
         // Vertical Axis
-        HandleAxisInput(CorrectVerticalInputValue(VerticalInputValue), forwardVector);
+        HandleAxisInput(VerticalInputValue, forwardVector);
 
         // Handle jumping
         HandleJumpInput();
 
         // Apply movement and rotation
-        ApplyMovement(movementVector);
+        ApplyMovement(AdjustMovementVector(movementVector));
         ApplyRotation(HorizontalInputValue, VerticalInputValue);
     }
 
-    private float CorrectVerticalInputValue(float VerticalInputValue)
+    private Vector3 AdjustMovementVector(Vector3 movementVector)
     {
-        Ray ray = new Ray(player.transform.position + FORWARD_RAYCAST_HEIGHT, Vector3.forward);
+        Ray ray = new Ray(player.transform.position + FORWARD_RAYCAST_HEIGHT, player.transform.forward);
         RaycastHit hitInfo;
         if(Physics.Raycast(ray, out hitInfo, FORWARD_RAYCAST_LENGTH, 1 << player.GroundedLayer, QueryTriggerInteraction.UseGlobal))
         {
             Debug.DrawRay(ray.origin, ray.direction * FORWARD_RAYCAST_LENGTH, Color.green);
-            return VerticalInputValue > 0 ? 0.0f : VerticalInputValue;
+            Vector3 projected = Vector3.Project(movementVector, player.transform.forward);
+            movementVector -= projected;
         }
 
-        return VerticalInputValue;
+        return movementVector;
     }
 
     private void HandleJumpInput()
