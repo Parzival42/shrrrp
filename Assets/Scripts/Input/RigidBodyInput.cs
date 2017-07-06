@@ -124,7 +124,9 @@ public class RigidBodyInput : MonoBehaviour
     {
         playerCanvas = gameObject.FindComponentInChildWithTag<Canvas>(PLAYER_CANVAS_TAG);
         playerLifeText = playerCanvas.gameObject.FindComponentInChildWithTag<Text>(PLAYER_LIFE_TEXT_TAG);
-        StartSpawnTween();
+
+        if(FindObjectOfType<GameManager>() != null)
+            StartSpawnTween();
     }
 
     public void StartSpawnTween()
