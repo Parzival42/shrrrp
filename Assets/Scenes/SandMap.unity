@@ -824,11 +824,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4119391776772388, guid: 60e17f19e8a717340937ecee3f5413a8, type: 2}
       propertyPath: m_LocalScale.z
-      value: 98.30424
+      value: 222.61542
       objectReference: {fileID: 0}
     - target: {fileID: 4119391776772388, guid: 60e17f19e8a717340937ecee3f5413a8, type: 2}
       propertyPath: m_LocalScale.x
-      value: 129.31493
+      value: 398.03516
       objectReference: {fileID: 0}
     - target: {fileID: 4119391776772388, guid: 60e17f19e8a717340937ecee3f5413a8, type: 2}
       propertyPath: m_LocalScale.y
