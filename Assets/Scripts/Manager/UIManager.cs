@@ -8,6 +8,13 @@ public class UIManager : MonoBehaviour
     private static readonly string INSERT_TAG = "TextInsert";
 
     #region Inspector Variables
+    [FancyHeader("Canvas", "Different canvas")]
+    [SerializeField]
+    private Canvas mainCanvas;
+
+    [SerializeField]
+    private Canvas playerLifeCanvas;
+
     [FancyHeader("Settings", "UI Manager Settings")]
     [SerializeField]
     private bool showIngameUI = true;
@@ -37,20 +44,40 @@ public class UIManager : MonoBehaviour
     private float tweenTime = 0.2f;
 
     [SerializeField]
+    private float playerLifeFadeIn = 0.3f;
+
+    [SerializeField]
     private LeanTweenType easeType = LeanTweenType.easeOutBack;
     #endregion
 
     #region Internal Variables
     private PlayerManager playerManager;
-    private Canvas mainCanvas;
     private Text textInsert;
     private LTDescr textInsertTween;
+
+    private Text[] playerLifeTexts;
+    private StartupEffects startupEffects;
     #endregion
 
     private void Start()
     {
         InitializeUI();
         InitializePlayerManager();
+        InitializePlayerCanvasElements();
+
+        playerManager.OnAllPlayersFound += FadeInPlayerLives;
+        playerManager.OnPlayerDied += HandlePlayerDeath;
+        playerManager.OnPlayerRespawned += HandlePlayerRespawn;
+        playerManager.OnOnePlayerLeft += HandlePlayerDeath;
+    }
+
+    private void InitializePlayerCanvasElements()
+    {
+        playerLifeTexts = playerLifeCanvas.transform.GetComponentsInChildren<Text>();
+
+        // Set alpha of each text to 0
+        foreach (Text playerLife in playerLifeTexts)
+            SetTextAlpha(playerLife, 0f);
     }
 
     private void InitializePlayerManager()
@@ -70,15 +97,48 @@ public class UIManager : MonoBehaviour
 
     private void InitializeUI()
     {
-        mainCanvas = GetComponentInChildren<Canvas>();
+        if(playerLifeCanvas == null)
+            Debug.LogError("[UIManager]: No player life canvas found!.", gameObject);
+
         if (mainCanvas == null)
-            Debug.LogError("[UIManager]: No canvas found!.", gameObject);
+            Debug.LogError("[UIManager]: No main canvas found!.", gameObject);
 
         textInsert = mainCanvas.gameObject.FindComponentInChildWithTag<Text>(INSERT_TAG);
         if (textInsert == null)
             Debug.LogError("[UIManager]: No text insert object found!", gameObject);
 
         SetTextInsertAlpha(0f);
+    }
+
+    private void FadeInPlayerLives(Player[] players)
+    {
+        foreach (Player player in players)
+        {
+            int playerType = (int) player.PlayerType;
+            SetPlayerLifeText(playerLifeTexts[playerType], player);
+
+            LeanTween.value(0f, 1f, playerLifeFadeIn).setEase(LeanTweenType.easeInExpo)
+                .setOnUpdate((float value) => {
+                    SetTextAlpha(playerLifeTexts[playerType], value);
+                });
+        }
+    }
+
+    private void HandlePlayerDeath(Player player)
+    {
+        int playerType = (int)player.PlayerType;
+        TweenPlayerLifeChange(playerLifeTexts[playerType]);
+        LeanTween.value(1f, 0f, playerLifeFadeIn).setEase(LeanTweenType.easeInExpo)
+                .setOnUpdate((float value) => {
+                    SetTextAlpha(playerLifeTexts[playerType], value);
+                });
+    }
+
+    private void HandlePlayerRespawn(Player player)
+    {
+        int playerType = (int) player.PlayerType;
+        playerLifeTexts[playerType].text = player.PlayerLives.ToString();
+        TweenPlayerLifeChange(playerLifeTexts[playerType]);
     }
 
     /// <summary>
@@ -149,5 +209,27 @@ public class UIManager : MonoBehaviour
     private void SetTextInsertAlpha(float alpha)
     {
         textInsert.color = new Color(textInsert.color.r, textInsert.color.g, textInsert.color.b, alpha);
+    }
+
+    private void SetTextAlpha(Text text, float alpha)
+    {
+        text.color = new Color(text.color.r, text.color.g, text.color.b, alpha);
+    }
+
+    private void SetPlayerLifeText(Text text, Player player)
+    {
+        text.text = player.PlayerLives.ToString();
+    }
+
+    private void TweenPlayerLifeChange(Text text)
+    {
+        Vector3 destinationSize = text.rectTransform.localScale * 1.2f;
+        LeanTween.value(text.gameObject, text.rectTransform.localScale, destinationSize, playerLifeFadeIn)
+            .setOnUpdate((Vector3 value) => {
+                text.rectTransform.localScale = value;
+            })
+            .setEase(LeanTweenType.easeInOutQuad)
+            .setLoopClamp()
+            .setLoopPingPong(1);
     }
 }

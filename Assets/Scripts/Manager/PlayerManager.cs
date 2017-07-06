@@ -4,6 +4,7 @@ using UnityEngine;
 public delegate void AllPlayerDeadHandler();
 public delegate void OnePlayerLeftHandler(Player lastPlayer);
 public delegate void PlayerDiedHandler(Player player);
+public delegate void PlayerRespawnedHandler(Player player);
 public delegate void AllPlayersFoundHandler(Player[] players);
 
 /// <summary>
@@ -30,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     public event AllPlayerDeadHandler OnAllPlayersDied;
     public event OnePlayerLeftHandler OnOnePlayerLeft;
     public event PlayerDiedHandler OnPlayerDied;
+    public event PlayerRespawnedHandler OnPlayerRespawned;
     public event AllPlayersFoundHandler OnAllPlayersFound;
     #endregion
 
@@ -133,6 +135,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (OnAllPlayersDied != null && sendEvents)
             OnAllPlayersDied();
+    }
+
+    public void PlayerRespawned(Player player)
+    {
+        if (OnPlayerRespawned != null)
+            OnPlayerRespawned(player);
     }
 
     private void OnePlayerLeft(Player lastPlayer)
